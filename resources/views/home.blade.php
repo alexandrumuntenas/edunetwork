@@ -1,13 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Inicio')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>Inicio</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @include('componentes.cards.home_cards_default')
+    <h4>Biblioteca</h4>
+    @include('componentes.cards.home_cards_biblio')
+
 @stop
 
 @section('css')
@@ -17,3 +20,7 @@
 @section('js')
     <script> console.log('Hi!'); </script>
 @stop
+
+@section('footer')
+    Eduweb v1.0 </> by duoestudios
+@endsection

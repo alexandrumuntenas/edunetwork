@@ -15,8 +15,7 @@
     {{-- Title --}}
     <title>
         @yield('title_prefix', config('adminlte.title_prefix', ''))
-        @yield('title', config('adminlte.title', 'AdminLTE 3'))
-        @yield('title_postfix', config('adminlte.title_postfix', ''))
+        @yield('title', config('adminlte.title', 'Modulo Bibliopress'))
     </title>
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
@@ -103,7 +102,6 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
-
 </body>
 
 </html>
