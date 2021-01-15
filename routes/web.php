@@ -35,11 +35,11 @@ Route::get('/agenda/', [App\Http\Controllers\AgendapersonalController::class, 'i
 Route::redirect('biblioteca/', 'biblioteca/catalogo/')->name('biblio_home');
 Route::get('/biblioteca/catalogo', [App\Http\Controllers\BibliotecaController::class, 'index'])->name('biblio_catalogo');
 Route::get('/biblioteca/misprestamos', [App\Http\Controllers\BibliotecaController::class, 'misprestamos'])->name('biblio_misprestamos');
-Route::get('/biblioteca/misestadisticas', [App\Http\Controllers\BibliotecaController::class, 'index'])->name('biblio_misestadisticas');
-Route::get('/biblioteca/misvaloraciones', [App\Http\Controllers\BibliotecaController::class, 'index'])->name('biblio_misvaloraciones');
+Route::get('/biblioteca/misestadisticas', [App\Http\Controllers\BibliotecaController::class, 'misestadisticas'])->name('biblio_misestadisticas');
+Route::get('/biblioteca/misvaloraciones', [App\Http\Controllers\BibliotecaController::class, 'misvaloraciones'])->name('biblio_misvaloraciones');
 
 //Rutas comunidades
 Route::get('/comunidad/missuscripciones', [App\Http\Controllers\ComunidadController::class, 'missuscripciones'])->name('cm_missuscripciones');
-Route::get('/comunidad/misprestamos', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('biblio_misprestamos');
-Route::get('/comunidad/misestadisticas', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('biblio_misestadisticas');
-Route::get('/comunidad/misvaloraciones', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('biblio_misvaloraciones');
+Route::get('/comunidad/misprestamos', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('cm_misprestamos');
+Route::get('/comunidad/misestadisticas', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('cm_misestadisticas');
+Route::get('/comunidad/misvaloraciones', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('cm_misvaloraciones');
