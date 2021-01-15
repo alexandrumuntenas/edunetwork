@@ -22,5 +22,5 @@
 @stop
 
 @section('footer')
-    Eduweb v1.0 </> by duoestudios
+    Edunetwork v1.0 </> by duoestudios
 @endsection

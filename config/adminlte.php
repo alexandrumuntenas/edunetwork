@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Edunetwork',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>Edu</b>network',
+    'logo_img' => '/images/_avatar.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'Edunetwork',
 
     /*
     |--------------------------------------------------------------------------
@@ -224,87 +224,81 @@ return [
     */
 
     'menu' => [
+        'Navegación',
         [
-            'text' => 'search',
-            'search' => true,
-            'topnav' => true,
+            'text' => 'Inicio',
+            'route' => 'home',
+            'icon' => 'fas fa-home',
         ],
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'text' => 'Mis clases',
+            'route' => 'ol_home',
+            'icon' => 'fas fa-school',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text'  => 'Seguimiento del curso',
+            'url' => '#',
+            'icon'  => 'fas fa-graduation-cap',
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'text' => 'Comunicaciones',
+            'route' => 'comunicaciones_home',
+            'icon' => 'far fa-comment-dots',
         ],
         [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
+            'text' => 'Agenda personal',
+            'route' => 'agenda_home',
+            'icon' => 'far fa-calendar',
+        ],
+        [
+            'text' => 'Biblioteca',
+            'route' => 'biblio_home',
+            'icon' => 'fas fa-book',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Catálogo',
+                    'route' => 'biblio_catalogo',
+                    'icon' => 'fas fa-list',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Mis préstamos',
+                    'route' => 'biblio_misprestamos',
+                    'icon' => 'fas fa-book-open',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Mis valoraciones',
+                    'route' => 'biblio_misvaloraciones',
+                    'icon' => 'fas fa-star',
                 ],
+                [
+                    'text' => 'Mis estadísticas',
+                    'route' => 'biblio_misestadisticas',
+                    'icon' => 'fas fa-chart-pie',
+                ],
+
             ],
         ],
-        ['header' => 'labels'],
         [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
+            'text' => 'Comunidad',
+            'url' => '#',
+            'icon' => 'fas fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Mis suscripciones',
+                    'route' => 'cm_missuscripciones',
+                    'icon' => 'fas fa-bell',
+                ]
+            ],
         ],
         [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
+            'text' => 'Utilidades',
+            'url' => '#',
+            'icon' => 'fas fa-toolbox',
         ],
         [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text' => 'Mi perfil',
+            'url' => '#',
+            'icon' => 'fas fa-user-cog',
         ],
     ],
 
