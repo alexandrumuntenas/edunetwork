@@ -337,6 +337,16 @@ return [
     */
 
     'plugins' => [
+        'jQuery' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'
+                ],
+            ],
+        ],
         'Datatables' => [
             'active' => true,
             'files' => [
@@ -411,9 +421,9 @@ return [
             'active' => false,
             'files' => [
                 [
-                'type' => 'js',
-                'asset' => false,
-                'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js',
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js',
                 ],
                 [
                     'type' => 'css',
