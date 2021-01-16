@@ -20,9 +20,9 @@ class Catalogos extends Migration
             $table->string('editorial');
             $table->date('anopub');
             $table->string('isbn');
-            $table->integer('disponibilidad');
-            $table->longText('prestadoa');
-            $table->date('fechadev');
+            $table->integer('disponibilidad')->default('1');
+            $table->longText('prestadoa')->nullable();
+            $table->date('fechadev')->nullable();
         });
     }
 
