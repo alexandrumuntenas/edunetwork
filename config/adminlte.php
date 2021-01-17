@@ -32,7 +32,6 @@ return [
 
     'use_ico_only' => false,
     'use_full_favicon' => false,
-
     /*
     |--------------------------------------------------------------------------
     | Logo
@@ -65,7 +64,7 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
@@ -83,10 +82,10 @@ return [
     |
     */
 
-    'layout_topnav' => null,
-    'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => null,
+    'layout_topnav' => false,
+    'layout_boxed' => false,
+    'layout_fixed_sidebar' => true,
+    'layout_fixed_navbar' => true,
     'layout_fixed_footer' => null,
 
     /*
@@ -146,7 +145,7 @@ return [
 
     'sidebar_mini' => true,
     'sidebar_collapse' => false,
-    'sidebar_collapse_auto_size' => false,
+    'sidebar_collapse_auto_size' => true,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
@@ -264,16 +263,37 @@ return [
                     'text' => 'Mis préstamos',
                     'route' => 'biblio_misprestamos',
                     'icon' => 'fas fa-book-open',
+                    'role' => 'alumno'
                 ],
                 [
                     'text' => 'Mis valoraciones',
                     'route' => 'biblio_misvaloraciones',
                     'icon' => 'fas fa-star',
+                    'role' => 'alumno'
                 ],
                 [
                     'text' => 'Mis estadísticas',
                     'route' => 'biblio_misestadisticas',
                     'icon' => 'fas fa-chart-pie',
+                    'role' => 'alumno'
+                ],
+                [
+                    'text' => 'Préstamos',
+                    'route' => 'biblio_prestamos',
+                    'icon' => 'fas fa-book-open',
+                    'role' => 'bibliotecario'
+                ],
+                [
+                    'text' => 'Valoraciones',
+                    'route' => 'biblio_valoraciones',
+                    'icon' => 'fas fa-star',
+                    'role' => 'bibliotecario'
+                ],
+                [
+                    'text' => 'Configuración',
+                    'route' => 'biblio_configuracion',
+                    'icon' => 'fas fa-cog',
+                    'role' => 'bibliotecario'
                 ],
 
             ],
@@ -300,6 +320,12 @@ return [
             'url' => '#',
             'icon' => 'fas fa-user-cog',
         ],
+        [
+            'text' => 'Configuración',
+            'route' => 'admin_configuracion',
+            'icon' => 'fas fa-cog',
+            'role' => 'director'
+        ],
     ],
 
     /*
@@ -315,11 +341,12 @@ return [
     */
 
     'filters' => [
-        JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+        //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+        App\Filtros\LaratrustFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
     ],
@@ -398,7 +425,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@10',
                 ],
             ],
         ],
@@ -437,6 +464,16 @@ return [
                 ],
             ],
         ],
+        'popperJs' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+                ]
+            ]
+        ]
     ],
 
     /*
