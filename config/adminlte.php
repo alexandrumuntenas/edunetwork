@@ -310,16 +310,11 @@ return [
             ],
         ],
         [
-            'text' => 'Comunidad',
+            'text' => 'Comunicaciones',
             'url' => '#',
-            'icon' => 'fas fa-users',
-            'submenu' => [
-                [
-                    'text' => 'Mis suscripciones',
-                    'route' => 'cm_missuscripciones',
-                    'icon' => 'fas fa-bell',
-                ]
-            ],
+            'icon' => 'fas fa-bell',
+            'role' => 'director|secretaria|jefaturadeestudios'
+
         ],
         [
             'text' => 'Utilidades',
@@ -335,7 +330,13 @@ return [
             'text' => 'Configuración',
             'route' => 'admin_configuracion',
             'icon' => 'fas fa-cog',
-            'role' => 'director'
+            'role' => 'director|it'
+        ],
+        [
+            'text' => 'Mi Perfil',
+            'url' => '#',
+            'icon' => 'fas fa-cog',
+            'topnav_user' => true,
         ],
     ],
 

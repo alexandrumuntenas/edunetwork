@@ -12,9 +12,6 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'superadministrador' => [
-            'configuracionglobal' => 'r,u',
-        ],
         'director' => [
             'web' => 'pagina-crear,pagina-editar,pagina-eliminar,pagina-publicar,post-crear,post-editar,post-eliminar-post-publicar,avisos-crear,avisos-editar,avisos-eliminar,accion-files-subir,accion-files-edit,accion-files-eliminar,accion-publicaciones-crear,accion-publicaciones-editar,accion-publicaciones-eliminar',
             'comunicaciones' => 'enviar,responder,leer',
@@ -31,6 +28,11 @@ return [
             'notificaciones' => 'enviar',
         ],
         'jeafaturadeestudios' => [
+            'web' => 'pagina-crear,pagina-editar,pagina-eliminar,pagina-publicar,post-crear,post-editar,post-eliminar-post-publicar,avisos-crear,avisos-editar,avisos-eliminar,accion-files-subir,accion-files-edit,accion-files-eliminar,accion-publicaciones-crear,accion-publicaciones-editar,accion-publicaciones-eliminar',
+            'comunicaciones' => 'enviar,responder,leer',
+            'notificaciones' => 'enviar',
+        ],
+        'it' => [
             'web' => 'pagina-crear,pagina-editar,pagina-eliminar,pagina-publicar,post-crear,post-editar,post-eliminar-post-publicar,avisos-crear,avisos-editar,avisos-eliminar,accion-files-subir,accion-files-edit,accion-files-eliminar,accion-publicaciones-crear,accion-publicaciones-editar,accion-publicaciones-eliminar',
             'comunicaciones' => 'enviar,responder,leer',
             'notificaciones' => 'enviar',
