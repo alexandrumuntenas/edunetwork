@@ -145,7 +145,7 @@ return [
 
     'sidebar_mini' => true,
     'sidebar_collapse' => false,
-    'sidebar_collapse_auto_size' => true,
+    'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
@@ -223,7 +223,6 @@ return [
     */
 
     'menu' => [
-        'Navegación',
         [
             'text' => 'Inicio',
             'route' => 'home',
@@ -260,6 +259,12 @@ return [
                     'icon' => 'fas fa-list',
                 ],
                 [
+                    'text' => 'Mis desideratas',
+                    'route' => 'biblio_misdesideratas',
+                    'icon' => 'fas fa-shopping-cart',
+                    'role' => 'alumno',
+                ],
+                [
                     'text' => 'Mis préstamos',
                     'route' => 'biblio_misprestamos',
                     'icon' => 'fas fa-book-open',
@@ -282,6 +287,12 @@ return [
                     'route' => 'biblio_prestamos',
                     'icon' => 'fas fa-book-open',
                     'role' => 'bibliotecario'
+                ],
+                [
+                    'text' => 'Desideratas',
+                    'route' => 'biblio_desideratas',
+                    'icon' => 'fas fa-shopping-cart',
+                    'role' => 'bibliotecario',
                 ],
                 [
                     'text' => 'Valoraciones',
@@ -380,17 +391,22 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => 'https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/af-2.3.5/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sp-1.2.2/sl-1.3.1/datatables.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => 'false',
+                    'location' => 'https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.23/af-2.3.5/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.3/r-2.2.7/sc-2.0.3/sb-1.0.1/sp-1.2.2/sl-1.3.1/datatables.min.js',
                 ],
             ],
         ],
@@ -471,6 +487,41 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+                ]
+            ]
+        ],
+        'shepperdjs' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/shepherd.js@8.1.0/dist/js/shepherd.js',
+                ],
+            ],
+        ],
+        'pusher' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://js.pusher.com/beams/1.0/push-notifications-cdn.js',
+                ]
+            ]
+        ],
+        'bootstrap-select' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js'
                 ]
             ]
         ]

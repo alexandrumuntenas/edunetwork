@@ -21,6 +21,7 @@ class Desideratas extends Migration
             $table->string('isbn');
             $table->integer('usuario');
             $table->date('fecha');
+            $table->integer('estado')->default('1');
         });
     }
 

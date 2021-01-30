@@ -1,9 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Mis préstamos < Biblioteca')
-
-@section('content_header')
-    <h1>Mis préstamos</h1>
+@section('title', 'Préstamos < Biblioteca') @section('content_header') <h1>Préstamos</h1>
 @stop
 
 @section('content')
@@ -24,6 +21,7 @@
                                     <td>Año de Publicación</td>
                                     <td>ISBN</td>
                                     <td>Fecha de devolución</td>
+                                    <td></td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,6 +33,11 @@
                                         <td>{{ $item->anopub }}</td>
                                         <td>{{ $item->isbn }}</td>
                                         <td>{{ $item->fechadev }}</td>
+                                        <td><a href="./acciones/devolver/{{ $item->id }}"
+                                                style="margin: 0px 5px 0px 5px;"><i class="fas fa-inbox"></i></a>
+                                            <a href="./acciones/prorroga/{{ $item->id }}"
+                                                style="margin: 0px 5px 0px 0px;"><i class="fas fa-clock"></i></a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -46,7 +49,36 @@
             <!-- /.card -->
         </div>
         <!-- /.col -->
+        <div class="col-12">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Leyenda</h3>
+
+                    <div class="card-tools">
+
+                        <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body leyenda form-inline">
+                    <p>
+                        <i class="fas fa-inbox"></i> Devolver
+                    </p>
+                    <p>
+                        <i class="fas fa-clock"></i> Retrasar devolución // Prorrogar préstamo
+                    </p>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
     </div>
+
 
 
 @stop
@@ -65,5 +97,6 @@
 @stop
 
 @section('footer')
-    Edunetwork v1.0 </> by duoestudios
+    Edunetwork v1.0
+</> by duoestudios
 @endsection

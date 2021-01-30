@@ -15,14 +15,19 @@ class Catalogos extends Migration
     {
         Schema::create('catalogos', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->string('autor');
-            $table->string('editorial');
-            $table->date('anopub');
-            $table->string('isbn');
+            $table->longText('portada')->nullable();
+            $table->string('titulo')->nullable();
+            $table->string('autor')->nullable();
+            $table->longText('descripcion')->nullable();
+            $table->string('editorial')->nullable();
+            $table->integer('anopub')->nullable();
+            $table->string('isbn')->nullable();
+            $table->string('ejemplar')->unique();
+            $table->string('ubicacion')->nullable();
             $table->integer('disponibilidad')->default('1');
             $table->longText('prestadoa')->nullable();
             $table->date('fechadev')->nullable();
+            $table->timestamps();
         });
     }
 
