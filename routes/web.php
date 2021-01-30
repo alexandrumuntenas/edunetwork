@@ -64,12 +64,6 @@ Route::get('/biblioteca/acciones/desideratas/rechazar/{id}', [App\Http\Controlle
 
 Route::post('/biblioteca/acciones/consultorio/usuarios', [App\Http\Controllers\BibliotecaController::class, 'consultorio_usuarios'])->middleware(['role:bibliotecario', 'auth']);
 
-//Rutas comunidades
-Route::get('/comunidad/missuscripciones', [App\Http\Controllers\ComunidadController::class, 'missuscripciones'])->name('cm_missuscripciones')->middleware('auth');
-Route::get('/comunidad/misprestamos', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('cm_misprestamos')->middleware('auth');
-Route::get('/comunidad/misestadisticas', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('cm_misestadisticas')->middleware('auth');
-Route::get('/comunidad/misvaloraciones', [App\Http\Controllers\Modulos\ComunidadController::class, 'index'])->name('cm_misvaloraciones')->middleware('auth');
-
 //Rutas Admin
 Route::get('/admin/configuracion', [App\Http\Controllers\AdminController::class, 'configuracion'])->name('admin_configuracion')->middleware(['role:director','auth']);
 
