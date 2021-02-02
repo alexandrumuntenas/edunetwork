@@ -13,7 +13,7 @@ class Notificaciones extends Migration
      */
     public function up()
     {
-        Schema::create('notificaciones', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string('json_data');
         });
@@ -26,6 +26,6 @@ class Notificaciones extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notificaciones');
+        Schema::dropIfExists('notifications');
     }
 }
