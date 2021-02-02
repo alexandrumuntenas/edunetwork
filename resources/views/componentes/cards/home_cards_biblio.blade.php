@@ -67,20 +67,24 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table style="width:100%" id="prestamos" class="table table-bordered table-hover">
-                    <thead>
-                        <td>Título</td>
-                        <td>Fecha de devolución</td>
-                    </thead>
-                    <tbody>
-                        @foreach ($prestamos as $item)
-                            <tr>
-                                <td>{{ $item->titulo }}</td>
-                                <td>{{ $item->fechadev }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                @if ($prestamos != '[]')
+                    <table style="width:100%" id="prestamos" class="table table-bordered table-hover">
+                        <thead>
+                            <td>Título</td>
+                            <td>Fecha de devolución</td>
+                        </thead>
+                        <tbody>
+                            @foreach ($prestamos as $item)
+                                <tr>
+                                    <td>{{ $item->titulo }}</td>
+                                    <td>{{ $item->fechadev }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                No tienes prestamos activos...
+                @endif
             </div>
             <!-- /.card-body -->
         </div>
