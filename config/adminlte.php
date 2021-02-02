@@ -229,26 +229,6 @@ return [
             'icon' => 'fas fa-home',
         ],
         [
-            'text' => 'Mis clases',
-            'route' => 'ol_home',
-            'icon' => 'fas fa-school',
-        ],
-        [
-            'text'  => 'Seguimiento del curso',
-            'url' => '#',
-            'icon'  => 'fas fa-graduation-cap',
-        ],
-        [
-            'text' => 'Comunicaciones',
-            'route' => 'comunicaciones_home',
-            'icon' => 'far fa-comment-dots',
-        ],
-        [
-            'text' => 'Agenda personal',
-            'route' => 'agenda_home',
-            'icon' => 'far fa-calendar',
-        ],
-        [
             'text' => 'Biblioteca',
             'route' => 'biblio_home',
             'icon' => 'fas fa-book',
@@ -310,10 +290,10 @@ return [
             ],
         ],
         [
-            'text' => 'Comunicaciones',
-            'url' => '#',
+            'text' => 'Notificaciones',
+            'route' => 'notificaciones_home',
             'icon' => 'fas fa-bell',
-            'role' => 'director|secretaria|jefaturadeestudios'
+            'role' => 'director|secretaria|jefaturadeestudios|it'
 
         ],
         [
@@ -501,31 +481,6 @@ return [
                 ],
             ],
         ],
-        'pusher' => [
-            'active' => true,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://js.pusher.com/beams/1.0/push-notifications-cdn.js',
-                ]
-            ]
-        ],
-        'bootstrap-select' => [
-            'active' => true,
-            'files' => [
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js'
-                ]
-            ]
-        ]
     ],
 
     /*

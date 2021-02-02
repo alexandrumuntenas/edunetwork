@@ -28,8 +28,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/elearning/inicio', [ App\Http\Controllers\HomeController::class, 'index'])->name('ol_home')->middleware('auth');
 Route::get('/elearning/clase/', [App\Http\Controllers\ElearningController::class, 'classroom'])->name('ol_home')->middleware('auth');
 
-//Rutas comunicaciones
-Route::get('/comunicaciones/', [App\Http\Controllers\ComunicacionesController::class, 'index'])->name('comunicaciones_home')->middleware('auth');
+//Rutas notificaciones
+Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::class, 'index'])->name('notificaciones_home')->middleware(['role:director', 'auth']);
 
 //Rutas Agenda
 Route::get('/agenda/', [App\Http\Controllers\AgendapersonalController::class, 'index'])->name('agenda_home')->middleware('auth');
@@ -41,13 +41,10 @@ Route::get('/biblioteca/misprestamos', [App\Http\Controllers\BibliotecaControlle
 Route::get('/biblioteca/misestadisticas', [App\Http\Controllers\BibliotecaController::class, 'misestadisticas'])->name('biblio_misestadisticas')->middleware(['role:alumno','auth']);
 Route::get('/biblioteca/misvaloraciones', [App\Http\Controllers\BibliotecaController::class, 'misvaloraciones'])->name('biblio_misvaloraciones')->middleware(['role:alumno','auth']);
 Route::get('/biblioteca/misdesideratas', [App\Http\Controllers\BibliotecaController::class, 'misdesideratas'])->name('biblio_misdesideratas')->middleware(['role:alumno','auth']);
-
-
 Route::get('/biblioteca/prestamos', [App\Http\Controllers\BibliotecaController::class, 'prestamos'])->name('biblio_prestamos')->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/desideratas', [App\Http\Controllers\BibliotecaController::class, 'desideratas'])->name('biblio_desideratas')->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/valoraciones', [App\Http\Controllers\BibliotecaController::class, 'valoraciones'])->name('biblio_valoraciones')->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/configuracion', [App\Http\Controllers\BibliotecaController::class, 'configuracion'])->name('biblio_configuracion')->middleware(['role:bibliotecario|secretaria|vicedirector|director','auth']);
-
 Route::post('/biblioteca/acciones/crear/', [App\Http\Controllers\BibliotecaController::class, 'crear'])->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/acciones/editar/{id}', [App\Http\Controllers\BibliotecaController::class, 'editar'])->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/acciones/eliminar/{id}', [App\Http\Controllers\BibliotecaController::class, 'eliminar'])->middleware(['role:bibliotecario', 'auth']);
@@ -61,7 +58,6 @@ Route::post('/biblioteca/acciones/subir/abies', [App\Http\Controllers\Biblioteca
 Route::post('/biblioteca/acciones/subir/biblioweb', [App\Http\Controllers\BibliotecaController::class, 'subirbiblioweb'])->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/acciones/desideratas/aprobar/{id}', [App\Http\Controllers\BibliotecaController::class, 'desiderata_aprobar'])->middleware(['role:bibliotecario', 'auth']);
 Route::get('/biblioteca/acciones/desideratas/rechazar/{id}', [App\Http\Controllers\BibliotecaController::class, 'desiderata_denegar'])->middleware(['role:bibliotecario', 'auth']);
-
 Route::post('/biblioteca/acciones/consultorio/usuarios', [App\Http\Controllers\BibliotecaController::class, 'consultorio_usuarios'])->middleware(['role:bibliotecario', 'auth']);
 
 //Rutas Admin
