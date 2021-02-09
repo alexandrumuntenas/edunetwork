@@ -235,7 +235,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Catálogo',
-                    'route' => 'biblio_catalogo',
+                    'route' => 'biblio_home',
                     'icon' => 'fas fa-list',
                 ],
                 [

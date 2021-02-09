@@ -149,7 +149,7 @@ class BibliotecaController extends Controller
     public function eliminar($id)
     {
         DB::table('catalogos')->where('id', '=', $id)->delete();
-        return redirect('biblioteca/catalogo');
+        return redirect('biblioteca/');
     }
     public function desiderata_aprobar($id)
     {

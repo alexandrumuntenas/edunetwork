@@ -35,8 +35,7 @@ Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::c
 Route::get('/agenda/', [App\Http\Controllers\AgendapersonalController::class, 'index'])->name('agenda_home')->middleware('auth');
 
 //Rutas biblioteca
-Route::redirect('biblioteca/', 'biblioteca/catalogo/')->name('biblio_home');
-Route::get('/biblioteca/catalogo', [App\Http\Controllers\BibliotecaController::class, 'index'])->name('biblio_catalogo')->middleware('auth');
+Route::get('/biblioteca/', [App\Http\Controllers\BibliotecaController::class, 'index'])->name('biblio_home')->middleware('auth');
 Route::get('/biblioteca/misprestamos', [App\Http\Controllers\BibliotecaController::class, 'misprestamos'])->name('biblio_misprestamos')->middleware(['role:alumno','auth']);
 Route::get('/biblioteca/misestadisticas', [App\Http\Controllers\BibliotecaController::class, 'misestadisticas'])->name('biblio_misestadisticas')->middleware(['role:alumno','auth']);
 Route::get('/biblioteca/misvaloraciones', [App\Http\Controllers\BibliotecaController::class, 'misvaloraciones'])->name('biblio_misvaloraciones')->middleware(['role:alumno','auth']);
