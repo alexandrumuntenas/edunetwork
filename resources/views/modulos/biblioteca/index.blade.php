@@ -1,7 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Catálogo < Biblioteca') @section('content_header') <h1>Catálogo</h1>
-@stop
+@section('title', 'Catálogo < Biblioteca') @section('content_header') <h1>Catálogo @if (Auth::user()->hasRole('bibliotecario')) <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#addbook" href=""><i class="fas fa-book-medical"></i> Añadir libro</a> @endif </h1> @stop
 
 @section('content')
 
@@ -114,19 +113,6 @@
                     <!-- /.card-body -->
                 </div>
             </div>
-                    <div class="fab-container">
-          <div class="fab fab-icon-holder">
-            <i class="fas fa-plus"></i>
-          </div>
-          <ul class="fab-options">
-            <li>
-              <span class="fab-label">Añadir nuevo libro (Beta)</span>
-              <div class="fab-icon-holder">
-                <a type="link" data-toggle="modal" data-target="#addbook"><i class="fas fa-book-medical"></i></a>
-              </div>
-            </li>
-          </ul>
-        </div>
             <div class="modal fade" id="addbook" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <form class="modal-content" method="post" action="{{url('/biblioteca/acciones/crear')}}">
@@ -189,10 +175,6 @@
     </div>
 
 
-@stop
-
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
