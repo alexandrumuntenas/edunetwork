@@ -293,7 +293,6 @@ return [
             'text' => 'Notificaciones',
             'route' => 'notificaciones_home',
             'icon' => 'fas fa-bell',
-            'role' => 'director|secretaria|jefaturadeestudios|it'
 
         ],
         [
@@ -478,6 +477,16 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => 'https://cdn.jsdelivr.net/npm/shepherd.js@8.1.0/dist/js/shepherd.js',
+                ],
+            ],
+        ],
+        'markdown' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js',
                 ],
             ],
         ],

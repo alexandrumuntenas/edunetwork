@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Catalogo;
+use App\Models\Notification;
 class HomeController extends Controller
 {
     /**
@@ -25,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $notificaciones = Notification::all()->sortByDesc('id')->take(5);
+        $notificaciones = json_decode(json_encode($notificaciones), true);
+
         $prestamos = DB::table('catalogos')
             ->where('prestadoa', '=', Auth::user()->email)
             ->where('disponibilidad', '=', '2')
@@ -42,6 +46,7 @@ class HomeController extends Controller
             'prestados' => $prestados,
             'devolucion' => $devolucion,
             'confinados' => $confinados,
+            'notificaciones' => $notificaciones,
             ]);
     }
 }

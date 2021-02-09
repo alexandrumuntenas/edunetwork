@@ -29,7 +29,7 @@ Route::get('/elearning/inicio', [ App\Http\Controllers\HomeController::class, 'i
 Route::get('/elearning/clase/', [App\Http\Controllers\ElearningController::class, 'classroom'])->name('ol_home')->middleware('auth');
 
 //Rutas notificaciones
-Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::class, 'index'])->name('notificaciones_home')->middleware(['role:director', 'auth']);
+Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::class, 'index'])->name('notificaciones_home')->middleware(['auth']);
 
 //Rutas Agenda
 Route::get('/agenda/', [App\Http\Controllers\AgendapersonalController::class, 'index'])->name('agenda_home')->middleware('auth');

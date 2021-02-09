@@ -16,6 +16,7 @@ class Notificaciones extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string('json_data');
+            $table->timestamps();
         });
     }
 

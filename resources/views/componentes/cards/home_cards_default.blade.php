@@ -30,7 +30,18 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                The body of the card
+                <table class="table table-bordered">
+                    <tbody>
+                    @foreach ($notificaciones as $item)
+                        @foreach (json_decode($item['json_data'], true) as $dato)
+                            <tr>
+                                <th style="font-weight: normal !important">{{ $dato['titulo'] }}, <em>publicado el {{ substr($item['created_at'], 0,10) }}</th>
+                                <th style="font-weight: normal !important"><a href="{{url('notificaciones/v/'.$item['id'].'')}}"> Ver más</a></th>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
             <!-- /.card-body -->
         </div>
