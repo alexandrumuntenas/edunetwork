@@ -30,6 +30,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+                @if ($notificaciones != null)
                 <table class="table table-bordered">
                     <tbody>
                     @foreach ($notificaciones as $item)
@@ -42,6 +43,9 @@
                     @endforeach
                     </tbody>
                 </table>
+                @else
+                <p>No hay notificaciones disponibles para mostrar...</p>
+                @endif
             </div>
             <!-- /.card-body -->
         </div>
