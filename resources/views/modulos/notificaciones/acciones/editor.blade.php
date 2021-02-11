@@ -1,5 +1,4 @@
 @extends('adminlte::page')
-@section('plugins.Summernote', true)
 
 @section('title', 'Editar < Notificaciones') @section('content_header') <h1>Editando...</h1>
 @stop
@@ -11,25 +10,34 @@
             <div class="card">
                 <!-- /.card-header -->
                 <div class="card-body">
-                    @php
-$config = [
-    "height" => "100",
-    "toolbar" => [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['table', ['table']],
-        ['insert', ['link', 'picture', 'video']],
-        ['view', ['fullscreen', 'codeview', 'help']],
-    ],
-]
-@endphp
-<x-adminlte-text-editor name="teConfig" label="WYSIWYG Editor" label-class="text-danger"
-    size="sm" placeholder="Write some text..." :config="$config"/>
+                    @foreach ($datos as $datos)
+                        <?php $id = $datos['id']; ?>
+                        @foreach (json_decode($datos['json_data'], true) as $datos)
+                            <form method="POST" action="{{ url('notificaciones/acciones/actualizar/') }}">
+                                @csrf
+                                <input id="id" name="id" value="{{$id}}"hidden/>
+                                <div class="form-group">
+                                    <label for="titulo">Título de la notificación</label>
+                                    <input id="titulo" name="titulo" class="form-control form-control-sm" type="text"
+                                        maxlength="255" value="{{ $datos['titulo'] }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="autor">Autor</label>
+                                    <input id="autor" name="autor" class="form-control form-control-sm" type="text"
+                                        maxlength="255" value="{{ $datos['autor'] }}" readonly />
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Contenido</label>
+                                    <textarea type="text" id="contenido" name="contenido"
+                                        class="md-textarea form-control" maxlength="1024" value=""
+                                        required>{{ $datos['contenido'] }}</textarea>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Actualizar" />
+                                <a href="{{url('notificaciones/v/'.$id)}}" class="btn btn-danger">Cancelar</a>
+                            </form>
+                        @endforeach
+                    @endforeach
+
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -49,7 +57,8 @@ $config = [
 @section('js')
     <script>
         $(document).ready(function() {
-            $('#prestamos').DataTable();
+            CKEDITOR.replace('contenido');
+
         });
 
     </script>

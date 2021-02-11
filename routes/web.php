@@ -33,7 +33,7 @@ Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::c
 Route::post('/notificaciones/acciones/crear', [App\Http\Controllers\NotificacionesController::class, 'crear'])->middleware(['auth']);
 Route::get('/notificaciones/acciones/editar/{id}', [App\Http\Controllers\NotificacionesController::class, 'editar'])->middleware(['auth']);
 Route::get('/notificaciones/acciones/eliminar/{id}', [App\Http\Controllers\NotificacionesController::class, 'eliminar'])->middleware(['auth']);
-Route::get('/notificaciones/acciones/actualizar/', [App\Http\Controllers\NotificacionesController::class, 'actualizar'])->middleware(['auth']);
+Route::post('/notificaciones/acciones/actualizar/', [App\Http\Controllers\NotificacionesController::class, 'actualizar'])->middleware(['auth']);
 Route::get('/notificaciones/v/{id}', [App\Http\Controllers\NotificacionesController::class, 'leer'])->middleware(['auth']);
 
 //Rutas Agenda

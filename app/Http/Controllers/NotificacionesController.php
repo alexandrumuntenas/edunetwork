@@ -24,7 +24,7 @@ class NotificacionesController extends Controller
         $titulo = $request->input('titulo');
         $autor = $request->input('autor');
 
-        $contenido = trim(preg_replace('/\s\s+/', ' ', $request->input('contenido')));
+        $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
         $json_data = '[{"titulo":"'.$titulo.'", "contenido":"'.$contenido.'", "autor":"'.$autor.'"}]';
         DB::table('notifications')->insert([
             'json_data' => $json_data,
@@ -46,14 +46,27 @@ class NotificacionesController extends Controller
     }
     public function editar($id)
     {
-        return view('modulos.notificaciones.acciones.editor');
+        $query = Notification::where('id', '=', $id)->get();
+        $datos = json_decode(json_encode($query), true);
+        $autor = Auth::user()->name;
+        return view('modulos.notificaciones.acciones.editor')->with([
+            'datos' => $datos, 'links' => $query, 'autor' => $autor,
+        ]);
     }
-    public function actualizar($id)
+    public function actualizar(Request $request)
     {
-        return redirect('notificaciones_home');
+        $titulo = $request->input('titulo');
+        $autor = $request->input('autor');
+        $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
+        $json_data = '[{"titulo":"' . $titulo . '", "contenido":"' . $contenido . '", "autor":"' . $autor . '"}]';
+        Notification::where('id', '=', $request->input('id'))->update([
+            'json_data' => $json_data,
+        ]);
+        return redirect('/notificaciones/');
     }
-    public function remover($id)
+    public function eliminar($id)
     {
-        return redirect('notificaciones_home');
-    }
+        Notification::where('id', '=', $id)->delete();
+        return redirect('/notificaciones/');
+    }notificaciones_home'
 }
