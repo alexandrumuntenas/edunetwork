@@ -14,7 +14,13 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+        <style>
+        .card {
+            min-width: 300px;
+            height: auto;
+            transition: transform .2s;
+        }
+        </style>
 @stop
 
 @section('js')

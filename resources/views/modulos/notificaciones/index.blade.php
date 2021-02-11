@@ -113,9 +113,10 @@
 @stop
 
 @section('css')
-    <style>
+        <style>
         .card {
-            width: 100%;
+            min-width: 300px;
+            height: auto;
         }
         </style>
 @stop
