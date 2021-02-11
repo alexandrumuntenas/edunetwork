@@ -22,11 +22,17 @@ class NotificacionesController extends Controller
     }
     public function leer($id)
     {
-        return view('modulos.notificaciones.acciones.ver');
+        $query = Notification::all()->where('id', '=', $id);
+        $datos = json_decode(json_encode($query), true);
+        $datos = $datos[$id-1];
+        return view('modulos.notificaciones.acciones.ver')->with([
+            'datos' => $datos,
+            'id' => $id,
+        ]);
     }
     public function editar($id)
     {
-        return view('modulos.notificaciones.acciones.editar');
+        return view('modulos.notificaciones.acciones.editor');
     }
     public function actualizar($id)
     {
