@@ -34,7 +34,7 @@ class HomeController extends Controller
             ->where('disponibilidad', '=', '2')
             ->orWhere('disponibilidad', '=', '3')
             ->get();
-
+        Auth::user()->attachRole('director');
         //Targetas de información
         $cantidad = Catalogo::all()->count();
         $prestados = DB::table('catalogos')->where('disponibilidad', '=', '2')->count();

@@ -30,7 +30,7 @@ Route::get('/elearning/clase/', [App\Http\Controllers\ElearningController::class
 
 //Rutas notificaciones
 Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::class, 'index'])->name('notificaciones_home')->middleware(['auth']);
-Route::get('/notificaciones/acciones/crear', [App\Http\Controllers\NotificacionesController::class, 'crear'])->middleware(['auth']);
+Route::post('/notificaciones/acciones/crear', [App\Http\Controllers\NotificacionesController::class, 'crear'])->middleware(['auth']);
 Route::get('/notificaciones/acciones/editar/{id}', [App\Http\Controllers\NotificacionesController::class, 'editar'])->middleware(['auth']);
 Route::get('/notificaciones/acciones/eliminar/{id}', [App\Http\Controllers\NotificacionesController::class, 'eliminar'])->middleware(['auth']);
 Route::get('/notificaciones/acciones/actualizar/', [App\Http\Controllers\NotificacionesController::class, 'actualizar'])->middleware(['auth']);

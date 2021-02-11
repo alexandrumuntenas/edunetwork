@@ -480,13 +480,13 @@ return [
                 ],
             ],
         ],
-        'markdown' => [
+        'ckeditor' => [
             'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js',
+                    'location' => 'https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js',
                 ],
             ],
         ],
