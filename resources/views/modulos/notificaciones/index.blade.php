@@ -11,13 +11,13 @@
     <div class="row">
         @foreach ($datos['data'] as $item)
             @foreach (json_decode($item['json_data'], true) as $dato)
-                <div class="col-12">
+                <div class="col-4">
                     <div class="card">
                         <!-- /.card-header -->
                         <div class="card-body">
 
                             <h5>{{ $dato['titulo'] }}</h6>
-                                <p>{!! substr($dato['contenido'],0,256) !!} | <a href="{{ url('/notificaciones/v/'.$item['id']) }}">Leer más</a></p>
+                                <p>{!! substr($dato['contenido'],0,256) !!}... <a href="{{ url('/notificaciones/v/'.$item['id']) }}">Leer más</a></p>
                                 <p><small>{!! $dato['autor'] !!}</small></p>
                                 @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it'))
                                     <td class="form-inline">
@@ -38,6 +38,7 @@
             @endforeach
         @endforeach
     </div>
+</div>
     @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it'))
         <div class="col-12">
             <div class="card card-success">
@@ -112,7 +113,11 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <style>
+        .card {
+            width: 100%;
+        }
+        </style>
 @stop
 
 @section('js')
