@@ -11,6 +11,7 @@
 @section('adminlte_css')
     @stack('css')
     @yield('css')
+    <style>img{width:100%;}</style>
 @stop
 
 @section('classes_body', $layoutHelper->makeBodyClasses())
