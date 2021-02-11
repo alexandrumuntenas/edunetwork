@@ -229,6 +229,11 @@ return [
             'icon' => 'fas fa-home',
         ],
         [
+            'text' => 'Classroom',
+            'route' => 'ol_home',
+            'icon' =>  'fas fa-chalkboard-teacher',
+        ],
+        [
             'text' => 'Biblioteca',
             'route' => 'biblio_home',
             'icon' => 'fas fa-book',

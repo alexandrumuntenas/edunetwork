@@ -17,7 +17,7 @@ use App\Notifications\TestNotification;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -25,8 +25,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 
 //Rutas E-Learning
-Route::get('/elearning/inicio', [ App\Http\Controllers\HomeController::class, 'index'])->name('ol_home')->middleware('auth');
-Route::get('/elearning/clase/', [App\Http\Controllers\ElearningController::class, 'classroom'])->name('ol_home')->middleware('auth');
+Route::get('/elearning/', [App\Http\Controllers\ClassroomController::class, 'index'])->name('ol_home')->middleware('auth');
+Route::get('/elearning/c/{hash}', [App\Http\Controllers\ClassroomController::class, 'classroom'])->middleware('auth');
 
 //Rutas notificaciones
 Route::get('/notificaciones/', [App\Http\Controllers\NotificacionesController::class, 'index'])->name('notificaciones_home')->middleware(['auth']);
