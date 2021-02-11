@@ -17,13 +17,13 @@
                         <div class="card-body">
 
                             <h5>{{ $dato['titulo'] }}</h6>
-                                <p>{!! $dato['contenido'] !!}</p>
+                                <p>{!! substr($dato['contenido'],0,256) !!} | <a href="{{ url('/notificaciones/v/'.$item['id']) }}">Leer más</a></p>
                                 <p><small>{!! $dato['autor'] !!}</small></p>
                                 @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it'))
                                     <td class="form-inline">
                                         <a class="btn btn-primary" href="{{ url('/notificaciones/acciones/editar/'.$item['id']) }}"><i
                                                 class="fas fa-edit"></i> Editar</a>
-                                        <a class="btn btn-danger" href="{{ url('/notificaciones/acciones/editar/'.$item['id']) }}"><i
+                                        <a class="btn btn-danger" href="{{ url('/notificaciones/acciones/eliminar/'.$item['id']) }}"><i
                                                 class="fas fa-trash"></i> Eliminar</a>
                                     </td>
                                 @endif
@@ -118,7 +118,6 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $('#notificaciones').DataTable();
             CKEDITOR.replace( 'contenido' );
         });
 
