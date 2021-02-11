@@ -68,5 +68,5 @@ class NotificacionesController extends Controller
     {
         Notification::where('id', '=', $id)->delete();
         return redirect('/notificaciones/');
-    }notificaciones_home'
+    }
 }
