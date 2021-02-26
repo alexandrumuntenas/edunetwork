@@ -26,6 +26,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Rutas E-Learning
 Route::get('/elearning/', [App\Http\Controllers\ClassroomController::class, 'index'])->name('ol_home')->middleware('auth');
+Route::post('/elearning/acciones/crear', [App\Http\Controllers\ClassroomController::class, 'crear'])->middleware('auth');
 Route::get('/elearning/c/{hash}', [App\Http\Controllers\ClassroomController::class, 'classroom'])->middleware('auth');
 
 //Rutas notificaciones
