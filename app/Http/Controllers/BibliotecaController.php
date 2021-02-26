@@ -177,17 +177,18 @@ class BibliotecaController extends Controller
     public function desideratas()
     {
         $pte = DB::table('desideratas')->where('estado', '=', '1')->get();
-        $rechazados = DB::table('desideratas')->where('estado','=','0')->get();
-        $aprobados = DB::table('desideratas')->where('estado','=','2')->get();
+        $rechazados = DB::table('desideratas')->where('estado', '=', '0')->get();
+        $aprobados = DB::table('desideratas')->where('estado', '=', '2')->get();
         return view('modulos.biblioteca.desideratas')
-        ->with([
-            'pte' => $pte,
-            'rechazados' => $rechazados,
-            'aprobados' => $aprobados,
-        ]);
+            ->with([
+                'pte' => $pte,
+                'rechazados' => $rechazados,
+                'aprobados' => $aprobados,
+            ]);
     }
 
-    public function valoraciones(){
+    public function valoraciones()
+    {
         return view('modulos.biblioteca.valoraciones');
     }
     # Todo lo relacionado con el consultorio

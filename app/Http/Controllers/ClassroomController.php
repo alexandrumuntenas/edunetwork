@@ -98,16 +98,17 @@ class ClassroomController extends Controller
     }
 
     //Funciones del tablón
-    public function crearanuncio(Request $request, $hash){
+    public function crearanuncio(Request $request, $hash)
+    {
         $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('nuevomensaje'))));
-        DB::table($hash.'_class_messages')->insert([
+        DB::table($hash . '_class_messages')->insert([
             'author' => Auth::user()->name,
             'message_data' => $contenido,
         ]);
-        return redirect('/elearning/c/'.$hash);
+        return redirect('/elearning/c/' . $hash);
     }
 
-    public function eliminaranuncio(Request $request, $hash){
-
+    public function eliminaranuncio(Request $request, $hash)
+    {
     }
 }

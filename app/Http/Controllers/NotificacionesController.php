@@ -25,7 +25,7 @@ class NotificacionesController extends Controller
         $autor = $request->input('autor');
 
         $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
-        $json_data = '[{"titulo":"'.$titulo.'", "contenido":"'.$contenido.'", "autor":"'.$autor.'"}]';
+        $json_data = '[{"titulo":"' . $titulo . '", "contenido":"' . $contenido . '", "autor":"' . $autor . '"}]';
         DB::table('notifications')->insert([
             'json_data' => $json_data,
         ]);
@@ -36,13 +36,12 @@ class NotificacionesController extends Controller
     {
         $query = Notification::all()->where('id', '=', $id);
         $datos = json_decode(json_encode($query), true);
-        foreach($datos as $item){
+        foreach ($datos as $item) {
             return view('modulos.notificaciones.acciones.ver')->with([
                 'datos' => $item,
                 'id' => $id,
             ]);
         }
-
     }
     public function editar($id)
     {

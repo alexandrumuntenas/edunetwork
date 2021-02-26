@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Catalogo;
 use App\Models\Notification;
+
 class HomeController extends Controller
 {
     /**
@@ -46,6 +47,6 @@ class HomeController extends Controller
             'devolucion' => $devolucion,
             'confinados' => $confinados,
             'notificaciones' => $notificaciones,
-            ]);
+        ]);
     }
 }
