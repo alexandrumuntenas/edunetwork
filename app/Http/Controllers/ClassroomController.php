@@ -21,10 +21,9 @@ class ClassroomController extends Controller
     {
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         $datos = json_decode(json_encode($data), true);
-
-        $anuncios = DB::table($hash.'_class_messages')->get();
-        $anuncios = json_decode($anuncios, true);
         if ($datos != null) {
+            $anuncios = DB::table($hash . '_class_messages')->get();
+            $anuncios = json_decode($anuncios, true);
             return view('modulos.classroom.class')->with(['classroom' => $datos, 'anuncios' => $anuncios, 'hash' => $hash]);
         } else {
             return view('modulos.errores.404.classroom');
@@ -55,9 +54,9 @@ class ClassroomController extends Controller
 
         Schema::create($classroom_hash . "_class_messages", function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('author');
+            $table->string('author');
             $table->longText('message_data');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
         Schema::create($classroom_hash . "_class_activities", function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -102,7 +101,7 @@ class ClassroomController extends Controller
     public function crearanuncio(Request $request, $hash){
         $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('nuevomensaje'))));
         DB::table($hash.'_class_messages')->insert([
-            'author' => Auth::user()->id,
+            'author' => Auth::user()->name,
             'message_data' => $contenido,
         ]);
         return redirect('/elearning/c/'.$hash);

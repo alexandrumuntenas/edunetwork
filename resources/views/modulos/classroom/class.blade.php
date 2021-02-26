@@ -21,17 +21,22 @@
         </div>
     </div>
     <div class="col-9">
-        <button id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
+        <div id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
             <div class="card-body">
-                <i class="fas fa-pen"></i> Anuncia algo a tu clase
-            </div>
-        </button>
-        @foreach ($anuncios as $anuncio)
-        <div class="card">
-            <div class="card-body">
-                {!! $anuncio['message_data'] !!}
+                <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Anuncia algo a tu clase
             </div>
         </div>
+        @foreach ($anuncios as $anuncio)
+            <div class="card">
+                <div class="card-header" id="classroom_tablon">
+                    <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
+                    {{ $anuncio['author'] }}
+                    <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>
+                </div>
+                <div class="card-body">
+                    {!! $anuncio['message_data'] !!}
+                </div>
+            </div>
         @endforeach
     </div>
 
@@ -39,7 +44,8 @@
     <div class="modal fade" id="crearanuncio" tabindex="-1" aria-labelledby="crearanuncio" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <form class="modal-content" method="post" action="{{ url('/elearning/c/'.$hash.'/tablon/crear') }}">
+                <form class="modal-content" method="post"
+                    action="{{ url('/elearning/c/' . $hash . '/tablon/crear') }}">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="addnotification">Anuncia algo a tu clase</h5>
@@ -88,15 +94,20 @@
             height: 100px;
             object-fit: cover;
         }
-        #nuevoanuncio{
+
+        #nuevoanuncio {
             transition: .2s;
+            color: rgba(0, 0, 0, 0.549)
         }
-        #nuevoanuncio:hover{
-border: 3px solid lightblue;
+
+        #nuevoanuncio:hover {
+            border: 3px solid lightblue;
         }
-                #nuevoanuncio:focus{
-border: 5px solid lightblue;
+
+        #nuevoanuncio:focus {
+            border: 5px solid lightblue;
         }
+
     </style>
 @stop
 
