@@ -2,8 +2,8 @@
 
 @section('title', 'Notificaciones < Edunetwork') @section('content_header') <h1>Notificaciones @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it')) <a
             class="btn btn-success btn-sm" data-toggle="modal" data-target="#addnotification" href=""><i
-                class="fas fa-bell"></i> Crear notificación</a></h1>
-    @endif
+                class="fas fa-bell"></i> Crear notificación</a>
+    @endif</h1>
 </h1> @stop
 
 @section('content')
