@@ -25,21 +25,27 @@
                 </div>
             </div>
         </div>
+        @foreach ($classrooms as $classroom)
+        @foreach (json_decode($classroom['classroom_config']) as $i)
         <div class="col">
             <div class="card">
+                <a href="{{url('/elearning/c/'.$classroom['classroom_hash'])}}">
                 <img class="classbg"
                     src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
                 <div class="text-block">
-                    <h4>Lengua Castellana y Literatura</h4>
-                    <p>3F · Profesor Facherito Refacherito</p>
+                    <h4>{{$i->asignatura}}</h4>
+                    <p>{{$i->clase}} · {{$i->profesor_name}}</p>
                 </div>
+                </a>
             </div>
         </div>
+        @endforeach
+        @endforeach
     </div>
     @if (Auth::user()->hasRole('profesor'))
         <div class="modal fade" id="crearclase" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <form class="modal-content" method="post" action="{{ url('/notificaciones/acciones/crear') }}">
+                <form class="modal-content" method="post" action="{{ url('/elearning/acciones/crear') }}">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="crearclase">Crear nueva clase</h5>
@@ -51,12 +57,12 @@
                         <div class="form-group">
                             <label for="asignatura">Asignatura</label>
                             <input id="asignatura" name="asignatura" class="form-control form-control-sm" type="text"
-                                maxlength="255" value="" />
+                                maxlength="255" value="" required/>
                         </div>
                         <div class="form-group">
                             <label for="clase">Clase</label>
                             <input id="clase" name="clase" class="form-control form-control-sm" type="text"
-                                maxlength="255" value="" required />
+                                maxlength="255" value="" required/>
                         </div>
                         <div class="form-group">
                             <label for="seccion">Sección</label>
