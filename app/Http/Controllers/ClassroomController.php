@@ -29,6 +29,19 @@ class ClassroomController extends Controller
             return view('modulos.errores.404.classroom');
         }
     }
+    public function class_work($hash)
+    {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        $datos = json_decode(json_encode($data), true);
+        if ($datos != null) {
+            $categorias = DB::table($hash . '_class_topics')->get();
+            $actividades = DB::table($hash . '_class_activities')->get();
+            return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades,'hash' => $hash]);
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
+
     public function misdeberes()
     {
     }
@@ -60,6 +73,7 @@ class ClassroomController extends Controller
         });
         Schema::create($classroom_hash . "_class_activities", function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('topic_id');
             $table->string('type');
             $table->longText('activity_data');
             $table->timestamps();
@@ -68,11 +82,7 @@ class ClassroomController extends Controller
             $table->bigIncrements('id');
             $table->longText('topic_data');
         });
-        Schema::create($classroom_hash . "_class_work", function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->longText('topic_id');
-            $table->longText('activity_id');
-        });
+
         Schema::create($classroom_hash . "_class_grades", function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('student_id');

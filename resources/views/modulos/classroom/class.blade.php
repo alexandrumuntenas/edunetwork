@@ -14,10 +14,8 @@
         </div>
     @endforeach
     <div class="col-3" id="class_pte_act">
-        <div class="card">
-            <div class="card-body">
-                Tareas pendientes
-            </div>
+        <div id="class_sidebar">
+            @include('modulos.classroom.componentes.sidebar')
         </div>
     </div>
     <div class="col-9">
@@ -27,8 +25,8 @@
             </div>
         </div>
         @foreach ($anuncios as $anuncio)
-            <div class="card">
-                <div class="card-header" id="classroom_tablon">
+            <div class="card" id="classroom_tablon">
+                <div class="card-header" id="class_message">
                     <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
                     {{ $anuncio['author'] }}
                     <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>

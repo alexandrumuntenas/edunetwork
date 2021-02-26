@@ -9,26 +9,10 @@
 @section('content')
 
     <div class="row">
-        <div class="col">
-            <div class="card">
-                <img class="classbg"
-                    src="https://cdn.duoestudios.es/wp-content/uploads/2021/01/monastery-569368_1920.jpg">
-                <div class="text-block">
-                    <h4>Actividades pendientes</h4>
-                    <p>
-                    <ul>
-                        <li>Presentación Powerpoint UE</li>
-                        <li>Actividades Tema 3</li>
-                        <li>La narración - Tema 1</li>
-                    </ul>
-                    </p>
-                </div>
-            </div>
-        </div>
         @foreach ($classrooms as $classroom)
             @foreach (json_decode($classroom['classroom_config']) as $i)
-                <div class="col">
-                    <div class="card" id="class_presentation">
+                <div class="col" id="class_presentation">
+                    <div class="card">
                         <a href="{{ url('/elearning/c/' . $classroom['classroom_hash']) }}">
                             <img class="classbg"
                                 src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
