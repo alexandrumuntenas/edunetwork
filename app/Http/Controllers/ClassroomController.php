@@ -12,10 +12,22 @@ class ClassroomController extends Controller
 {
     public function index()
     {
-        $user_id = Auth::user()->id;
-        $data = DB::table('classrooms')->where('classroom_teacher', '=', $user_id)->get();
-        $datos = json_decode(json_encode($data), true);
-        return view('modulos.classroom.index')->with(['classrooms' => $datos]);
+        if (Auth::user()->hasRole('profesor')) {
+            $user_id = Auth::user()->id;
+            $data = DB::table('classrooms')->where('classroom_teacher', '=', $user_id)->get();
+            $datos = json_decode(json_encode($data), true);
+            return view('modulos.classroom.index')->with(['classrooms' => $datos]);
+        } else {
+            $clases = array();
+            $user_id = Auth::user()->id;
+            $ver_donde_estudiante = DB::table('student_classrooms')->where('student_id', '=', $user_id)->get();
+            foreach ($ver_donde_estudiante as $item) {
+                $clase = DB::table('classrooms')->where('id', '=', $item->class_id)->first();
+                $clases[] = $clase;
+            }
+            $clases = json_decode(json_encode($clases),true);
+            return view('modulos.classroom.index')->with(['classrooms' => $clases]);
+        }
     }
     public function classroom($hash)
     {
@@ -36,7 +48,7 @@ class ClassroomController extends Controller
         if ($datos != null) {
             $categorias = DB::table($hash . '_class_topics')->get();
             $actividades = DB::table($hash . '_class_activities')->get();
-            return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades,'hash' => $hash]);
+            return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash]);
         } else {
             return view('modulos.errores.404.classroom');
         }

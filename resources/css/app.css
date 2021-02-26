@@ -1,5 +1,5 @@
 img {
-    width: 100%;
+    width: auto;
 }
 
 /* width */
@@ -53,6 +53,7 @@ img {
     filter: brightness(0.25);
     height: 197.75px;
     object-fit: cover;
+    width: 100%;
 }
 
 #class_presentation .card h4 {
