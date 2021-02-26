@@ -15,6 +15,8 @@ class Classroom extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('classroom_teacher');
+            $table->longText('classroom_hash')->unique();
             $table->longText('classroom_config');
             $table->string('students')->nullable();
             $table->timestamps();
