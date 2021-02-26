@@ -26,20 +26,20 @@
             </div>
         </div>
         @foreach ($classrooms as $classroom)
-        @foreach (json_decode($classroom['classroom_config']) as $i)
-        <div class="col">
-            <div class="card">
-                <a href="{{url('/elearning/c/'.$classroom['classroom_hash'])}}">
-                <img class="classbg"
-                    src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
-                <div class="text-block">
-                    <h4>{{$i->asignatura}}</h4>
-                    <p>{{$i->clase}} · {{$i->profesor_name}}</p>
+            @foreach (json_decode($classroom['classroom_config']) as $i)
+                <div class="col">
+                    <div class="card" id="class_presentation">
+                        <a href="{{ url('/elearning/c/' . $classroom['classroom_hash']) }}">
+                            <img class="classbg"
+                                src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
+                            <div class="text-block">
+                                <h4>{{ $i->asignatura }}</h4>
+                                <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                </a>
-            </div>
-        </div>
-        @endforeach
+            @endforeach
         @endforeach
     </div>
     @if (Auth::user()->hasRole('profesor'))
@@ -57,12 +57,12 @@
                         <div class="form-group">
                             <label for="asignatura">Asignatura</label>
                             <input id="asignatura" name="asignatura" class="form-control form-control-sm" type="text"
-                                maxlength="255" value="" required/>
+                                maxlength="255" value="" required />
                         </div>
                         <div class="form-group">
                             <label for="clase">Clase</label>
                             <input id="clase" name="clase" class="form-control form-control-sm" type="text"
-                                maxlength="255" value="" required/>
+                                maxlength="255" value="" required />
                         </div>
                         <div class="form-group">
                             <label for="seccion">Sección</label>
@@ -83,47 +83,6 @@
             </div>
         </div>
     @endif
-@stop
-
-@section('css')
-    <style>
-        .card {
-            max-width: 350px;
-            min-width: 300px;
-            height: auto;
-            transition: transform .2s;
-        }
-
-        .card:hover {
-            box-shadow: 2px 2px 20px #000;
-            transform: scale(1.025);
-        }
-
-        .text-block {
-            position: absolute;
-            left: 10px;
-            top: 20px;
-            color: white;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .card h4 {
-            font-weight: bold;
-        }
-
-        .classbg {
-            filter: brightness(0.25);
-            height: 197.75px;
-            object-fit: cover;
-        }
-
-    </style>
-@stop
-
-@section('js')
-    <script>
-    </script>
 @stop
 
 @section('footer')

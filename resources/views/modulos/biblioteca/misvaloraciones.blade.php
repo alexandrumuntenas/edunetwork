@@ -1,9 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Mis valoraciones < Biblioteca')
-
-@section('content_header')
-    <h1>Mis valoraciones</h1>
+@section('title', 'Mis valoraciones < Biblioteca') @section('content_header') <h1>Mis valoraciones</h1>
 @stop
 
 @section('content')
@@ -24,10 +21,9 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('footer')
-    Edunetwork v1.0 </> by duoestudios
+    Edunetwork v1.0
+</> by duoestudios
 @endsection

@@ -83,7 +83,7 @@
                         </tbody>
                     </table>
                 @else
-                No tienes prestamos activos...
+                    No tienes prestamos activos...
                 @endif
             </div>
             <!-- /.card-body -->

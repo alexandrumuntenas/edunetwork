@@ -2,7 +2,7 @@
 
 @section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
     @foreach (json_decode($classroom['classroom_config']) as $i)
-        <div class="col-12">
+        <div class="col-12" id="class_header">
             <div class="card">
                 <img class="classbg"
                     src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
@@ -13,7 +13,7 @@
             </div>
         </div>
     @endforeach
-    <div class="col-3">
+    <div class="col-3" id="class_pte_act">
         <div class="card">
             <div class="card-body">
                 Tareas pendientes
@@ -67,48 +67,6 @@
             </div>
         </div>
     </div>
-@stop
-
-@section('css')
-    <style>
-        .col-12 .card {
-            width: auto;
-            height: 100px;
-        }
-
-        .text-block {
-            position: absolute;
-            left: 10px;
-            top: 20px;
-            color: white;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .card h4 {
-            font-weight: bold;
-        }
-
-        .classbg {
-            filter: brightness(0.25);
-            height: 100px;
-            object-fit: cover;
-        }
-
-        #nuevoanuncio {
-            transition: .2s;
-            color: rgba(0, 0, 0, 0.549)
-        }
-
-        #nuevoanuncio:hover {
-            border: 3px solid lightblue;
-        }
-
-        #nuevoanuncio:focus {
-            border: 5px solid lightblue;
-        }
-
-    </style>
 @stop
 
 @section('js')

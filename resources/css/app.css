@@ -1,3 +1,7 @@
+img {
+    width: 100%;
+}
+
 /* width */
 
 ::-webkit-scrollbar {
@@ -34,10 +38,59 @@
     margin-right: 15px;
 }
 
-img {
-    width: 100%;
+/* Classroom Module */
+
+.text-block {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
+.classbg {
+    filter: brightness(0.25);
+    height: 100px;
+    object-fit: cover;
+}
+
+#class_presentation .card {
+    max-width: 350px;
+    min-width: 300px;
+    height: auto;
+    transition: transform .2s;
+}
+
+#class_presentation .card:hover {
+    box-shadow: 2px 2px 20px #000;
+    transform: scale(1.025);
+}
+
+#class_header .card {
+    width: auto;
+    height: 100px;
+}
+
+#class_header .card h4 {
+    font-weight: bold;
+}
+
+#class_pte_act {}
+
 #classroom_tablon .user_avatar {
-    float:left;
+    float: left;
+}
+
+#nuevoanuncio {
+    transition: .2s;
+    color: rgba(0, 0, 0, 0.549)
+}
+
+#nuevoanuncio:hover {
+    border: 3px solid lightblue;
+}
+
+#nuevoanuncio:focus {
+    border: 5px solid lightblue;
 }

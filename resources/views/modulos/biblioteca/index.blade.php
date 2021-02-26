@@ -1,6 +1,8 @@
 @extends('adminlte::page')
 
-@section('title', 'Catálogo < Biblioteca') @section('content_header') <h1>Catálogo @if (Auth::user()->hasRole('bibliotecario')) <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#addbook" href=""><i class="fas fa-book-medical"></i> Añadir libro</a> @endif </h1> @stop
+@section('title', 'Catálogo < Biblioteca') @section('content_header') <h1>Catálogo @if (Auth::user()->hasRole('bibliotecario')) <a class="btn btn-success btn-sm" data-toggle="modal"
+            data-target="#addbook" href=""><i class="fas fa-book-medical"></i> Añadir libro</a> @endif
+</h1> @stop
 
 @section('content')
 
@@ -115,7 +117,7 @@
             </div>
             <div class="modal fade" id="addbook" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <form class="modal-content" method="post" action="{{url('/biblioteca/acciones/crear')}}">
+                    <form class="modal-content" method="post" action="{{ url('/biblioteca/acciones/crear') }}">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title" id="addbook">Añadir libro</h5>
@@ -124,43 +126,55 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>✨ Ahora puedes añadir libros más rápido! Solo escanea con el lector de código de barras el código de barras del libro que desees añadir. Utilizando la tecnología de Google y un poco de magia, completarás la información del libro en segundos. <mark>Ten en cuenta de que esta tecnología no es precisa al 100%, pero generalmente si dará buenos resultados.</mark></p>
-                        <div id="gapisresult"></div>
-                        <div class="form-group">
-                            <label for="titulo">Título del libro</label>
-                            <input id="titulo" name="titulo" class="form-control form-control-sm" type="text" maxlength="255" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="autor">Autor</label>
-                            <input id="autor" name="autor" class="form-control form-control-sm" type="text" maxlength="255" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="ISBN">ISBN</label>
-                            <input id="ISBN" name="ISBN" class="form-control form-control-sm" type="text" maxlength="255" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="editorial">Editorial</label>
-                            <input id="editorial" name="editorial" class="form-control form-control-sm" type="text" maxlength="255" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="anopub">Año de Publicación</label>
-                            <input id="anopub" name="anopub" class="form-control form-control-sm" type="text" maxlength="255" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="ejemplar">Ejemplar</label>
-                            <input id="ejemplar" name="ejemplar" class="form-control form-control-sm" type="text" maxlength="8" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="ubicación">Ubicación</label>
-                            <input id="ubicacion" name="ubicacion" class="form-control form-control-sm" type="text" maxlength="12" value="" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <textarea type="text" id="descripcion" name="descripcion" class="md-textarea form-control" maxlength="512" value="" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <input id="portada" name="portada" type="text" value="" hidden />
-                        </div>
+                            <p>✨ Ahora puedes añadir libros más rápido! Solo escanea con el lector de código de barras
+                                el código de barras del libro que desees añadir. Utilizando la tecnología de Google y un
+                                poco de magia, completarás la información del libro en segundos. <mark>Ten en cuenta de
+                                    que esta tecnología no es precisa al 100%, pero generalmente si dará buenos
+                                    resultados.</mark></p>
+                            <div id="gapisresult"></div>
+                            <div class="form-group">
+                                <label for="titulo">Título del libro</label>
+                                <input id="titulo" name="titulo" class="form-control form-control-sm" type="text"
+                                    maxlength="255" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="autor">Autor</label>
+                                <input id="autor" name="autor" class="form-control form-control-sm" type="text"
+                                    maxlength="255" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ISBN">ISBN</label>
+                                <input id="ISBN" name="ISBN" class="form-control form-control-sm" type="text"
+                                    maxlength="255" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="editorial">Editorial</label>
+                                <input id="editorial" name="editorial" class="form-control form-control-sm" type="text"
+                                    maxlength="255" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="anopub">Año de Publicación</label>
+                                <input id="anopub" name="anopub" class="form-control form-control-sm" type="text"
+                                    maxlength="255" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ejemplar">Ejemplar</label>
+                                <input id="ejemplar" name="ejemplar" class="form-control form-control-sm" type="text"
+                                    maxlength="8" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="ubicación">Ubicación</label>
+                                <input id="ubicacion" name="ubicacion" class="form-control form-control-sm" type="text"
+                                    maxlength="12" value="" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <textarea type="text" id="descripcion" name="descripcion"
+                                    class="md-textarea form-control" maxlength="512" value="" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input id="portada" name="portada" type="text" value="" hidden />
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -208,9 +222,9 @@
 
         }
 
-        $("#gapi").click(function(){
- alert('toggled');
- })
+        $("#gapi").click(function() {
+            alert('toggled');
+        })
 
     </script>
 @stop

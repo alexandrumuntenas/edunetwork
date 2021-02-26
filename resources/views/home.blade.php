@@ -13,19 +13,6 @@
 
 @stop
 
-@section('css')
-        <style>
-        .card {
-            min-width: 300px;
-            height: auto;
-            transition: transform .2s;
-        }
-        </style>
-@stop
-
-@section('js')
-@stop
-
 @section('footer')
     Edunetwork v1.0 </> by duoestudios
 @endsection

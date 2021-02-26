@@ -155,6 +155,7 @@
             $('#aprobados').DataTable();
             $('#rechazados').DataTable();
         });
+
     </script>
 @stop
 

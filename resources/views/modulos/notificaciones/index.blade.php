@@ -3,7 +3,8 @@
 @section('title', 'Notificaciones < Edunetwork') @section('content_header') <h1>Notificaciones @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it')) <a
             class="btn btn-success btn-sm" data-toggle="modal" data-target="#addnotification" href=""><i
                 class="fas fa-bell"></i> Crear notificación</a>
-    @endif</h1>
+    @endif
+    </h1>
 </h1> @stop
 
 @section('content')
@@ -17,13 +18,16 @@
                         <div class="card-body">
 
                             <h5>{{ $dato['titulo'] }}</h6>
-                                <p>{!! substr($dato['contenido'],0,256) !!}... <a href="{{ url('/notificaciones/v/'.$item['id']) }}">Leer más</a></p>
+                                <p>{!! substr($dato['contenido'], 0, 256) !!}... <a
+                                        href="{{ url('/notificaciones/v/' . $item['id']) }}">Leer más</a></p>
                                 <p><small>{!! $dato['autor'] !!}</small></p>
                                 @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it'))
                                     <td class="form-inline">
-                                        <a class="btn btn-primary" href="{{ url('/notificaciones/acciones/editar/'.$item['id']) }}"><i
+                                        <a class="btn btn-primary"
+                                            href="{{ url('/notificaciones/acciones/editar/' . $item['id']) }}"><i
                                                 class="fas fa-edit"></i> Editar</a>
-                                        <a class="btn btn-danger" href="{{ url('/notificaciones/acciones/eliminar/'.$item['id']) }}"><i
+                                        <a class="btn btn-danger"
+                                            href="{{ url('/notificaciones/acciones/eliminar/' . $item['id']) }}"><i
                                                 class="fas fa-trash"></i> Eliminar</a>
                                     </td>
                                 @endif
@@ -38,7 +42,7 @@
             @endforeach
         @endforeach
     </div>
-</div>
+    </div>
     @if (Auth::user()->hasRole('director|vicedirector|secretaria|jeafaturadeestudios|it'))
         <div class="col-12">
             <div class="card card-success">
@@ -88,7 +92,7 @@
                         <div class="form-group">
                             <label for="autor">Autor</label>
                             <input id="autor" name="autor" class="form-control form-control-sm" type="text"
-                                maxlength="255" value="{{$autor}}" readonly/>
+                                maxlength="255" value="{{ $autor }}" readonly />
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Contenido</label>
@@ -113,18 +117,19 @@
 @stop
 
 @section('css')
-        <style>
+    <style>
         .card {
             min-width: 300px;
             height: auto;
         }
-        </style>
+
+    </style>
 @stop
 
 @section('js')
     <script>
         $(document).ready(function() {
-            CKEDITOR.replace( 'contenido' );
+            CKEDITOR.replace('contenido');
         });
 
     </script>

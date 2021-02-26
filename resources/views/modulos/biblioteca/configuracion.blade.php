@@ -159,16 +159,17 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
     <script>
         function importar() {
-            $("#enviar").html('<div class="spinner-border text-light spinner-border-sm" role="status"> <span class="sr-only" > Loading... </span> </div> Importando');
-                $("#enviar").attr('disabled', true);
-            }
+            $("#enviar").html(
+                '<div class="spinner-border text-light spinner-border-sm" role="status"> <span class="sr-only" > Loading... </span> </div> Importando'
+                );
+            $("#enviar").attr('disabled', true);
+        }
+
     </script>
 
 @stop

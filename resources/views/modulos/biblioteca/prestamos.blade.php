@@ -10,7 +10,7 @@
             <div class="card">
                 <!-- /.card-header -->
                 <div class="card-body table-responsive-lg">
-                    <div class="dataTables_wrapper dt-bootstrap4">
+                    <div class="dataTaules_wrapper dt-bootstrap4">
                         <table style="width:100%" id="prestamos"
                             class="table table-bordered table-hover dataTable dtr-inline collapsed">
                             <thead>
@@ -83,9 +83,7 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
     <script>

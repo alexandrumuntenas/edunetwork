@@ -1,9 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Configuración < Administrar Edunetwork')
-
-@section('content_header')
-    <h1>Configuración</h1>
+@section('title', 'Configuración < Administrar Edunetwork') @section('content_header') <h1>Configuración</h1>
 @stop
 
 @section('content')
@@ -40,13 +37,11 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
-@section('js')
-@stop
+
+
 
 @section('footer')
-    Edunetwork v1.0 </> by duoestudios
+    Edunetwork v1.0
+</> by duoestudios
 @endsection

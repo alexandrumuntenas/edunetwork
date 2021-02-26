@@ -31,20 +31,22 @@
             <!-- /.card-header -->
             <div class="card-body">
                 @if ($notificaciones != null)
-                <table class="table table-bordered">
-                    <tbody>
-                    @foreach ($notificaciones as $item)
-                        @foreach (json_decode($item['json_data'], true) as $dato)
-                            <tr>
-                                <th style="font-weight: normal !important">{{ $dato['titulo'] }}, <em>publicado el {{ substr($item['created_at'], 0,10) }}</th>
-                                <th style="font-weight: normal !important"><a href="{{url('notificaciones/v/'.$item['id'].'')}}"> Leer más</a></th>
-                            </tr>
-                        @endforeach
-                    @endforeach
-                    </tbody>
-                </table>
+                    <table class="table table-bordered">
+                        <tbody>
+                            @foreach ($notificaciones as $item)
+                                @foreach (json_decode($item['json_data'], true) as $dato)
+                                    <tr>
+                                        <th style="font-weight: normal !important">{{ $dato['titulo'] }},
+                                            <em>publicado el {{ substr($item['created_at'], 0, 10) }}</th>
+                                        <th style="font-weight: normal !important"><a
+                                                href="{{ url('notificaciones/v/' . $item['id'] . '') }}"> Leer más</a></th>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                    </table>
                 @else
-                <p>No hay notificaciones disponibles para mostrar...</p>
+                    <p>No hay notificaciones disponibles para mostrar...</p>
                 @endif
             </div>
             <!-- /.card-body -->

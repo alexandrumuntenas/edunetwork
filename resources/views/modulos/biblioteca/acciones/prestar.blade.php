@@ -22,25 +22,25 @@
                 <div class="card-body">
                     <form method="POST" action="{{ url('/biblioteca/acciones/prestamo/') }}">
                         @csrf
-                        <input type="number" value="{{$id}}" name="identificador" hidden/>
+                        <input type="number" value="{{ $id }}" name="identificador" hidden />
                         <div class="form-group">
                             <label for="correousuario">Introduce el correo del usuario</label>
-                            <input type="text"
-                                class="form-control form-control-sm" id="correousuario" name="correousuario" required/>
+                            <input type="text" class="form-control form-control-sm" id="correousuario"
+                                name="correousuario" required />
                         </div>
                         <div class="form-group">
                             <label>Nombre</label>
                             <input type="text" class="form-control form-control-sm" id="nombre" name="nombre"
-                                placeholder="Introduce primero el correo del usuario" required readonly/>
+                                placeholder="Introduce primero el correo del usuario" required readonly />
                         </div>
                         <div class="form-group">
                             <label>Clase</label>
                             <input type="text" class="form-control form-control-sm" id="clase" name="clase"
-                                placeholder="Función pendiente de desarrollo" readonly/>
+                                placeholder="Función pendiente de desarrollo" readonly />
                         </div>
                         <div class="form-group">
                             <label>Fecha de Devolución</label>
-                            <input type="date" class="form-control form-control-sm" id="fechadev" name="fechadev"/>
+                            <input type="date" class="form-control form-control-sm" id="fechadev" name="fechadev" />
                             <small>Si no se personaliza la fecha de devolución, el valor será <?php echo
                                 date('Y-m-d', strtotime(date('Y-m-d') . '+ 15 days')); ?>
                         </div>
@@ -113,9 +113,7 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
     <script>
@@ -127,7 +125,7 @@
                 } else {
                     $.ajax({
                         type: "POST",
-                        url: "{{url('/biblioteca/acciones/consultorio/usuarios')}}",
+                        url: "{{ url('/biblioteca/acciones/consultorio/usuarios') }}",
                         dataType: 'json',
                         data: {
                             "_token": "{{ csrf_token() }}",
