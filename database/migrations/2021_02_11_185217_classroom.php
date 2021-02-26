@@ -18,7 +18,7 @@ class Classroom extends Migration
             $table->integer('classroom_teacher');
             $table->longText('classroom_hash')->unique();
             $table->longText('classroom_config');
-            $table->string('students')->nullable();
+            $table->string('access_code');
             $table->timestamps();
         });
     }
