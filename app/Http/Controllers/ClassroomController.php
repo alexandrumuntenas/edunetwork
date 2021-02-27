@@ -45,13 +45,17 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id){
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
                 $categorias = array();
-                foreach (json_decode($data->classroom_topics_order) as $i) {
+                if (isset($data->classroom_topics_order)) {
+                    foreach (json_decode($data->classroom_topics_order) as $i) {
+                        $datos = json_decode(json_encode($data), true);
+                        $categorias[] = DB::table($hash . '_class_topics')->where('id', '=', $i)->first();
+                    }
+                } else {
                     $datos = json_decode(json_encode($data), true);
-                    $categorias[] = DB::table($hash . '_class_topics')->where('id','=',$i)->first();
-                    $actividades = DB::table($hash . '_class_activities')->get();
                 }
+                $actividades = DB::table($hash . '_class_activities')->get();
                 return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
@@ -106,7 +110,10 @@ class ClassroomController extends Controller
         $user_name = Auth::user()->name;
         $randomizer = rand(1, 1000) + rand(1, 1000) * rand(1, 1000) / rand(1, 1000) * rand(1, 100) / rand(1, 10);
         $classroom_hash = hash('md5', "$asignatura$clase$seccion$aula$user_id$user_name$randomizer");
-        $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $user_id . '", "profesor_name":"' . $user_name . '"}]';
+        $aspectos = array("orange", "blue", "indigo", "purple", "cyan");
+        $aspecto = array_rand($aspectos, 1);
+        $aspecto = $aspectos[$aspecto];
+        $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $user_id . '", "profesor_name":"' . $user_name . '", "aspecto":"' . $aspecto . '"}]';
         $access_code = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
         DB::table('classrooms')->insert([
             'classroom_teacher' => $user_id,

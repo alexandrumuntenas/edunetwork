@@ -19,7 +19,7 @@ class Classroom extends Migration
             $table->integer('classroom_teacher');
             $table->longText('classroom_hash')->unique();
             $table->longText('classroom_config');
-            $table->longText('classroom_topics_order');
+            $table->longText('classroom_topics_order')->nullable();
             $table->timestamps();
         });
     }

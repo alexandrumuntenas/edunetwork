@@ -1,7 +1,7 @@
     @foreach (json_decode($classroom['classroom_config']) as $i)
         <div class="col-12" id="class_header">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body {{$i->aspecto}}">
                     <h4>{{ $i->asignatura }}</h4>
                     <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
                 </div>

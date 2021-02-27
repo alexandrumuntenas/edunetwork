@@ -75,8 +75,6 @@ img {
 #class_header .card-body {
     color: #FFF;
     object-fit: cover;
-    background-op background: rgb(255, 111, 0);
-    background: linear-gradient(90deg, rgba(255, 111, 0, 1) 0%, rgba(255, 0, 0, 1) 100%);
     background-position: center center;
     background-size: 100% auto;
 }
@@ -160,6 +158,33 @@ img {
     border: #ff6f00 solid 3px;
 }
 
-#trabajodeclase_jquery_sortable{
+#trabajodeclase_jquery_sortable {
     padding: 0;
+}
+
+/* Classroom Backgrounds */
+
+.blue {
+    background: rgb(0, 123, 255);
+    background: linear-gradient(90deg, rgba(0, 123, 255, 1) 0%, rgba(13, 255, 252, 1) 100%);
+}
+
+.orange {
+    background: rgb(255, 111, 0);
+    background: linear-gradient(90deg, rgba(255, 111, 0, 1) 0%, rgba(255, 0, 0, 1) 100%);
+}
+
+.indigo {
+    background: rgb(102, 16, 242);
+    background: linear-gradient(90deg, rgba(102, 16, 242, 1) 0%, rgba(232, 5, 249, 1) 100%);
+}
+
+.purple {
+    background: rgb(111, 66, 193);
+    background: linear-gradient(90deg, rgba(111, 66, 193, 1) 0%, rgba(191, 60, 207, 1) 100%);
+}
+
+.cyan {
+    background: rgb(23, 162, 184);
+    background: linear-gradient(90deg, rgba(23, 162, 184, 1) 0%, rgba(14, 196, 119, 1) 100%);
 }

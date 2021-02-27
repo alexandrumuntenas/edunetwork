@@ -74,7 +74,7 @@
                         <div class="row" id="class_work">
                             @include('modulos.classroom.componentes.actividades')
                         </div>
-                    </div>
+                    </div>'
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
                     </div>
@@ -95,7 +95,7 @@
                             handle: '.handle',
                             stop: function(event, ui) {
                                 var data = $(this).sortable('toArray');
-                                var csrf = "{{ csrf_token() }}";
+                               var csrf = "{{ csrf_token() }}";
                                 $.ajax({
                                     data: {
                                         data: data,
