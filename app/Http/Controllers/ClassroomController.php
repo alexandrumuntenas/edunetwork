@@ -27,7 +27,7 @@ class ClassroomController extends Controller
 
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id','=',Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
                 $datos = json_decode(json_encode($data), true);
                     $anuncios = DB::table($hash . '_class_messages')->get();
@@ -44,7 +44,7 @@ class ClassroomController extends Controller
     {
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id','=',Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
             $datos = json_decode(json_encode($data), true);
                 $categorias = DB::table($hash . '_class_topics')->get();
@@ -62,7 +62,7 @@ class ClassroomController extends Controller
     {
         $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
         if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id','=',Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
             } else {
                 return view('modulos.errores.404.classroom');
