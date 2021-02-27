@@ -45,10 +45,13 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
-                $datos = json_decode(json_encode($data), true);
-                $categorias = DB::table($hash . '_class_topics')->get();
-                $actividades = DB::table($hash . '_class_activities')->get();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id){
+                $categorias = array();
+                foreach (json_decode($data->classroom_topics_order) as $i) {
+                    $datos = json_decode(json_encode($data), true);
+                    $categorias[] = DB::table($hash . '_class_topics')->where('id','=',$i)->first();
+                    $actividades = DB::table($hash . '_class_activities')->get();
+                }
                 return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
@@ -57,7 +60,8 @@ class ClassroomController extends Controller
             return view('modulos.errores.404.classroom');
         }
     }
-    public function class_students($hash){
+    public function class_students($hash)
+    {
         $companeros = array();
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
@@ -65,8 +69,8 @@ class ClassroomController extends Controller
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
                 $datos = json_decode(json_encode($data), true);
                 $alumnos = DB::table('user_classrooms')->where('class_id', '=', $data->id)->get();
-                foreach($alumnos as $alumno){
-                    $conseguirdatoscompaneros = DB::table('users')->where('id','=',$alumno->user_id)->first();
+                foreach ($alumnos as $alumno) {
+                    $conseguirdatoscompaneros = DB::table('users')->where('id', '=', $alumno->user_id)->first();
                     $companeros[] = $conseguirdatoscompaneros;
                 }
                 return view('modulos.classroom.classmates')->with(['classroom' => $datos, 'alumnos' => $companeros, 'hash' => $hash]);
@@ -189,7 +193,8 @@ class ClassroomController extends Controller
     }
 
     //Funciones de "trabajo de clase"
-    public function class_work_c_material($hash){
+    public function class_work_c_material($hash)
+    {
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
@@ -204,12 +209,18 @@ class ClassroomController extends Controller
         }
     }
 
-    public function class_work_c_tema(Request $request,$hash){
-        DB::table($hash.'_class_topics')->insert(['topic_data'=> $request->input('tema')]);
-        return redirect('/elearning/c/' . $hash.'/trabajodeclase');
+    public function class_work_c_tema(Request $request, $hash)
+    {
+        DB::table($hash . '_class_topics')->insert(['topic_data' => $request->input('tema')]);
+        return redirect('/elearning/c/' . $hash . '/trabajodeclase');
     }
 
-    public function class_work_save_ord(Request $request, $hash){
-        return $request->input('data');
+    public function class_work_save_ord(Request $request, $hash)
+    {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if ($data->classroom_teacher === Auth::user()->id) {
+            DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_topics_order' => $request->input('data'),]);
+            return json_encode($request->input('data'));
+        }
     }
 }

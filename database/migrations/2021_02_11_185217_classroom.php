@@ -15,10 +15,11 @@ class Classroom extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('access_code');
             $table->integer('classroom_teacher');
             $table->longText('classroom_hash')->unique();
             $table->longText('classroom_config');
-            $table->string('access_code');
+            $table->longText('classroom_topics_order');
             $table->timestamps();
         });
     }

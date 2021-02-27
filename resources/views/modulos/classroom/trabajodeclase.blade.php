@@ -14,29 +14,32 @@
                 </div>
             </div>
         @endif
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">No categorizado</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    @foreach ($actividades as $actividad)
-                        @if ($actividad->topic_id === 0)
-                            En futuro commit
-                        @endif
-                    @endforeach
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">No categorizado</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
                 </div>
             </div>
+            <div class="card-body">
+                @foreach ($actividades as $actividad)
+                    @if ($actividad->topic_id === 0)
+                        En futuro commit
+                    @endif
+                @endforeach
+            </div>
+        </div>
         <ul id="trabajodeclase_jquery_sortable">
             @foreach ($categorias as $categoria)
-                <li id="cat-{{ $categoria->id }}" class="card">
+                <li id="{{ $categoria->id }}" class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            <span class="handle"><i class="fas fa-arrows-alt"></i></span>
+                            @if (Auth::user()->hasRole('profesor'))
+                                @if (Auth::user()->id === $classroom['classroom_teacher'])
+                                    <span class="handle"><i class="fas fa-arrows-alt"></i></span>
+                                @endif
+                            @endif
                             {{ $categoria->topic_data }}
                         </h3>
                         <div class="card-tools">
@@ -82,31 +85,34 @@
     </div>
 @stop
 @section('js')
-    <script>
-        $(document).ready(function() {
-            CKEDITOR.replace('nuevomensaje');
-            $(function() {
-                $("#trabajodeclase_jquery_sortable").sortable({
-                    axis: 'y',
-                    handle: '.handle',
-                    stop: function(event, ui) {
-                        var data = $(this).sortable('serialize');
-                        var csrf = "{{ csrf_token() }}";
-                        $.ajax({
-                            data: {
-                                data: data,
-                                _token: csrf
-                            },
-                            type: 'POST',
-                            url: "{{url('/elearning/c/'.$hash.'/trabajodeclase/ord')}}"
+    @if (Auth::user()->hasRole('profesor'))
+        @if (Auth::user()->id === $classroom['classroom_teacher'])
+            <script>
+                $(document).ready(function() {
+                    $(function() {
+                        $("#trabajodeclase_jquery_sortable").sortable({
+                            axis: 'y',
+                            handle: '.handle',
+                            stop: function(event, ui) {
+                                var data = $(this).sortable('toArray');
+                                var csrf = "{{ csrf_token() }}";
+                                $.ajax({
+                                    data: {
+                                        data: data,
+                                        _token: csrf
+                                    },
+                                    type: 'POST',
+                                    url: "{{ url('/elearning/c/' . $hash . '/trabajodeclase/ord') }}"
+                                });
+                            }
                         });
-                    }
+                        $("#trabajodeclase_jquery_sortable").disableSelection();
+                    });
                 });
-                $("#trabajodeclase_jquery_sortable").disableSelection();
-            });
-        });
 
-    </script>
+            </script>
+        @endif
+    @endif
 @stop
 
 @section('footer')
