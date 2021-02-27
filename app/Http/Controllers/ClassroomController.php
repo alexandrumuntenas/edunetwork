@@ -25,7 +25,6 @@ class ClassroomController extends Controller
     }
     public function classroom($hash)
     {
-
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
@@ -187,5 +186,30 @@ class ClassroomController extends Controller
 
     public function eliminaranuncio(Request $request, $hash)
     {
+    }
+
+    //Funciones de "trabajo de clase"
+    public function class_work_c_material($hash){
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if (isset($data->id)) {
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $datos = json_decode(json_encode($data), true);
+                return view('modulos.classroom.trabajodeclase.material')->with(['classroom' => $datos, 'hash' => $hash]);
+            } else {
+                return view('modulos.errores.404.classroom');
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
+
+    public function class_work_c_tema(Request $request,$hash){
+        DB::table($hash.'_class_topics')->insert(['topic_data'=> $request->input('tema')]);
+        return redirect('/elearning/c/' . $hash.'/trabajodeclase');
+    }
+
+    public function class_work_save_ord(Request $request, $hash){
+        return $request->input('data');
     }
 }

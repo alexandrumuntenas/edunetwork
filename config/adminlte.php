@@ -445,23 +445,13 @@ return [
                 ],
             ],
         ],
-        'jsGrid' => [
-            'active' => false,
+        'JqueryUI' => [
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css',
+                    'location' => 'https://code.jquery.com/ui/1.12.0/jquery-ui.min.js',
                 ],
             ],
         ],
