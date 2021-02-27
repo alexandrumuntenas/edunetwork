@@ -37,6 +37,13 @@ Route::post('/elearning/c/{hash}/tablon/eliminar', [App\Http\Controllers\Classro
 #Trabajo de clase
 Route::get('/elearning/c/{hash}/trabajodeclase/', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');
 Route::get('/elearning/c/{hash}/trabajodeclase/{tid}', [App\Http\Controllers\ClassroomController::class, 'class_task'])->middleware('auth');
+#Acciones trabajo de clase
+Route::get('/elearning/c/{hash}/trabajodeclase/', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');
+Route::get('/elearning/c/{hash}/trabajodeclase/v/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');
+Route::post('/elearning/c/{hash}/trabajodeclase/c/', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');
+Route::get('/elearning/c/{hash}/trabajodeclase/e/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');
+Route::get('/elearning/c/{hash}/trabajodeclase/d/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');
+
 #Compañeros de clase
 Route::get('/elearning/c/{hash}/companerosdeclase/', [App\Http\Controllers\ClassroomController::class, 'class_students'])->middleware('auth');
 #Alumnos
