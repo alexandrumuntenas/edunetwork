@@ -21,11 +21,13 @@
     <div class="col-9">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Compañeros de clase</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                </div>
+                <h3 class="card-title">
+                    @if (Auth::user()->hasRole('profesor'))
+                    Alumnos
+                    @else
+                    Compañeros de clase
+                    @endif
+                </h3>
             </div>
             <div class="card-body">
                 <table class="table table-hover">
@@ -38,17 +40,20 @@
                     </thead>
                     <tbody>
                         @foreach ($alumnos as $alumno)
-                            <tr>
-                                <th><img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /></th>
-                                <th> {{ $alumno->name }}
-                                @if(Auth::user()->hasRole('profesor'))
-                                <br><h6 class="card-subtitle">{{ $alumno->email }}</h6></th>
+                            @if ($alumno->id != $classroom['classroom_teacher'])
+                                <tr>
+                                    <th><img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /></th>
+                                    <th> {{ $alumno->name }}
+                                        @if (Auth::user()->hasRole('profesor'))
+                                            <br>
+                                            <h6 class="card-subtitle">{{ $alumno->email }}</h6>
+                                    </th>
                                 @else
-                                </th>
-                                @endif
-                                <th style="text-align:right"><i class="far fa-paper-plane"></i></th>
+                                    </th>
+                            @endif
+                            <th style="text-align:right"><i class="far fa-paper-plane"></i></th>
                             </tr>
-
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
