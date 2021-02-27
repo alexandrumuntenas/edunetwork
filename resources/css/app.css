@@ -63,13 +63,17 @@ img {
 #class_presentation .card {
     max-width: 350px;
     min-width: 300px;
-    height: auto;
+    height: 197px;
     transition: transform .2s;
 }
 
 #class_presentation .card:hover {
     box-shadow: 2px 2px 20px #000;
     transform: scale(1.025);
+}
+
+#class_presentation .card .card-body h4, #class_presentation .card .card-body p{
+    color: #FFF;
 }
 
 #class_header .card-body {

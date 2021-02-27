@@ -15,14 +15,12 @@
                 @foreach (json_decode($classroom['classroom_config']) as $i)
                     <div class="col" id="class_presentation">
                         <div class="card">
-                            <a href="{{ url('/elearning/c/' . $classroom['classroom_hash']) }}">
-                                <img class="classbg"
-                                    src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
-                                <div class="text-block">
+                            <div class="card-body {{ $i->aspecto }}">
+                                <a href="{{ url('/elearning/c/' . $classroom['classroom_hash']) }}">
                                     <h4>{{ $i->asignatura }}</h4>
                                     <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
