@@ -12,22 +12,15 @@ class ClassroomController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->hasRole('profesor')) {
-            $user_id = Auth::user()->id;
-            $data = DB::table('classrooms')->where('classroom_teacher', '=', $user_id)->get();
-            $datos = json_decode(json_encode($data), true);
-            return view('modulos.classroom.index')->with(['classrooms' => $datos]);
-        } else {
-            $clases = array();
-            $user_id = Auth::user()->id;
-            $ver_donde_estudiante = DB::table('student_classrooms')->where('student_id', '=', $user_id)->get();
-            foreach ($ver_donde_estudiante as $item) {
-                $clase = DB::table('classrooms')->where('id', '=', $item->class_id)->first();
-                $clases[] = $clase;
-            }
-            $clases = json_decode(json_encode($clases),true);
-            return view('modulos.classroom.index')->with(['classrooms' => $clases]);
+        $clases = array();
+        $user_id = Auth::user()->id;
+        $ver_donde_usuario = DB::table('user_classrooms')->where('user_id', '=', $user_id)->get();
+        foreach ($ver_donde_usuario as $item) {
+            $clase = DB::table('classrooms')->where('id', '=', $item->class_id)->first();
+            $clases[] = $clase;
         }
+        $clases = json_decode(json_encode($clases), true);
+        return view('modulos.classroom.index')->with(['classrooms' => $clases]);
     }
     public function classroom($hash)
     {
@@ -101,6 +94,12 @@ class ClassroomController extends Controller
             $table->timestamps();
         });
 
+        $id_class = DB::table('classrooms')->where('classroom_hash', '=', $classroom_hash)->first();
+
+        DB::table('user_classrooms')->insert([
+            'user_id' => Auth::user()->id,
+            'class_id' => $id_class->id,
+        ]);
         return redirect('/elearning/');
     }
     public function unirse()

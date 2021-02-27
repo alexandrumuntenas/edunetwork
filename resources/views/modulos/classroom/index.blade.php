@@ -11,7 +11,23 @@
 
     <div class="row">
         @foreach ($classrooms as $classroom)
-        <?php var_dump($classroom); ?>
+            @if (isset($classroom))
+                @foreach (json_decode($classroom['classroom_config']) as $i)
+                    <div class="col" id="class_presentation">
+                        <div class="card">
+                            <a href="{{ url('/elearning/c/' . $classroom['classroom_hash']) }}">
+                                <img class="classbg"
+                                    src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
+                                <div class="text-block">
+                                    <h4>{{ $i->asignatura }}</h4>
+                                    <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                @endforeach
+            @endif
         @endforeach
     </div>
     @if (Auth::user()->hasRole('profesor'))
@@ -79,9 +95,9 @@
                 </form>
             </div>
 
-    </div>
+        </div>
     @endif
-</div>
+    </div>
 @stop
 
 @section('footer')
