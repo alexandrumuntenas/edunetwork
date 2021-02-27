@@ -75,8 +75,7 @@ img {
 #class_header .card-body {
     color: #FFF;
     object-fit: cover;
-    background-op
-    background: rgb(255, 111, 0);
+    background-op background: rgb(255, 111, 0);
     background: linear-gradient(90deg, rgba(255, 111, 0, 1) 0%, rgba(255, 0, 0, 1) 100%);
     background-position: center center;
     background-size: 100% auto;
@@ -149,4 +148,14 @@ img {
 
 #class_work .col {
     min-width: 125px;
+}
+
+#nuevaactividadhub a.card {
+    color: #333;
+    transition: .2s;
+}
+
+#nuevaactividadhub a.card:hover {
+    color: #333;
+    border: #ff6f00 solid 3px;
 }

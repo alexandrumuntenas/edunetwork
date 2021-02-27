@@ -1,33 +1,15 @@
 @extends('adminlte::page')
 
 @section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
-    @foreach (json_decode($classroom['classroom_config']) as $i)
-        <div class="col-12" id="class_header">
-            <div class="card">
-                <img class="classbg"
-                    src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
-                <div class="text-block">
-                    <h4>{{ $i->asignatura }}</h4>
-                    <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
-                </div>
-            </div>
-        </div>
-    @endforeach
-    <div class="col-3" id="class_pte_act">
-        <div id="class_sidebar">
-            @include('modulos.classroom.componentes.sidebar')
-        </div>
+    @include('modulos.classroom.componentes.cabecera')
+
+    <div class="col" id="class_sidebar">
+        @include('modulos.classroom.componentes.sidebar')
     </div>
-    <div class="col-9">
+    <div class="col">
         @if (Auth::user()->hasRole('profesor'))
-            <div id="nuevoanuncio" class="card" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-                <div class="card-body">
+            <div id="nuevoanuncio" class="card">
+                <div class="card-body" data-toggle="modal" data-target="#nuevaactividadhub">
                     <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Crear nueva actividad
                 </div>
             </div>
@@ -69,8 +51,29 @@
         @endforeach
 
     </div>
-
-
+    @if (Auth::user()->hasRole('profesor'))
+        <div class="modal fade" id="nuevaactividadhub" tabindex="-1" aria-labelledby="nuevaactividadhub"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="nuevaactividadhub">Crear nueva actividad</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="class_work">
+                            @include('modulos.classroom.componentes.actividades')
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     </div>
 @stop
 
