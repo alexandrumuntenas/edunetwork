@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 
 class ClassroomController extends Controller
 {
+    //Páginas
     public function index()
     {
         $clases = array();
@@ -57,7 +58,26 @@ class ClassroomController extends Controller
             return view('modulos.errores.404.classroom');
         }
     }
-
+    public function class_students($hash){
+        $companeros = array();
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if (isset($data->id)) {
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $datos = json_decode(json_encode($data), true);
+                $alumnos = DB::table('user_classrooms')->where('class_id', '=', $data->id)->get();
+                foreach($alumnos as $alumno){
+                    $conseguirdatoscompaneros = DB::table('users')->where('id','=',$alumno->user_id)->first();
+                    $companeros[] = $conseguirdatoscompaneros;
+                }
+                return view('modulos.classroom.classmates')->with(['classroom' => $datos, 'alumnos' => $companeros, 'hash' => $hash]);
+            } else {
+                return view('modulos.errores.404.classroom');
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
     public function misdeberes()
     {
         $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
