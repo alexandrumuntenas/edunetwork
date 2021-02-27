@@ -77,7 +77,7 @@
                 <form class="modal-content" method="post" action="{{ url('/elearning/acciones/unirme') }}">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="crearclase">Crear nueva clase</h5>
+                        <h5 class="modal-title" id="unirseclase">Crear nueva clase</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
