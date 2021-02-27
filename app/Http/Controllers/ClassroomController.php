@@ -27,26 +27,26 @@ class ClassroomController extends Controller
 
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id','=',Auth::user()->id)->first();
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
                 $datos = json_decode(json_encode($data), true);
-                    $anuncios = DB::table($hash . '_class_messages')->get();
-                    $anuncios = json_decode($anuncios, true);
-                    return view('modulos.classroom.class')->with(['classroom' => $datos, 'anuncios' => $anuncios, 'hash' => $hash]);
-                } else {
-                return view('modulos.errores.404.classroom');
-            }
+                $anuncios = DB::table($hash . '_class_messages')->get();
+                $anuncios = json_decode($anuncios, true);
+                return view('modulos.classroom.class')->with(['classroom' => $datos, 'anuncios' => $anuncios, 'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
             }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
     }
     public function class_work($hash)
     {
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id','=',Auth::user()->id)->first();
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
-            $datos = json_decode(json_encode($data), true);
+                $datos = json_decode(json_encode($data), true);
                 $categorias = DB::table($hash . '_class_topics')->get();
                 $actividades = DB::table($hash . '_class_activities')->get();
                 return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash]);
@@ -62,7 +62,7 @@ class ClassroomController extends Controller
     {
         $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
         if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id','=',Auth::user()->id)->first();
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
             } else {
                 return view('modulos.errores.404.classroom');
@@ -128,13 +128,18 @@ class ClassroomController extends Controller
     {
         $user_id = Auth::user()->id;
         $clase_solicitada = $request->input('codigo');
-        $datos_clase_solicitada = DB::table('classrooms')->where('access_code','=',$clase_solicitada)->first();
-        DB::table('user_classrooms')->insert([
-            'user_id' => $user_id,
-            'class_id' => $datos_clase_solicitada->id
-        ]);
+        $datos_clase_solicitada = DB::table('classrooms')->where('access_code', '=', $clase_solicitada)->first();
+        $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
+        if (isset($comprobar_si_ya_en_clase)) {
+            return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+        } else {
+            DB::table('user_classrooms')->insert([
+                'user_id' => $user_id,
+                'class_id' => $datos_clase_solicitada->id
+            ]);
 
-        return redirect('/elearning/c/'.$datos_clase_solicitada->classroom_hash);
+            return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+        }
     }
     public function editar()
     {
