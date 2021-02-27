@@ -1,24 +1,11 @@
 @extends('adminlte::page')
 
 @section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
-    @foreach (json_decode($classroom['classroom_config']) as $i)
-        <div class="col-12" id="class_header">
-            <div class="card">
-                <img class="classbg"
-                    src="https://cdn.duoestudios.es/wp-content/uploads/2021/02/pexels-elina-krima-3309968-scaled.jpg">
-                <div class="text-block">
-                    <h4>{{ $i->asignatura }}</h4>
-                    <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
-                </div>
-            </div>
-        </div>
-    @endforeach
-    <div class="col-3" id="class_pte_act">
-        <div id="class_sidebar">
+    @include('modulos.classroom.componentes.cabecera')
+    <div class="col" id="class_sidebar">
             @include('modulos.classroom.componentes.sidebar')
-        </div>
     </div>
-    <div class="col-9">
+    <div class="col">
         <div id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
             <div class="card-body">
                 <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Anuncia algo a tu clase

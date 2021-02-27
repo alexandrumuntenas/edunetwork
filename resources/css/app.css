@@ -72,22 +72,28 @@ img {
     transform: scale(1.025);
 }
 
-#class_header .classbg {
-    filter: brightness(0.25);
-    height: 100px;
+#class_header .card-body {
+    color: #FFF;
     object-fit: cover;
+    background-op
+    background: rgb(255, 111, 0);
+    background: linear-gradient(90deg, rgba(255, 111, 0, 1) 0%, rgba(255, 0, 0, 1) 100%);
+    background-position: center center;
+    background-size: 100% auto;
 }
 
 #class_header .card {
     width: auto;
-    height: 100px;
+    height: 90%;
+}
+
+#class_header .card .card-footer {
+    padding-bottom: 0;
 }
 
 #class_header .card h4 {
     font-weight: bold;
 }
-
-#class_pte_act {}
 
 #classroom_tablon .user_avatar {
     float: left;
@@ -117,16 +123,30 @@ img {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    max-width: 240px;
 }
 
-#class_menu ul{
+@media screen and (max-width: 650px) {
+    #class_sidebar {
+        display: none;
+    }
+}
+
+#class_menu ul {
     list-style-type: none;
     padding: 0;
-}
-#class_menu ul li{
-    margin: 0px 0px 10px 0px;
+    text-align: center;
 }
 
-#class_menu a.active{
-    color:red;
+#class_menu ul li {
+    display: inline;
+    margin: 0px 10px 0px 10px;
+}
+
+#class_work .col {
+    text-align: center;
+}
+
+#class_work .col {
+    min-width: 125px;
 }
