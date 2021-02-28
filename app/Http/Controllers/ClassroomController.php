@@ -218,7 +218,11 @@ class ClassroomController extends Controller
 
     public function class_work_c_tema(Request $request, $hash)
     {
-        DB::table($hash . '_class_topics')->insert(['topic_data' => $request->input('tema')]);
+        $array = DB::Table('classrooms')->where('classroom_hash','=',$hash)->first();
+        $id = DB::table($hash . '_class_topics')->insertGetId(['topic_data' => $request->input('tema')]);
+        $order = json_decode($array->classroom_topics_order);
+        $order[] = $id;
+        DB::table('classrooms')->where('id','=',$array->id)->update(['classroom_topics_order' => $order]);
         return redirect('/elearning/c/' . $hash . '/trabajodeclase');
     }
 
