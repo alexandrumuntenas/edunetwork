@@ -206,8 +206,9 @@ class ClassroomController extends Controller
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $topics = DB::table($hash.'_class_topics')->get();
                 $datos = json_decode(json_encode($data), true);
-                return view('modulos.classroom.trabajodeclase.material')->with(['classroom' => $datos, 'hash' => $hash]);
+                return view('modulos.classroom.trabajodeclase.material')->with(['classroom' => $datos, 'temas' => $topics ,'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
             }
@@ -218,12 +219,46 @@ class ClassroomController extends Controller
 
     public function class_work_c_tema(Request $request, $hash)
     {
-        $array = DB::Table('classrooms')->where('classroom_hash','=',$hash)->first();
+        $array = DB::Table('classrooms')->where('classroom_hash', '=', $hash)->first();
         $id = DB::table($hash . '_class_topics')->insertGetId(['topic_data' => $request->input('tema')]);
         $order = json_decode($array->classroom_topics_order);
         $order[] = $id;
-        DB::table('classrooms')->where('id','=',$array->id)->update(['classroom_topics_order' => $order]);
+        DB::table('classrooms')->where('id', '=', $array->id)->update(['classroom_topics_order' => $order]);
         return redirect('/elearning/c/' . $hash . '/trabajodeclase');
+    }
+
+    public function class_work_crear(Request $request, $hash)
+    {
+        $referer = $request->headers->get('referer');
+        $referer = explode('/',$referer);
+        switch($referer[10]){
+            case "material":
+                $titulo = $request->input('titulo');
+                $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
+                $tema = $request->input('tema');
+                $json_data = '[{"titulo": "'.$titulo.'","contenido": "'.$contenido.'"}]';
+                DB::table($hash.'_class_activities')->insert(['topic_id' => $tema,'type' => 'material','activity_data' => $json_data]);
+                return redirect('/elearning/c/' . $hash . '/trabajodeclase');
+                break;
+            case "tarea":
+                break;
+
+            case "pregunta":
+                break;
+
+            case "h5p":
+                break;
+
+            case "examen":
+                break;
+
+        }
+        /*$array = DB::Table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        $id = DB::table($hash . '_class_topics')->insertGetId(['topic_data' => $request->input('tema')]);
+        $order = json_decode($array->classroom_topics_order);
+        $order[] = $id;
+        DB::table('classrooms')->where('id', '=', $array->id)->update(['classroom_topics_order' => $order]);
+        return redirect('/elearning/c/' . $hash . '/trabajodeclase');*/
     }
 
     public function class_work_save_ord(Request $request, $hash)

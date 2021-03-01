@@ -25,7 +25,7 @@
             <div class="card-body">
                 @foreach ($actividades as $actividad)
                     @if ($actividad->topic_id === 0)
-                        En futuro commit
+                        @include('modulos.classroom.componentes.vistarecursos')
                     @endif
                 @endforeach
             </div>
@@ -51,7 +51,7 @@
                     <div class="card-body">
                         @foreach ($actividades as $actividad)
                             @if ($actividad->topic_id === $categoria->id)
-                                En futuro commit
+                                @include('modulos.classroom.componentes.vistarecursos')
                             @endif
                         @endforeach
                     </div>
@@ -95,7 +95,7 @@
                             handle: '.handle',
                             stop: function(event, ui) {
                                 var data = $(this).sortable('toArray');
-                               var csrf = "{{ csrf_token() }}";
+                                var csrf = "{{ csrf_token() }}";
                                 $.ajax({
                                     data: {
                                         data: data,
