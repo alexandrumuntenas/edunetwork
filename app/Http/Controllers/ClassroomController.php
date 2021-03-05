@@ -226,7 +226,7 @@ class ClassroomController extends Controller
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
                 $topics = DB::table($hash . '_class_topics')->get();
                 $datos = json_decode(json_encode($data), true);
-                return view('modulos.classroom.trabajodeclase.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
+                return view('modulos.classroom.trabajodeclase.crear.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
             }
