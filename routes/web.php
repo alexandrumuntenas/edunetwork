@@ -47,8 +47,8 @@ Route::get('/elearning/c/{hash}/trabajodeclase/c/pregunta', [App\Http\Controller
 Route::get('/elearning/c/{hash}/trabajodeclase/c/h5p', [App\Http\Controllers\ClassroomController::class, 'class_work_c_h5p'])->middleware(['role:profesor', 'auth']);
 Route::get('/elearning/c/{hash}/trabajodeclase/c/examen', [App\Http\Controllers\ClassroomController::class, 'class_work_c_examen'])->middleware(['role:profesor', 'auth']);
 Route::post('/elearning/c/{hash}/trabajodeclase/c/tema', [App\Http\Controllers\ClassroomController::class, 'class_work_c_tema'])->middleware(['role:profesor', 'auth']);
-Route::get('/elearning/c/{hash}/trabajodeclase/e/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware(['role:profesor', 'auth']);
-Route::get('/elearning/c/{hash}/trabajodeclase/d/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware(['role:profesor', 'auth']);
+Route::get('/elearning/c/{hash}/trabajodeclase/e/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work_e_activity'])->middleware(['role:profesor', 'auth']);
+Route::get('/elearning/c/{hash}/trabajodeclase/d/{id}', [App\Http\Controllers\ClassroomController::class, 'class_work_d_activity'])->middleware(['role:profesor', 'auth']);
 #Compañeros de clase
 Route::get('/elearning/c/{hash}/companerosdeclase/', [App\Http\Controllers\ClassroomController::class, 'class_students'])->middleware('auth');
 #Alumnos

@@ -72,7 +72,7 @@ class ClassroomController extends Controller
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
                 $datos = json_decode(json_encode($data), true);
-                $actividad = DB::table($hash.'_class_activities')->where('id', '=', $id)->first();
+                $actividad = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
                 return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
@@ -283,7 +283,21 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if ($data->classroom_teacher === Auth::user()->id) {
             DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_topics_order' => $request->input('data'),]);
-            return json_encode($request->input('data'));
+            return '¡Orden guardado!';
+        }
+    }
+
+    //Funciones trabajo de clase, pero de actividad
+    public function class_work_e_activity($hash, $id)
+    {
+    }
+
+    public function class_work_d_activity($hash, $id)
+    {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if ($data->classroom_teacher === Auth::user()->id) {
+            DB::table($hash . '_class_activities')->where('id', '=', $id)->delete();
+            return redirect('/elearning/c/' . $hash . '/trabajodeclase');
         }
     }
 }
