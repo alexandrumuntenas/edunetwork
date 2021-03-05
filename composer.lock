@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ad2580bdca86b2e7426e57099886626",
+    "content-hash": "2b5af7eb1df079e1e39141e4dc909966",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -423,6 +423,193 @@
                 "validator"
             ],
             "time": "2020-12-29T14:50:06+00:00"
+        },
+        {
+            "name": "escolasoft/h5p-core",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EscolaSoft/h5p-php-library.git",
+                "reference": "9e2a91e9baea96e9fe99916a1f10753e50d41ab4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EscolaSoft/h5p-php-library/zipball/9e2a91e9baea96e9fe99916a1f10753e50d41ab4",
+                "reference": "9e2a91e9baea96e9fe99916a1f10753e50d41ab4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "h5p.classes.php",
+                    "h5p-development.class.php",
+                    "h5p-file-storage.interface.php",
+                    "h5p-default-storage.class.php",
+                    "h5p-event-base.class.php",
+                    "h5p-metadata.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Svein-Tore Griff With",
+                    "email": "with@joubel.com",
+                    "homepage": "http://joubel.com",
+                    "role": "CEO"
+                },
+                {
+                    "name": "Frode Petterson",
+                    "email": "frode.petterson@joubel.com",
+                    "homepage": "http://joubel.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "H5P Core functionality in PHP",
+            "homepage": "https://h5p.org",
+            "keywords": [
+                "content",
+                "h5p",
+                "hvp",
+                "interactive",
+                "quiz"
+            ],
+            "time": "2021-01-11T17:53:10+00:00"
+        },
+        {
+            "name": "escolasoft/h5p-editor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EscolaSoft/h5p-editor-php-library.git",
+                "reference": "4952fa50f3ad5381a3c4c1f0664231f5838586e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EscolaSoft/h5p-editor-php-library/zipball/4952fa50f3ad5381a3c4c1f0664231f5838586e6",
+                "reference": "4952fa50f3ad5381a3c4c1f0664231f5838586e6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "h5peditor.class.php",
+                    "h5peditor-file.class.php",
+                    "h5peditor-ajax.class.php",
+                    "h5peditor-storage.interface.php",
+                    "h5peditor-ajax.interface.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Svein-Tore Griff With",
+                    "email": "with@joubel.com",
+                    "homepage": "http://joubel.com",
+                    "role": "CEO"
+                },
+                {
+                    "name": "Frode Petterson",
+                    "email": "frode.petterson@joubel.com",
+                    "homepage": "http://joubel.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "H5P Editor functionality in PHP",
+            "homepage": "https://h5p.org",
+            "keywords": [
+                "content",
+                "editor",
+                "h5p",
+                "hvp",
+                "interactive",
+                "quiz"
+            ],
+            "time": "2021-01-11T17:52:46+00:00"
+        },
+        {
+            "name": "escolasoft/laravel-h5p",
+            "version": "dev-dev-qunabu-patch-3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EscolaSoft/Laravel-H5P.git",
+                "reference": "1a84cb84b8932488c0b61842ed97fc92811e39de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EscolaSoft/Laravel-H5P/zipball/1a84cb84b8932488c0b61842ed97fc92811e39de",
+                "reference": "1a84cb84b8932488c0b61842ed97fc92811e39de",
+                "shasum": ""
+            },
+            "require": {
+                "escolasoft/h5p-core": "dev-master",
+                "escolasoft/h5p-editor": "dev-master",
+                "guzzlehttp/guzzle": ">=6",
+                "laravel/framework": "8.*",
+                "laravelcollective/html": ">=6.2",
+                "php": "^7.4"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.8",
+                "kitloong/laravel-migrations-generator": "^4.0",
+                "mockery/mockery": "1.2.*",
+                "phpunit/phpunit": "~9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "EscolaSoft\\LaravelH5p\\LaravelH5pServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelH5p": "EscolaSoft\\LaravelH5p\\Facades"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EscolaSoft\\LaravelH5p\\": "src/LaravelH5p"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alefe Souza",
+                    "email": "contact@alefesouza.com"
+                },
+                {
+                    "name": "Anass BOUTAKAOUA",
+                    "email": "anass@itcours.com"
+                },
+                {
+                    "name": "Abdelouahab Djoudi",
+                    "email": "info@djoudi.net"
+                },
+                {
+                    "name": "Mateusz Wojczal",
+                    "email": "mateusz@escolasoft.com"
+                },
+                {
+                    "name": "Marcin Lenkowski",
+                    "email": "Marcin.Lenkowski@escola.pl"
+                }
+            ],
+            "description": "H5P Plugin for laravel platform",
+            "time": "2021-02-03T12:05:05+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1229,6 +1416,74 @@
                 "ui"
             ],
             "time": "2021-01-06T19:20:22+00:00"
+        },
+        {
+            "name": "laravelcollective/html",
+            "version": "v6.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "ae15b9c4bf918ec3a78f092b8555551dd693fde3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/ae15b9c4bf918ec3a78f092b8555551dd693fde3",
+                "reference": "ae15b9c4bf918ec3a78f092b8555551dd693fde3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^6.0|^7.0|^8.0",
+                "illuminate/routing": "^6.0|^7.0|^8.0",
+                "illuminate/session": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "illuminate/view": "^6.0|^7.0|^8.0",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "illuminate/database": "^6.0|^7.0|^8.0",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~8.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Collective\\Html\\HtmlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Form": "Collective\\Html\\FormFacade",
+                        "Html": "Collective\\Html\\HtmlFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                },
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "HTML and Form Builders for the Laravel Framework",
+            "homepage": "https://laravelcollective.com",
+            "time": "2020-12-15T20:20:05+00:00"
         },
         {
             "name": "league/commonmark",
@@ -6973,11 +7228,14 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "escolasoft/laravel-h5p": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3|^8.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
