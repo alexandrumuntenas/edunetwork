@@ -64,6 +64,24 @@ class ClassroomController extends Controller
             return view('modulos.errores.404.classroom');
         }
     }
+
+    public function class_work_view($hash, $id)
+    {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if (isset($data->id)) {
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $datos = json_decode(json_encode($data), true);
+                $actividad = DB::table($hash.'_class_activities')->where('id', '=', $id)->first();
+                return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash]);
+            } else {
+                return view('modulos.errores.404.classroom');
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
+
     public function class_students($hash)
     {
         $companeros = array();
@@ -206,9 +224,9 @@ class ClassroomController extends Controller
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if ($esta_en_esta_clase->user_id == Auth::user()->id) {
-                $topics = DB::table($hash.'_class_topics')->get();
+                $topics = DB::table($hash . '_class_topics')->get();
                 $datos = json_decode(json_encode($data), true);
-                return view('modulos.classroom.trabajodeclase.material')->with(['classroom' => $datos, 'temas' => $topics ,'hash' => $hash]);
+                return view('modulos.classroom.trabajodeclase.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
             } else {
                 return view('modulos.errores.404.classroom');
             }
@@ -230,14 +248,14 @@ class ClassroomController extends Controller
     public function class_work_crear(Request $request, $hash)
     {
         $referer = $request->headers->get('referer');
-        $referer = explode('/',$referer);
-        switch($referer[10]){
+        $referer = explode('/', $referer);
+        switch ($referer[10]) {
             case "material":
                 $titulo = $request->input('titulo');
                 $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
                 $tema = $request->input('tema');
-                $json_data = '[{"titulo": "'.$titulo.'","contenido": "'.$contenido.'"}]';
-                DB::table($hash.'_class_activities')->insert(['topic_id' => $tema,'type' => 'material','activity_data' => $json_data]);
+                $json_data = '[{"titulo": "' . $titulo . '","contenido": "' . $contenido . '"}]';
+                DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'material', 'activity_data' => $json_data]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
                 break;
             case "tarea":
@@ -251,7 +269,6 @@ class ClassroomController extends Controller
 
             case "examen":
                 break;
-
         }
         /*$array = DB::Table('classrooms')->where('classroom_hash', '=', $hash)->first();
         $id = DB::table($hash . '_class_topics')->insertGetId(['topic_data' => $request->input('tema')]);

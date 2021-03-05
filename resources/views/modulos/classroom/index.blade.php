@@ -1,10 +1,9 @@
 @extends('adminlte::page')
 
 @section('title', 'Classroom < Edunetwork') @section('content_header') <h1>Classroom @if (Auth::user()->hasRole('profesor')) <a class="btn btn-success btn-sm" data-toggle="modal"
-            data-target="#crearclase" href=""><i class="fas fa-chalkboard-teacher "></i> Crear una clase</a></h1>
-    @elseif(Auth::user()->hasRole('alumno')) <a class="btn btn-success btn-sm" data-toggle="modal"
+            data-target="#crearclase" href=""><i class="fas fa-chalkboard-teacher "></i> Crear una clase</a>
+    @endif <a class="btn btn-success btn-sm" data-toggle="modal"
             data-target="#unirseclase" href=""><i class="fas fa-chalkboard-teacher "></i> Unirse a una clase</a></h1>
-    @endif
 </h1> @stop
 
 @section('content')
@@ -69,7 +68,6 @@
             </div>
         </div>
     @endif
-    @if (Auth::user()->hasRole('alumno'))
         <div class="modal fade" id="unirseclase" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <form class="modal-content" method="post" action="{{ url('/elearning/acciones/unirme') }}">
@@ -94,7 +92,6 @@
             </div>
 
         </div>
-    @endif
     </div>
 @stop
 
