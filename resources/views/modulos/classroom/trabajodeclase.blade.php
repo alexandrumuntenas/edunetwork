@@ -7,7 +7,7 @@
         @include('modulos.classroom.componentes.sidebar')
     </div>
     <div class="col">
-        @if (Auth::user()->hasRole('profesor'))
+        @if (Auth::user()->id === $classroom['classroom_teacher'])
             <div id="nuevoanuncio" class="card">
                 <div class="card-body" data-toggle="modal" data-target="#nuevaactividadhub">
                     <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Crear nueva actividad
@@ -35,7 +35,8 @@
                 <li id="{{ $categoria->id }}" class="card">
                     <div class="card-header">
                         <h3 class="card-title">
-                            @if (Auth::user()->hasRole('profesor'))
+                            @if (Auth::user()->id === $classroom['classroom_teacher'])
+
                                 @if (Auth::user()->id === $classroom['classroom_teacher'])
                                     <span class="handle"><i class="fas fa-arrows-alt"></i></span>
                                 @endif
@@ -59,7 +60,8 @@
             @endforeach
         </ul>
     </div>
-    @if (Auth::user()->hasRole('profesor'))
+    @if (Auth::user()->id === $classroom['classroom_teacher'])
+
         <div class="modal fade" id="nuevaactividadhub" tabindex="-1" aria-labelledby="nuevaactividadhub"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
