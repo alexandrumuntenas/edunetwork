@@ -36,10 +36,7 @@
                     <div class="card-header">
                         <h3 class="card-title">
                             @if (Auth::user()->id === $classroom['classroom_teacher'])
-
-                                @if (Auth::user()->id === $classroom['classroom_teacher'])
                                     <span class="handle"><i class="fas fa-arrows-alt"></i></span>
-                                @endif
                             @endif
                             {{ $categoria->topic_data }}
                         </h3>
