@@ -3,7 +3,7 @@
 @section('title', 'Classroom < Edunetwork') @section('content_header') <h1>Classroom @if (Auth::user()->hasRole('profesor')) <a class="btn btn-success btn-sm" data-toggle="modal"
             data-target="#crearclase" href=""><i class="fas fa-chalkboard-teacher "></i> Crear una clase</a>
     @endif <a class="btn btn-success btn-sm" data-toggle="modal"
-            data-target="#unirseclase" href=""><i class="fas fa-chalkboard-teacher "></i> Unirse a una clase</a></h1>
+            data-target="#unirseclase" href=""><i class="fas fa-mouse-pointer"></i> Unirse a una clase</a></h1>
 </h1> @stop
 
 @section('content')

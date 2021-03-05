@@ -290,6 +290,71 @@ class ClassroomController extends Controller
     //Funciones trabajo de clase, pero de actividad
     public function class_work_e_activity($hash, $id)
     {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if ($data->classroom_teacher === Auth::user()->id) {
+            $activity = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
+            $topics = DB::table($hash . '_class_topics')->get();
+            $datos = json_decode(json_encode($data), true);
+            switch ($activity->type) {
+                case ('material'):
+                    return view('modulos.classroom.trabajodeclase.editar')->with(['type' => 'material','classroom' => $datos, 'temas' => $topics,'data' => $activity,'hash' => $hash]);
+                    break;
+
+                case ('tarea'):
+                    return 'Tarea';
+                    break;
+
+                case ('pregunta'):
+                    return 'Pregunta';
+                    break;
+
+                case ('h5p'):
+                    return 'H5P';
+                    break;
+
+                case ('examen'):
+                    return 'Examen';
+                    break;
+
+                default:
+                    return 'Ha habido un error en la solicitud';
+                    break;
+            }
+        }
+    }
+    public function class_work_u_activity(Request $request, $hash){
+        $url = explode('/', $request->server('HTTP_REFERER'));
+        $activity = DB::table($hash.'_class_activities')->where('id', '=', $url[10])->first();
+        switch ($activity->type) {
+            case ('material'):
+                $titulo = $request->input('titulo');
+                $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
+                $tema = $request->input('tema');
+                $json_data = '[{"titulo": "' . $titulo . '","contenido": "' . $contenido . '"}]';
+                DB::table($hash.'_class_activities')->where('id','=', $activity->id)->update(['topic_id' => $tema, 'activity_data' => $json_data]);
+                return redirect('/elearning/c/' . $hash . '/trabajodeclase/v/'.$activity->id);
+                break;
+
+            case ('tarea'):
+                return 'Tarea';
+                break;
+
+            case ('pregunta'):
+                return 'Pregunta';
+                break;
+
+            case ('h5p'):
+                return 'H5P';
+                break;
+
+            case ('examen'):
+                return 'Examen';
+                break;
+
+            default:
+                return 'Ha habido un error en la solicitud';
+                break;
+        }
     }
 
     public function class_work_d_activity($hash, $id)
