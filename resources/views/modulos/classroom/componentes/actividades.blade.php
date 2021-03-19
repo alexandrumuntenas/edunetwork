@@ -28,8 +28,8 @@
         </div>
     </a>
 </div>
-<div class="col">
-    <a class="card" href="{{url('/elearning/c/'.$hash.'/trabajodeclase/c/h5p')}}">
+<div class="col" >
+    <a class="card" onclick="alert('Esta función estará disponible a partir de la versión 2.x.x')" disabled>
         <div class="card-body">
             <h2><i class="fab fa-html5"></i></h2>
         </div>
