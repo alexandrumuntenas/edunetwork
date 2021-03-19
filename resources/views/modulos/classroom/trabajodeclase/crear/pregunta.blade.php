@@ -9,7 +9,7 @@
     <div class="col">
         <form class="card" action="{{ url("/elearning/c/$hash/trabajodeclase/crear") }}" method="POST">
             <div class="card-header" id="class_message">
-                <span class="card-title float-left">Crear nuevo material</span><span class="float-right"><button
+                <span class="card-title float-left">Crear nueva pregunta</span><span class="float-right"><button
                         class="btn btn-primary btn-sm" type="submit">Publicar</button></span>
             </div>
             <div class="card-body">
@@ -31,9 +31,28 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo de pregunta</label>
+                    <select id="tipo" name="tipo" class="form-control">
+                        <option value="number">Numérico</option>
+                        <option value="text" selected>Respuesta corta</option>
+                        <option value="textarea">Respuesta Larga</option>
+                        <option value="select" disabled>Seleccionar</option>
+                    </select>
+                </div>
+                <div class="numericfields" style="display: none" id="numericfields">
+                    <div class="form-group">
+                        <label for="min">Cantidad mínima (valor predeterminado: 0)</label>
+                        <input type="number" class="form-control" id="min" name="min" />
+                    </div>
+                    <div class="form-group">
+                        <label for="max">Cantidad máxima (valor predeterminado: 100)</label>
+                        <input type="number" class="form-control" id="max" name="max" />
+                    </div>
+                </div>
             </div>
             <div class="card-footer">
-                <span class="card-title float-left">Crear nuevo material</span><span class="float-right"><button
+                <span class="card-title float-left">Crear nueva pregunta</span><span class="float-right"><button
                         class="btn btn-primary btn-sm" type="submit">Publicar</button></span>
             </div>
         </form>
@@ -47,6 +66,14 @@
     <script>
         $(document).ready(function() {
             CKEDITOR.replace('contenido');
+        });
+        $('select').change(function() {
+            console.log($('option').val())
+            if ($(this).val() == 'number') {
+                $('.numericfields').show();
+            } else {
+                $('.numericfields').hide();
+            }
         });
 
     </script>

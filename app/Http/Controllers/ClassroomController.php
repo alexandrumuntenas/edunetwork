@@ -159,9 +159,15 @@ class ClassroomController extends Controller
         });
 
         Schema::create($classroom_hash . "_class_grades", function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('activity_id');
             $table->integer('student_id');
-            $table->timestamps();
+            $table->integer('nota');
+        });
+
+        Schema::create($classroom_hash . "_class_activities_response", function (Blueprint $table) {
+            $table->bigIncrements('activity_id');
+            $table->integer('student_id');
+            $table->integer('response_data');
         });
 
         $id_class = DB::table('classrooms')->where('classroom_hash', '=', $classroom_hash)->first();
@@ -198,8 +204,15 @@ class ClassroomController extends Controller
     public function archivar()
     {
     }
-    public function eliminar()
+    public function eliminar($hash)
     {
+        Schema::dropIfExists($hash . "_class_activities_response");
+        Schema::dropIfExists($hash . "_class_activities");
+        Schema::dropIfExists($hash . "_class_grades");
+        Schema::dropIfExists($hash . "_class_topics");
+        Schema::dropIfExists($hash . "_class_messages");
+        DB::table('classrooms')->where('classroom_hash', '=', $hash)->delete();
+        return redirect('/elearning/');
     }
 
     //Funciones del tablón
@@ -218,46 +231,12 @@ class ClassroomController extends Controller
     }
 
     //Funciones de "trabajo de clase"
-    public function class_work_c_material($hash)
+    public function class_work_save_ord(Request $request, $hash)
     {
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
-        if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
-                $topics = DB::table($hash . '_class_topics')->get();
-                $datos = json_decode(json_encode($data), true);
-                return view('modulos.classroom.trabajodeclase.crear.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
-            } else {
-                return view('modulos.errores.404.classroom');
-            }
-        } else {
-            return view('modulos.errores.404.classroom');
-        }
-    }
-
-    public function class_work_c_tema(Request $request, $hash)
-    {
-        $array = DB::Table('classrooms')->where('classroom_hash', '=', $hash)->first();
-        $id = DB::table($hash . '_class_topics')->insertGetId(['topic_data' => $request->input('tema')]);
-        $order = json_decode($array->classroom_topics_order);
-        $order[] = $id;
-        DB::table('classrooms')->where('id', '=', $array->id)->update(['classroom_topics_order' => $order]);
-        return redirect('/elearning/c/' . $hash . '/trabajodeclase');
-    }
-
-    public function class_work_c_pregunta(Request $request,$hash){
-        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
-        if (isset($data->id)) {
-            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
-                $topics = DB::table($hash . '_class_topics')->get();
-                $datos = json_decode(json_encode($data), true);
-                return view('modulos.classroom.trabajodeclase.crear.pregunta')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
-            } else {
-                return view('modulos.errores.404.classroom');
-            }
-        } else {
-            return view('modulos.errores.404.classroom');
+        if ($data->classroom_teacher === Auth::user()->id) {
+            DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_topics_order' => $request->input('data'),]);
+            return '¡Orden guardado!';
         }
     }
 
@@ -278,6 +257,19 @@ class ClassroomController extends Controller
                 break;
 
             case "pregunta":
+                $pregunta = $request->input('pregunta');
+                $tipo = $request->input('tipo');
+                $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
+                $tema = $request->input('tema');
+                if ($tipo === 'number') {
+                    $min = $request->input('min');
+                    $max = $request->input('max');
+                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","min":"' . $min . '","max":"' . $max . '","contenido": "' . $contenido . '"}]';
+                } else {
+                    $json_data = '[{"titulo": "' . $pregunta . '","contenido": "' . $contenido . '"}]';
+                }
+                DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
+                return redirect('/elearning/c/' . $hash . '/trabajodeclase');
                 break;
 
             case "h5p":
@@ -293,17 +285,6 @@ class ClassroomController extends Controller
         DB::table('classrooms')->where('id', '=', $array->id)->update(['classroom_topics_order' => $order]);
         return redirect('/elearning/c/' . $hash . '/trabajodeclase');*/
     }
-
-    public function class_work_save_ord(Request $request, $hash)
-    {
-        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
-        if ($data->classroom_teacher === Auth::user()->id) {
-            DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_topics_order' => $request->input('data'),]);
-            return '¡Orden guardado!';
-        }
-    }
-
-    //Funciones trabajo de clase, pero de actividad
     public function class_work_e_activity($hash, $id)
     {
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
@@ -313,7 +294,7 @@ class ClassroomController extends Controller
             $datos = json_decode(json_encode($data), true);
             switch ($activity->type) {
                 case ('material'):
-                    return view('modulos.classroom.trabajodeclase.editar')->with(['type' => 'material','classroom' => $datos, 'temas' => $topics,'data' => $activity,'hash' => $hash]);
+                    return view('modulos.classroom.trabajodeclase.editar')->with(['type' => 'material', 'classroom' => $datos, 'temas' => $topics, 'data' => $activity, 'hash' => $hash]);
                     break;
 
                 case ('tarea'):
@@ -338,17 +319,18 @@ class ClassroomController extends Controller
             }
         }
     }
-    public function class_work_u_activity(Request $request, $hash){
+    public function class_work_u_activity(Request $request, $hash)
+    {
         $url = explode('/', $request->server('HTTP_REFERER'));
-        $activity = DB::table($hash.'_class_activities')->where('id', '=', $url[10])->first();
+        $activity = DB::table($hash . '_class_activities')->where('id', '=', $url[10])->first();
         switch ($activity->type) {
             case ('material'):
                 $titulo = $request->input('titulo');
                 $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
                 $tema = $request->input('tema');
                 $json_data = '[{"titulo": "' . $titulo . '","contenido": "' . $contenido . '"}]';
-                DB::table($hash.'_class_activities')->where('id','=', $activity->id)->update(['topic_id' => $tema, 'activity_data' => $json_data]);
-                return redirect('/elearning/c/' . $hash . '/trabajodeclase/v/'.$activity->id);
+                DB::table($hash . '_class_activities')->where('id', '=', $activity->id)->update(['topic_id' => $tema, 'activity_data' => $json_data]);
+                return redirect('/elearning/c/' . $hash . '/trabajodeclase/v/' . $activity->id);
                 break;
 
             case ('tarea'):
@@ -380,5 +362,59 @@ class ClassroomController extends Controller
             DB::table($hash . '_class_activities')->where('id', '=', $id)->delete();
             return redirect('/elearning/c/' . $hash . '/trabajodeclase');
         }
+    }
+
+    //Funciones trabajo de clase, crear actividad
+    public function class_work_c_material($hash)
+    {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if (isset($data->id)) {
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $topics = DB::table($hash . '_class_topics')->get();
+                $datos = json_decode(json_encode($data), true);
+                return view('modulos.classroom.trabajodeclase.crear.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
+            } else {
+                return view('modulos.errores.404.classroom');
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
+
+    public function class_work_c_tema(Request $request, $hash)
+    {
+        $array = DB::Table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        $id = DB::table($hash . '_class_topics')->insertGetId(['topic_data' => $request->input('tema')]);
+        $order = json_decode($array->classroom_topics_order);
+        $order[] = $id;
+        DB::table('classrooms')->where('id', '=', $array->id)->update(['classroom_topics_order' => $order]);
+        return redirect('/elearning/c/' . $hash . '/trabajodeclase');
+    }
+
+    public function class_work_c_pregunta(Request $request, $hash)
+    {
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if (isset($data->id)) {
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $topics = DB::table($hash . '_class_topics')->get();
+                $datos = json_decode(json_encode($data), true);
+                return view('modulos.classroom.trabajodeclase.crear.pregunta')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
+            } else {
+                return view('modulos.errores.404.classroom');
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
+
+    //Funciones de trabajo de clase, pero per cápita (actividad)
+
+    public function entregar_actividad(Request $request, $hash)
+    {
+        $referer = $request->headers->get('referer');
+        $referer = explode('/', $referer);
+        return $referer;
     }
 }
