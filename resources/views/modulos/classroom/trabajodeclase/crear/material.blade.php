@@ -19,7 +19,7 @@
                     <input class="form-control" name="titulo" id="titulo" required />
                 </div>
                 <div class="form-group">
-                    <label for="contenido">Descripción</label>
+                    <label for="contenido">Descripción (Opcional)</label>
                     <textarea class="form-control" id="contenido" name="contenido"></textarea>
                 </div>
                 <div class="form-group">
