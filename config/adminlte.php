@@ -234,6 +234,11 @@ return [
             'icon' =>  'fas fa-chalkboard-teacher',
         ],
         [
+            'text' => 'Jitsi Meet',
+            'url' => '#',
+            'icon' => 'fas fa-video',
+        ],
+        [
             'text' => 'Biblioteca',
             'route' => 'biblio_home',
             'icon' => 'fas fa-book',
