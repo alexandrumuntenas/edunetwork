@@ -28,7 +28,7 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
                 $datos = json_decode(json_encode($data), true);
                 $anuncios = DB::table($hash . '_class_messages')->get();
                 $anuncios = json_decode($anuncios, true);
@@ -45,7 +45,7 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
                 $categorias = array();
                 if (isset($data->classroom_topics_order)) {
                     foreach (json_decode($data->classroom_topics_order) as $i) {
@@ -70,8 +70,11 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
                 $datos = json_decode(json_encode($data), true);
+                if($esta_en_esta_clase === $datos['classroom_teacher']){
+                    $respuestas = ($hash . '_class_activities_response')//paracontinuar
+                }
                 $actividad = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
                 return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash]);
             } else {
@@ -88,7 +91,7 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
                 $datos = json_decode(json_encode($data), true);
                 $alumnos = DB::table('user_classrooms')->where('class_id', '=', $data->id)->get();
                 foreach ($alumnos as $alumno) {
@@ -108,7 +111,7 @@ class ClassroomController extends Controller
         $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
             } else {
                 return view('modulos.errores.404.classroom');
             }
@@ -159,13 +162,15 @@ class ClassroomController extends Controller
         });
 
         Schema::create($classroom_hash . "_class_grades", function (Blueprint $table) {
-            $table->bigIncrements('activity_id');
+            $table->bigIncrements('id');
+            $table->integer('activity_id');
             $table->integer('student_id');
-            $table->integer('nota');
+            $table->integer('grade')->nullable();
         });
 
         Schema::create($classroom_hash . "_class_activities_response", function (Blueprint $table) {
-            $table->bigIncrements('activity_id');
+            $table->bigIncrements('id');
+            $table->integer('activity_id');
             $table->integer('student_id');
             $table->integer('response_data');
         });
@@ -266,7 +271,7 @@ class ClassroomController extends Controller
                     $max = $request->input('max');
                     $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","min":"' . $min . '","max":"' . $max . '","contenido": "' . $contenido . '"}]';
                 } else {
-                    $json_data = '[{"titulo": "' . $pregunta . '","contenido": "' . $contenido . '"}]';
+                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","contenido": "' . $contenido . '"}]';
                 }
                 DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
@@ -370,7 +375,7 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
                 $topics = DB::table($hash . '_class_topics')->get();
                 $datos = json_decode(json_encode($data), true);
                 return view('modulos.classroom.trabajodeclase.crear.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
@@ -397,7 +402,7 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if (isset($data->id)) {
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
-            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+            if (isset($esta_en_esta_clase->user_id)) {
                 $topics = DB::table($hash . '_class_topics')->get();
                 $datos = json_decode(json_encode($data), true);
                 return view('modulos.classroom.trabajodeclase.crear.pregunta')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
@@ -415,6 +420,22 @@ class ClassroomController extends Controller
     {
         $referer = $request->headers->get('referer');
         $referer = explode('/', $referer);
-        return $referer;
+        $activity = DB::table($hash . '_class_activities')->where('id', '=', $referer[10])->first();
+        $respuesta = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('respuesta'))));
+        switch($activity->type){
+            case('pregunta'):
+                $response_data = $respuesta;
+                DB::table($hash . '_class_activities_response')->insert([
+                    'activity_id' => $activity->id,
+                    'student_id' => Auth::user()->id,
+                    'response_data' => $response_data
+                ]);
+                DB::table($hash . '_class_grades')->insert([
+                    'activity_id' => $activity->id,
+                    'student_id' => Auth::user()->id,
+                ]);
+                return redirect('/elearning/c/'.$hash.'/trabajodeclase/v/'.$referer[10]);
+                break;
+        }
     }
 }
