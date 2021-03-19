@@ -245,6 +245,22 @@ class ClassroomController extends Controller
         return redirect('/elearning/c/' . $hash . '/trabajodeclase');
     }
 
+    public function class_work_c_pregunta(Request $request,$hash){
+        $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        if (isset($data->id)) {
+            $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($esta_en_esta_clase->user_id == Auth::user()->id) {
+                $topics = DB::table($hash . '_class_topics')->get();
+                $datos = json_decode(json_encode($data), true);
+                return view('modulos.classroom.trabajodeclase.crear.pregunta')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
+            } else {
+                return view('modulos.errores.404.classroom');
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
+        }
+    }
+
     public function class_work_crear(Request $request, $hash)
     {
         $referer = $request->headers->get('referer');
