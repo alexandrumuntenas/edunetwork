@@ -72,11 +72,33 @@ class ClassroomController extends Controller
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if (isset($esta_en_esta_clase->user_id)) {
                 $datos = json_decode(json_encode($data), true);
-                if($esta_en_esta_clase === $datos['classroom_teacher']){
-                    $respuestas = ($hash . '_class_activities_response')//paracontinuar
+                if ($datos['classroom_teacher'] === Auth::user()->id) {
+                    $alumnos = DB::table('user_classrooms')->where('class_id', '=', $data->id)->get();
+                    $listadoalumnos = array();
+                    foreach ($alumnos as $alumno) {
+                        $listadoalumnos[] = DB::table('users')->where('id', '=', $alumno->user_id)->first();
+                    }
+                    $respuestas = DB::table($hash . '_class_activities_response')->where('activity_id', '=', $id)->get();
+                    $respuestascontadas = array();
+                    foreach ($respuestas as $respuesta) {
+                        $respuestascontadas[] = $respuesta->student_id;
+                    }
+                    if (isset($respuestascontadas)) {
+                        $respuestascontadas = array_count_values($respuestascontadas);
+                        $nopresentado = count($alumnos) - count($respuestascontadas) - 1; //Restamos 1, ya que contamos también al profesor.
+                        $presentado = count($respuestascontadas);
+                    } else {
+                        $nopresentado = count($alumnos) - 1; //Restamos 1, ya que contamos también al profesor.
+                        $presentado = 0;
+                    }
+                    //Valores
+                    $devuelto = null;
+                } else {
+                    $respuestasalumno = DB::table($hash.'_class_activities_response')->where('student_id','=',Auth::user()->id)->where('activity_id','=',$id)->get();
+                    $nrespuestasalumno = count($respuestasalumno);
                 }
                 $actividad = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
-                return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash]);
+                return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash, 'respuestas' => $respuestas ?? null, 'listadoalumnos' => $listadoalumnos ?? null, 'nopresentado' => $nopresentado ?? 0, 'presentado' => $presentado ?? 0, 'devuelto' => $devuelto ?? 0, 'respuestasalumno' => $respuestasalumno ?? null, 'nrespuestasalumno' => $nrespuestasalumno ?? null]);
             } else {
                 return view('modulos.errores.404.classroom');
             }
@@ -161,18 +183,13 @@ class ClassroomController extends Controller
             $table->longText('topic_data');
         });
 
-        Schema::create($classroom_hash . "_class_grades", function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('activity_id');
-            $table->integer('student_id');
-            $table->integer('grade')->nullable();
-        });
-
         Schema::create($classroom_hash . "_class_activities_response", function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('activity_id');
             $table->integer('student_id');
-            $table->integer('response_data');
+            $table->longText('response_data');
+            $table->integer('mark')->nullable();
+            $table->timestamp('created_at')->useCurrent();
         });
 
         $id_class = DB::table('classrooms')->where('classroom_hash', '=', $classroom_hash)->first();
@@ -263,15 +280,21 @@ class ClassroomController extends Controller
 
             case "pregunta":
                 $pregunta = $request->input('pregunta');
+                $masrespuestas = $request->input('masrespuestas');
+                if (isset($masrespuestas)) {
+                    $masrespuestas = 1;
+                } else {
+                    $masrespuestas = 0;
+                }
                 $tipo = $request->input('tipo');
                 $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
                 $tema = $request->input('tema');
                 if ($tipo === 'number') {
                     $min = $request->input('min');
                     $max = $request->input('max');
-                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","min":"' . $min . '","max":"' . $max . '","contenido": "' . $contenido . '"}]';
+                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","min":"' . $min . '","max":"' . $max . '","contenido": "' . $contenido . '"}]';
                 } else {
-                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","contenido": "' . $contenido . '"}]';
+                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","contenido": "' . $contenido . '"}]';
                 }
                 DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
@@ -422,19 +445,15 @@ class ClassroomController extends Controller
         $referer = explode('/', $referer);
         $activity = DB::table($hash . '_class_activities')->where('id', '=', $referer[10])->first();
         $respuesta = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('respuesta'))));
-        switch($activity->type){
-            case('pregunta'):
+        switch ($activity->type) {
+            case ('pregunta'):
                 $response_data = $respuesta;
                 DB::table($hash . '_class_activities_response')->insert([
                     'activity_id' => $activity->id,
                     'student_id' => Auth::user()->id,
                     'response_data' => $response_data
                 ]);
-                DB::table($hash . '_class_grades')->insert([
-                    'activity_id' => $activity->id,
-                    'student_id' => Auth::user()->id,
-                ]);
-                return redirect('/elearning/c/'.$hash.'/trabajodeclase/v/'.$referer[10]);
+                return redirect('/elearning/c/' . $hash . '/trabajodeclase/v/' . $referer[10]);
                 break;
         }
     }

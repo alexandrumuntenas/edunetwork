@@ -50,6 +50,10 @@
                         <input type="number" class="form-control" id="max" name="max" />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="masrespuestas">¿Aceptar más de una respuesta?</label>
+                    <input type="checkbox" value="masrespuestas" id="masrespuestas" name="masrespuestas" />
+                </div>
             </div>
             <div class="card-footer">
                 <span class="card-title float-left">Crear nueva pregunta</span><span class="float-right"><button
