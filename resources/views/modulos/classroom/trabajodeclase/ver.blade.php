@@ -18,7 +18,7 @@
                 @if ($classroom['classroom_teacher'] != Auth::user()->id)
                     @if ($actividad->type === 'pregunta')
                         <div class="card-footer">
-                            @if($nrespuestasalumno != 0)
+                            @if ($nrespuestasalumno != 0)
                                 @if ($data['masrespuestas'] == 1)
                                     <div class="row">
                                         Introduce tu respuesta:
@@ -33,10 +33,10 @@
                                                 name="respuesta" type="{{ $data['atributo'] }}"
                                                 min="{{ $data['min'] }}" max="{{ $data['max'] }}" />
                                         @elseif($data['atributo'] === 'textarea')
-                                            <div><textarea class="col-11" id="contenido" name="respuesta"></textarea>
+                                            <div><textarea class="col-11" id="contenido" name="respuesta" required></textarea>
                                             </div>
                                         @else <input class="form-control col-11" name="respuesta"
-                                                type="{{ $data['atributo'] }}" />
+                                                type="{{ $data['atributo'] }}" required/>
                                         @endif
                                         <button type="submit"
                                             class="btn btn-light float-right col-1 fas fa-paper-plane"></button>
@@ -56,9 +56,9 @@
                                         <input class="form-control col-11"
                                             placeholder="Introduce un valor entre {{ $data['min'] }} y {{ $data['max'] }}"
                                             name="respuesta" type="{{ $data['atributo'] }}"
-                                            min="{{ $data['min'] }}" max="{{ $data['max'] }}" />
+                                            min="{{ $data['min'] }}" max="{{ $data['max'] }}" required/>
                                     @elseif($data['atributo'] === 'textarea')
-                                        <div><textarea class="col-11" id="contenido" name="respuesta"></textarea></div>
+                                        <div><textarea class="col-11" id="contenido" name="respuesta" required></textarea></div>
                                     @else <input class="form-control col-11" name="respuesta"
                                             type="{{ $data['atributo'] }}" />
                                     @endif
@@ -124,7 +124,7 @@
                 <div class="card">
                     <div class="card-header" id="class_message">Entregado el {{ $solucion->created_at }}</div>
                     <div class="card-body">{!! $solucion->response_data !!}</div>
-                    <div class="card-footer">Entregado el {{ $solucion->created_at }}</div>
+                    <div class="card-footer">Puntuación: (Siguiente commit)</div>
                 </div>
             @else
             @endif
@@ -148,6 +148,35 @@
                             <h5>{!! $data['titulo'] !!}</h5>
                             {!! $respuesta->response_data !!}
                         </div>
+                        <form method="post" class="card-footer form-inline">
+                            Puntuación: <input class="form-control form-control-sm col-1" id="{{ $respuesta->id }}"
+                                type="number" value="{{$respuesta->mark ?? null}}" />/{{ $data['puntos'] }}
+                            <script>
+                                $(document).ready(function() {
+                                    $("#{{ $respuesta->id }}").focusout(function() {
+                                        var pts = $("#{{ $respuesta->id }}").val();
+                                        var csrf = "{{ csrf_token() }}";
+                                        var user = "{{$respuesta->student_id}}";
+                                        var actv = "{{$respuesta->activity_id}}";
+                                        var rpsi = "{{ $respuesta->id }}";
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "{{url('/elearning/c/'.$hash.'/trabajodeclase/v/'.$respuesta->activity_id.'/evaluar')}}",
+                                            data: {
+                                                puntuacion: pts,
+                                                usuario: user,
+                                                actividad: actv,
+                                                respuesta: rpsi,
+                                                _token: csrf
+                                            },
+                                            success: function(html) {
+                                                $("#display").html(html).show();
+                                            },
+                                        });
+                                    });
+                                });
+                            </script>
+                        </form>
                     </div>
                 @endif
             @endforeach

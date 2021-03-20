@@ -371,7 +371,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'
+                    'location' => 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'
                 ],
             ],
         ],

@@ -56,7 +56,10 @@ class ClassroomController extends Controller
                     $datos = json_decode(json_encode($data), true);
                 }
                 $actividades = DB::table($hash . '_class_activities')->get();
-                return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash]);
+                if (Auth::user()->hasRole('alumno')) {
+                    $notas = DB::table($hash . '_class_activities_response')->where('student_id', '=', Auth::user()->id)->where('mark','!=',null)->get();
+                }
+                return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash, 'notas' => $notas ?? null]);
             } else {
                 return view('modulos.errores.404.classroom');
             }
@@ -79,22 +82,25 @@ class ClassroomController extends Controller
                         $listadoalumnos[] = DB::table('users')->where('id', '=', $alumno->user_id)->first();
                     }
                     $respuestas = DB::table($hash . '_class_activities_response')->where('activity_id', '=', $id)->get();
+                    $respuestasconnota = DB::table($hash . '_class_activities_response')->where('activity_id', '=', $id)->where('mark', '!=', null)->get();
                     $respuestascontadas = array();
                     foreach ($respuestas as $respuesta) {
                         $respuestascontadas[] = $respuesta->student_id;
                     }
                     if (isset($respuestascontadas)) {
+                        $respuestasconnotas = count($respuestasconnota);
                         $respuestascontadas = array_count_values($respuestascontadas);
                         $nopresentado = count($alumnos) - count($respuestascontadas) - 1; //Restamos 1, ya que contamos también al profesor.
-                        $presentado = count($respuestascontadas);
+                        $presentado = count($respuestascontadas) - $respuestasconnotas;
+                        $devuelto = $respuestasconnotas;
                     } else {
                         $nopresentado = count($alumnos) - 1; //Restamos 1, ya que contamos también al profesor.
                         $presentado = 0;
+                        $devuelto = 0;
                     }
                     //Valores
-                    $devuelto = null;
                 } else {
-                    $respuestasalumno = DB::table($hash.'_class_activities_response')->where('student_id','=',Auth::user()->id)->where('activity_id','=',$id)->get();
+                    $respuestasalumno = DB::table($hash . '_class_activities_response')->where('student_id', '=', Auth::user()->id)->where('activity_id', '=', $id)->get();
                     $nrespuestasalumno = count($respuestasalumno);
                 }
                 $actividad = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
@@ -291,15 +297,16 @@ class ClassroomController extends Controller
                 } else {
                     $masrespuestas = 0;
                 }
+                $puntos = $request->input('puntos');
                 $tipo = $request->input('tipo');
                 $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
                 $tema = $request->input('tema');
                 if ($tipo === 'number') {
                     $min = $request->input('min');
                     $max = $request->input('max');
-                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","min":"' . $min . '","max":"' . $max . '","contenido": "' . $contenido . '"}]';
+                    $json_data = '[{"titulo": "' . $pregunta . '", "puntos":"' . $puntos . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","min":"' . $min . '","max":"' . $max . '","contenido": "' . $contenido . '"}]';
                 } else {
-                    $json_data = '[{"titulo": "' . $pregunta . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","contenido": "' . $contenido . '"}]';
+                    $json_data = '[{"titulo": "' . $pregunta . '", "puntos":"' . $puntos . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","contenido": "' . $contenido . '"}]';
                 }
                 DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
@@ -461,5 +468,15 @@ class ClassroomController extends Controller
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase/v/' . $referer[10]);
                 break;
         }
+    }
+
+    public function evaluar_actividad(Request $request, $hash, $id)
+    {
+        $puntuacion = json_decode($request->input('puntuacion'));
+        $usuario = $request->input('usuario');
+        $actividad = $request->input('actividad');
+        $respuesta = $request->input('respuesta');
+        DB::table($hash . "_class_activities_response")->where('id', '=', $respuesta)->where('student_id', '=', $usuario)->where('activity_id', '=', $actividad)->update(['mark' => $puntuacion]);
+        return '';
     }
 }

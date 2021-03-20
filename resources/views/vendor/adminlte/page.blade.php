@@ -1,6 +1,6 @@
 @extends('adminlte::master')
 
-@inject('layoutHelper', \JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper)
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
 @if ($layoutHelper->isLayoutTopnavEnabled())
     @php($def_container_class = 'container')
@@ -21,7 +21,7 @@
 
         @section('body')
             <div class="wrapper">
-
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                 {{-- Top Navbar --}}
                 @if ($layoutHelper->isLayoutTopnavEnabled())
                     @include('adminlte::partials.navbar.navbar-layout-topnav')

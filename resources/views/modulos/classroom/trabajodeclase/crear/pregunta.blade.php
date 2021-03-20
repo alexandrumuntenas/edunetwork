@@ -54,6 +54,10 @@
                     <label for="masrespuestas">¿Aceptar más de una respuesta?</label>
                     <input type="checkbox" value="masrespuestas" id="masrespuestas" name="masrespuestas" />
                 </div>
+                <div class="form-group">
+                    <label for="puntos">Puntos</label>
+                    <input type="number" class="form-control" value="100" id="puntos" name="puntos" />
+                </div>
             </div>
             <div class="card-footer">
                 <span class="card-title float-left">Crear nueva pregunta</span><span class="float-right"><button
