@@ -205,18 +205,23 @@ class ClassroomController extends Controller
         $user_id = Auth::user()->id;
         $clase_solicitada = $request->input('codigo');
         $datos_clase_solicitada = DB::table('classrooms')->where('access_code', '=', $clase_solicitada)->first();
-        $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
-        if (isset($comprobar_si_ya_en_clase)) {
-            return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
-        } else {
-            DB::table('user_classrooms')->insert([
-                'user_id' => $user_id,
-                'class_id' => $datos_clase_solicitada->id
-            ]);
+        if (isset($datos_clase_solicitada)) {
+            $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
+            if (isset($comprobar_si_ya_en_clase)) {
+                return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+            } else {
+                DB::table('user_classrooms')->insert([
+                    'user_id' => $user_id,
+                    'class_id' => $datos_clase_solicitada->id
+                ]);
 
-            return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+                return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+            }
+        } else {
+            return view('modulos.errores.404.classroom');
         }
     }
+
     public function editar()
     {
     }
