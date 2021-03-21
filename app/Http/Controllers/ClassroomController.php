@@ -247,7 +247,22 @@ class ClassroomController extends Controller
         DB::table('classrooms')->where('classroom_hash', '=', $hash)->delete();
         return redirect('/elearning/');
     }
-
+    //Configuración de clase
+    public function class_u_config(Request $request, $hash){
+        $datanatiguo = DB::table('classrooms')->where('classroom_hash','=',$hash)->first();
+        foreach(json_decode($datanatiguo->classroom_config,true) as $i){
+            $asignatura = $i['asignatura'];
+            $clase = $i['clase'];
+            $seccion = $i['seccion'];
+            $aula = $i['aula'];
+            $profesor_id = $i['profesor_id'];
+            $profesor_name = $i['profesor_name'];
+            $aspecto = $request->input('aspecto');
+            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '"}]';
+            DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_config' => $json_data]);
+        }
+        return '200';
+    }
     //Funciones del tablón
     public function crearanuncio(Request $request, $hash)
     {

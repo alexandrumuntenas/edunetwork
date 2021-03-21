@@ -20,7 +20,7 @@
         </div>
         <div class="col-1 ml-auto">
         @if (Auth::user()->id === $classroom['classroom_teacher'])
-            <div class="card-tools dropwdown">
+            <div class="card-tools dropleft">
                 <button type="button" class="btn btn-tool" id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i>
                 </button>

@@ -145,7 +145,7 @@
                         @endif
                     </div>
                     @if ($data['atributo'] != 'color')
-                    <div class="card-footer">Puntuación: {{ $solucion->mark }}/{{ $data['puntos'] }}</div>
+                        <div class="card-footer">Puntuación: {{ $solucion->mark }}/{{ $data['puntos'] }}</div>
                     @endif
                 </div>
             @else
@@ -160,31 +160,27 @@
                         ->first();
                 @endphp
                 @if ($respuesta->student_id === $alumno->id)
-                                    <div class="card">
-                    <div class="card-header" id="class_message">Entregado el {{ $respuesta->created_at }}</div>
-                    <div class="card-body">
-                        @if ($data['atributo'] == 'color')
-                            <div class="col-4">
-                                <!-- small card -->
-                                <div class="small-box" style="background-color:{!! $respuesta->response_data !!}">
-                                    <div class="inner">
-                                        <h3>{!! $respuesta->response_data !!}</sup></h3>
+                    <div class="card">
+                        <div class="card-header" id="class_message">Entregado el {{ $respuesta->created_at }}</div>
+                        <div class="card-body">
+                            @if ($data['atributo'] == 'color')
+                                <div class="col-4">
+                                    <!-- small card -->
+                                    <div class="small-box" style="background-color:{!! $respuesta->response_data !!}">
+                                        <div class="inner">
+                                            <h3>{!! $respuesta->response_data !!}</sup></h3>
 
-                                        <p>Puntuación: {{ $respuesta->mark }}/{{ $data['puntos'] }}</p>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="fas fa-inbox"></i>
+                                            <p>Puntuación: {{ $respuesta->mark }}/{{ $data['puntos'] }}</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fas fa-inbox"></i>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @else
-                            {!! $respuesta->response_data !!}
-                        @endif
-                    </div>
-                    @if ($data['atributo'] != 'color')
-                    <div class="card-footer">Puntuación: {{ $respuesta->mark }}/{{ $data['puntos'] }}</div>
-                    @endif
-                </div>
+                            @else
+                                {!! $respuesta->response_data !!}
+                            @endif
+                        </div>
                         <form method="post" class="card-footer form-inline">
                             Puntuación: <input class="form-control form-control-sm col-1" id="{{ $respuesta->id }}"
                                 type="number" value="{{ $respuesta->mark ?? null }}" />/{{ $data['puntos'] }}
@@ -215,9 +211,9 @@
 
                             </script>
                         </form>
-                    </div>
                 @endif
             @endforeach
+            </div>
         @endforeach
     @endif
 

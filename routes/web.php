@@ -31,6 +31,7 @@ Route::post('/elearning/acciones/unirme', [App\Http\Controllers\ClassroomControl
 
 //Rutas E-Learning, pero ya en la clase
 Route::get('/elearning/c/{hash}', [App\Http\Controllers\ClassroomController::class, 'classroom'])->middleware('auth');
+Route::post('/elearning/c/{hash}/config/u', [App\Http\Controllers\ClassroomController::class, 'class_u_config'])->middleware('auth');
 Route::get('/elearning/c/{hash}/del', [App\Http\Controllers\ClassroomController::class, 'eliminar'])->middleware('auth');
 #Tablón
 Route::post('/elearning/c/{hash}/tablon/crear', [App\Http\Controllers\ClassroomController::class, 'crearanuncio'])->middleware('auth');
