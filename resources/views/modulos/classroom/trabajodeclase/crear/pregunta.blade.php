@@ -37,7 +37,7 @@
                         <option value="number">Numérico</option>
                         <option value="text" selected>Respuesta corta</option>
                         <option value="textarea">Respuesta Larga</option>
-                        <option value="select" disabled>Seleccionar</option>
+                        <option value="color">Color</option>
                     </select>
                 </div>
                 <div class="numericfields" style="display: none" id="numericfields">

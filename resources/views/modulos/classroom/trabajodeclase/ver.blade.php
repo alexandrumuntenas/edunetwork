@@ -33,10 +33,11 @@
                                                 name="respuesta" type="{{ $data['atributo'] }}"
                                                 min="{{ $data['min'] }}" max="{{ $data['max'] }}" />
                                         @elseif($data['atributo'] === 'textarea')
-                                            <div><textarea class="col-11" id="contenido" name="respuesta" required></textarea>
+                                            <div><textarea class="col-11" id="contenido" name="respuesta"
+                                                    required></textarea>
                                             </div>
                                         @else <input class="form-control col-11" name="respuesta"
-                                                type="{{ $data['atributo'] }}" required/>
+                                                type="{{ $data['atributo'] }}" required />
                                         @endif
                                         <button type="submit"
                                             class="btn btn-light float-right col-1 fas fa-paper-plane"></button>
@@ -56,9 +57,10 @@
                                         <input class="form-control col-11"
                                             placeholder="Introduce un valor entre {{ $data['min'] }} y {{ $data['max'] }}"
                                             name="respuesta" type="{{ $data['atributo'] }}"
-                                            min="{{ $data['min'] }}" max="{{ $data['max'] }}" required/>
+                                            min="{{ $data['min'] }}" max="{{ $data['max'] }}" required />
                                     @elseif($data['atributo'] === 'textarea')
-                                        <div><textarea class="col-11" id="contenido" name="respuesta" required></textarea></div>
+                                        <div><textarea class="col-11" id="contenido" name="respuesta"
+                                                required></textarea></div>
                                     @else <input class="form-control col-11" name="respuesta"
                                             type="{{ $data['atributo'] }}" />
                                     @endif
@@ -123,8 +125,28 @@
             @if ($actividad->type === 'pregunta')
                 <div class="card">
                     <div class="card-header" id="class_message">Entregado el {{ $solucion->created_at }}</div>
-                    <div class="card-body">{!! $solucion->response_data !!}</div>
-                    <div class="card-footer">Puntuación: {{ $solucion->mark }}/{{$data['puntos']}}</div>
+                    <div class="card-body">
+                        @if ($data['atributo'] == 'color')
+                            <div class="col-4">
+                                <!-- small card -->
+                                <div class="small-box" style="background-color:{!! $solucion->response_data !!}">
+                                    <div class="inner">
+                                        <h3>{!! $solucion->response_data !!}</sup></h3>
+
+                                        <p>Puntuación: {{ $solucion->mark }}/{{ $data['puntos'] }}</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-inbox"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            {!! $solucion->response_data !!}
+                        @endif
+                    </div>
+                    @if ($data['atributo'] != 'color')
+                    <div class="card-footer">Puntuación: {{ $solucion->mark }}/{{ $data['puntos'] }}</div>
+                    @endif
                 </div>
             @else
             @endif
@@ -138,30 +160,45 @@
                         ->first();
                 @endphp
                 @if ($respuesta->student_id === $alumno->id)
-                    <div class="card" id="classroom_tablon">
-                        <div class="card-header" id="class_message">
-                            <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
-                            {{ $user_data->name }}
-                            <h6 class="card-subtitle mb-2 text-muted">{{ $respuesta->created_at }}</h6>
-                        </div>
-                        <div class="card-body">
-                            <h5>{!! $data['titulo'] !!}</h5>
+                                    <div class="card">
+                    <div class="card-header" id="class_message">Entregado el {{ $respuesta->created_at }}</div>
+                    <div class="card-body">
+                        @if ($data['atributo'] == 'color')
+                            <div class="col-4">
+                                <!-- small card -->
+                                <div class="small-box" style="background-color:{!! $respuesta->response_data !!}">
+                                    <div class="inner">
+                                        <h3>{!! $respuesta->response_data !!}</sup></h3>
+
+                                        <p>Puntuación: {{ $respuesta->mark }}/{{ $data['puntos'] }}</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-inbox"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
                             {!! $respuesta->response_data !!}
-                        </div>
+                        @endif
+                    </div>
+                    @if ($data['atributo'] != 'color')
+                    <div class="card-footer">Puntuación: {{ $respuesta->mark }}/{{ $data['puntos'] }}</div>
+                    @endif
+                </div>
                         <form method="post" class="card-footer form-inline">
                             Puntuación: <input class="form-control form-control-sm col-1" id="{{ $respuesta->id }}"
-                                type="number" value="{{$respuesta->mark ?? null}}" />/{{ $data['puntos'] }}
+                                type="number" value="{{ $respuesta->mark ?? null }}" />/{{ $data['puntos'] }}
                             <script>
                                 $(document).ready(function() {
                                     $("#{{ $respuesta->id }}").focusout(function() {
                                         var pts = $("#{{ $respuesta->id }}").val();
                                         var csrf = "{{ csrf_token() }}";
-                                        var user = "{{$respuesta->student_id}}";
-                                        var actv = "{{$respuesta->activity_id}}";
+                                        var user = "{{ $respuesta->student_id }}";
+                                        var actv = "{{ $respuesta->activity_id }}";
                                         var rpsi = "{{ $respuesta->id }}";
                                         $.ajax({
                                             type: "POST",
-                                            url: "{{url('/elearning/c/'.$hash.'/trabajodeclase/v/'.$respuesta->activity_id.'/evaluar')}}",
+                                            url: "{{ url('/elearning/c/' . $hash . '/trabajodeclase/v/' . $respuesta->activity_id . '/evaluar') }}",
                                             data: {
                                                 puntuacion: pts,
                                                 usuario: user,
@@ -175,6 +212,7 @@
                                         });
                                     });
                                 });
+
                             </script>
                         </form>
                     </div>
