@@ -124,7 +124,7 @@
                 <div class="card">
                     <div class="card-header" id="class_message">Entregado el {{ $solucion->created_at }}</div>
                     <div class="card-body">{!! $solucion->response_data !!}</div>
-                    <div class="card-footer">Puntuación: (Siguiente commit)</div>
+                    <div class="card-footer">Puntuación: {{ $solucion->mark }}/{{$data['puntos']}}</div>
                 </div>
             @else
             @endif
