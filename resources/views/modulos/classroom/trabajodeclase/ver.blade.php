@@ -161,7 +161,10 @@
                 @endphp
                 @if ($respuesta->student_id === $alumno->id)
                     <div class="card">
-                        <div class="card-header" id="class_message">Entregado el {{ $respuesta->created_at }}</div>
+                        <div class="card-header" id="class_message">
+                            <h5>{{$alumno->name}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Entregado el {{ $respuesta->created_at }}</h6>
+                        </div>
                         <div class="card-body">
                             @if ($data['atributo'] == 'color')
                                 <div class="col-4">
