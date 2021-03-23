@@ -2,18 +2,20 @@
         <div class="col-12" id="class_header">
             <div class="card">
                 <div id="card_header_theme" class="card-body {{ $i->aspecto }}">
-                    <div class="dropleft float-right">
-                        <a type="button" id="configmenu" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="fas fa-cog"></i>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="configmenu">
-                            <a class="dropdown-item" data-toggle="modal" data-target="#configtheme">Cambiar tema</a>
-                            <a class="dropdown-item" data-toggle="modal" data-target="#configcodigo">Ver código</a>
-                            <a class="dropdown-item" data-toggle="modal" data-target="#configmodal">Something else
-                                here</a>
+                    @if (Auth::user()->id === $classroom['classroom_teacher'])
+                        <div class="dropleft float-right">
+                            <a type="button" id="configmenu" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="fas fa-cog"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="configmenu">
+                                <a class="dropdown-item" data-toggle="modal" data-target="#configtheme">Cambiar tema</a>
+                                <a class="dropdown-item" data-toggle="modal" data-target="#configcodigo">Ver código</a>
+                                <a class="dropdown-item" data-toggle="modal"
+                                    data-target="#configmodal">Configuración</a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <h4>{{ $i->asignatura }}</h4>
                     <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
                 </div>
@@ -38,53 +40,102 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="configtheme" tabindex="-1" aria-labelledby="configtheme" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="configtheme">Cambiar tema</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <select class="form-control" name="color_scheme" id="color_scheme">
-                            <option selected disabled>El tema actual es: {{ $i->aspecto }}</option>
-                            <option value="blue">Azul (blue)</option>
-                            <option value="orange">Naranja (orange)</option>
-                            <option value="indigo">Indigo (indigo)</option>
-                            <option value="purple">Morado (purple)</option>
-                            <option value="cyan">Cian (cyan)</option>
-                        </select>
-
-                    </div>
-                    <div class="modal-footer">
-                        <p><small>Al cambiar el color, se actualizará automáticamente</small></p>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
-                    </div>
+        @if (Auth::user()->id === $classroom['classroom_teacher'])
+            <div class="modal fade" id="configmodal" tabindex="-1" aria-labelledby="configmodal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <form class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="configmodal">Configuración</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="classconfig">
+                                <h5>Detalles de la clase</h5>
+                                <div class="form-group">
+                                    <label for="asignatura">Asignatura</label>
+                                    <input id="asignatura" name="asignatura" class="form-control form-control-sm"
+                                        type="text" maxlength="255" value="{{ $i->asignatura }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="clase">Clase</label>
+                                    <input id="clase" name="clase" class="form-control form-control-sm" type="text"
+                                        maxlength="255" value="{{ $i->clase }}" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="seccion">Sección</label>
+                                    <input id="seccion" name="seccion" class="form-control form-control-sm" type="text"
+                                        maxlength="255" value="{{ $i->seccion }}" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="aula">Aula</label>
+                                    <input id="aula" name="aula" class="form-control form-control-sm" type="text"
+                                        maxlength="255" value="{{ $i->aula }}" />
+                                </div>
+                            </div>
+                            <div class="generalconfig">
+                                <h5>General</h5>
+                                <div class="form-group">
+                                    <label for="invitation_settings">Gestionar códigos de invitación</label>
+                                    <select class="form-control" name="codigosinvitacion" id="codigosinvitacion">
+                                        @if ($i->cdginvitacion == 'activado')
+                                            <option value="activado" selected>Activado</option>
+                                            <option value="desactivado">Desactivado</option>
+                                        @else
+                                            <option value="activado">Activado</option>
+                                            <option value="desactivado" selected>Desactivado</option>
+                                        @endif
+                                    </select>
+                                    <p><small>Al cambiar la configuración, se actualizará automáticamente en el
+                                            servidor</small>
+                                </div>
+                            </div>
+                            <div class="classthemeconfig">
+                                <h5>Aspecto</h5>
+                                <div class="form-group">
+                                    <label for="color_scheme">Aspecto de la clase</label>
+                                    <select class="form-control" name="color_scheme" id="color_scheme">
+                                        <option selected disabled>El tema actual es: {{ $i->aspecto }}</option>
+                                        <option value="blue">Azul (blue)</option>
+                                        <option value="orange">Naranja (orange)</option>
+                                        <option value="indigo">Indigo (indigo)</option>
+                                        <option value="purple">Morado (purple)</option>
+                                        <option value="cyan">Cian (cyan)</option>
+                                    </select>
+                                    <p><small>Al cambiar el color, se actualizará automáticamente en el servidor</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <p><small>¡Recuerda guardar los cambios!</small></p>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
-        <script>
-            var selectedScheme = '{{ $i->aspecto }}';
+            <script>
+                var selectedScheme = '{{ $i->aspecto }}';
 
-            $('#color_scheme').change(function() {
-                $('#card_header_theme').removeClass(selectedScheme).addClass($(this).val());
-                selectedScheme = $(this).val();
-                var csrf = "{{ csrf_token() }}";
-                var theme = $(this).val();
-                $.ajax({
-                    type: "POST",
-                    url: "{{ url('/elearning/c/' . $hash . '/config/u') }}",
-                    data: {
-                        aspecto:theme,
-                        _token: csrf
-                    },
-                    success: function(html) {
-                        $("#display").html(html).show();
-                    },
+                $('#color_scheme').change(function() {
+                    $('#card_header_theme').removeClass(selectedScheme).addClass($(this).val());
+                    selectedScheme = $(this).val();
+                    var csrf = "{{ csrf_token() }}";
+                    var theme = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('/elearning/c/' . $hash . '/config/u') }}",
+                        data: {
+                            aspecto: theme,
+                            _token: csrf
+                        },
+                        success: function(html) {
+                            $("#display").html(html).show();
+                        },
+                    });
                 });
-            });
 
-        </script>
+            </script>
+        @endif
     @endforeach

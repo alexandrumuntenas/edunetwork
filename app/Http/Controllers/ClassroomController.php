@@ -162,7 +162,7 @@ class ClassroomController extends Controller
         $aspectos = array("orange", "blue", "indigo", "purple", "cyan");
         $aspecto = array_rand($aspectos, 1);
         $aspecto = $aspectos[$aspecto];
-        $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $user_id . '", "profesor_name":"' . $user_name . '", "aspecto":"' . $aspecto . '"}]';
+        $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $user_id . '", "profesor_name":"' . $user_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"activado"}]';
         $access_code = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
         DB::table('classrooms')->insert([
             'classroom_teacher' => $user_id,
@@ -257,8 +257,9 @@ class ClassroomController extends Controller
             $aula = $i['aula'];
             $profesor_id = $i['profesor_id'];
             $profesor_name = $i['profesor_name'];
+            $cdginvitacion = $i['cdginvitacion'];
             $aspecto = $request->input('aspecto');
-            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '"}]';
+            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"'.$cdginvitacion.'"}]';
             DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_config' => $json_data]);
         }
         return '200';
