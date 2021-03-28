@@ -28,6 +28,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/elearning/', [App\Http\Controllers\ClassroomController::class, 'index'])->name('ol_home')->middleware('auth');
 Route::post('/elearning/acciones/crear', [App\Http\Controllers\ClassroomController::class, 'crear'])->middleware('auth');
 Route::post('/elearning/acciones/unirme', [App\Http\Controllers\ClassroomController::class, 'unirme'])->middleware('auth');
+Route::post('/elearning/j/{code}', [App\Http\Controllers\ClassroomController::class, 'unirme'])->middleware('auth');
 
 //Rutas E-Learning, pero ya en la clase
 Route::get('/elearning/c/{hash}', [App\Http\Controllers\ClassroomController::class, 'classroom'])->middleware('auth');

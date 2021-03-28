@@ -258,7 +258,15 @@ class ClassroomController extends Controller
             $profesor_id = $i['profesor_id'];
             $profesor_name = $i['profesor_name'];
             $cdginvitacion = $i['cdginvitacion'];
-            $aspecto = $request->input('aspecto');
+            $aspecto = $i['aspecto'];
+            $aspectotmp = $request->input('aspecto');
+            $codigosinvitaciontmp = $request->input('codigosinvitacion');
+            if(isset($aspectotmp)){
+                $aspecto = $request->input('aspecto');
+            }
+            if (isset($codigosinvitaciontmp)) {
+                $cdginvitacion = $request->input('codigosinvitacion');
+            }
             $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"'.$cdginvitacion.'"}]';
             DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_config' => $json_data]);
         }

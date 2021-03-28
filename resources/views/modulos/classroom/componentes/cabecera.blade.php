@@ -87,9 +87,26 @@
                                             <option value="desactivado" selected>Desactivado</option>
                                         @endif
                                     </select>
-                                    <p><small>Al cambiar la configuración, se actualizará automáticamente en el
-                                            servidor</small>
+                                    <p><small>Los ajustes se aplican a los enlaces de invitación y códigos de
+                                            clase</small></p>
                                 </div>
+                                @if ($i->cdginvitacion == 'activado')
+                                    <div id="invitation_settings_div">
+                                        <div class="form-group">
+                                            <label for="codigoclase">Código de la clase</label>
+                                            <input class="form-control" id="codigoclase" type="text"
+                                                value="{{ $classroom['access_code'] }}" readonly />
+                                            <p><small></small></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enlaceclase">Enlace de invitación</label>
+                                            <input class="form-control" id="enlaceclase" type="text"
+                                                value="{{ url('/elearning/j/' . $classroom['access_code']) }}"
+                                                readonly />
+                                            <p><small></small></p>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                             <div class="classthemeconfig">
                                 <h5>Aspecto</h5>
@@ -130,10 +147,65 @@
                             aspecto: theme,
                             _token: csrf
                         },
-                        success: function(html) {
-                            $("#display").html(html).show();
+                        success: function() {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'info',
+                                title: 'Se han guardado los ajustes'
+                            })
                         },
                     });
+                });
+                $('#codigosinvitacion').change(function() {
+                    var csrf = "{{ csrf_token() }}";
+                    var codigosinvitacion = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('/elearning/c/' . $hash . '/config/u') }}",
+                        data: {
+                            codigosinvitacion: codigosinvitacion,
+                            _token: csrf
+                        },
+                        success: function() {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'info',
+                                title: 'Se han guardado los ajustes'
+                            })
+                        },
+                    });
+                });
+                $('#codigosinvitacion').change(function() {
+                    if ($(this).val() == 'desactivado') {
+                        $(this).next('div#invitation_settings_div').remove();
+                    } else {
+                        $(this).next('div#invitation_settings_div').remove();
+                        $(this).after('<div id="invitation_settings_div"> <div class="form-group"> <label for="codigoclase">Código de la clase</label> <input class="form-control" id="codigoclase" type="text" value="{{ $classroom["access_code"] }}" readonly /> <p><small></small></p> </div> <div class="form-group"> <label for="enlaceclase">Enlace de invitación</label> <input class="form-control" id="enlaceclase" type="text" value="{{ url('/elearning/j/' . $classroom["access_code"]) }}" readonly /> <p><small></small></p> </div> </div>');
+                    }
                 });
 
             </script>
