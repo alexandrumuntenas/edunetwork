@@ -465,16 +465,6 @@ return [
                 ]
             ]
         ],
-        'shepperdjs' => [
-            'active' => true,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/shepherd.js@8.1.0/dist/js/shepherd.js',
-                ],
-            ],
-        ],
         'ckeditor' => [
             'active' => true,
             'files' => [

@@ -73,7 +73,7 @@
                 <form class="modal-content" id="unirseaclase_modal">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="unirseclase">Crear nueva clase</h5>
+                        <h5 class="modal-title">Crear nueva clase</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -107,8 +107,7 @@
                                 timerProgressBar: true,
                                 didOpen: (toast) => {
                                     toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal
-                                        .resumeTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                                 }
                             })
 
@@ -120,7 +119,7 @@
 
                         },
                         success: function(response) {
-                                                        const Toast = Swal.mixin({
+                            const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'bottom',
                                 showConfirmButton: false,
@@ -128,8 +127,7 @@
                                 timerProgressBar: true,
                                 didOpen: (toast) => {
                                     toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal
-                                        .resumeTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                                 }
                             });
 
@@ -137,7 +135,8 @@
                                 icon: 'info',
                                 title: 'Redirigiéndote a la clase...'
                             });
-                            setTimeout(function(){window.location = '{{ url('/elearning/c/') }}/' + response.clase},3000);
+                            setTimeout(function() {
+                                window.location = '{{ url('/elearning/c/') }}/' + response.clase}, 3000);
 
                         }
                     });

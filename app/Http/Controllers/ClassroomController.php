@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
 class ClassroomController extends Controller
 {
     //Páginas
-    public function index()
+    public function index(Request $request)
     {
         $clases = array();
         $user_id = Auth::user()->id;
@@ -21,7 +21,8 @@ class ClassroomController extends Controller
             $clases[] = $clase;
         }
         $clases = json_decode(json_encode($clases), true);
-        return view('modulos.classroom.index')->with(['classrooms' => $clases]);
+        $cdg = $request->input('cdg');
+        return view('modulos.classroom.index')->with(['classrooms' => $clases,'cdg'=> $cdg]);
     }
     public function classroom($hash)
     {
@@ -34,10 +35,10 @@ class ClassroomController extends Controller
                 $anuncios = json_decode($anuncios, true);
                 return view('modulos.classroom.class')->with(['classroom' => $datos, 'anuncios' => $anuncios, 'hash' => $hash]);
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
     public function class_work($hash)
@@ -61,10 +62,10 @@ class ClassroomController extends Controller
                 }
                 return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash, 'notas' => $notas ?? null]);
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -106,10 +107,10 @@ class ClassroomController extends Controller
                 $actividad = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
                 return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash, 'respuestas' => $respuestas ?? null, 'listadoalumnos' => $listadoalumnos ?? null, 'nopresentado' => $nopresentado ?? 0, 'presentado' => $presentado ?? 0, 'devuelto' => $devuelto ?? 0, 'respuestasalumno' => $respuestasalumno ?? null, 'nrespuestasalumno' => $nrespuestasalumno ?? null]);
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -128,10 +129,10 @@ class ClassroomController extends Controller
                 }
                 return view('modulos.classroom.classmates')->with(['classroom' => $datos, 'alumnos' => $companeros, 'hash' => $hash]);
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
     public function misdeberes()
@@ -141,10 +142,10 @@ class ClassroomController extends Controller
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if (isset($esta_en_esta_clase->user_id)) {
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -206,8 +207,33 @@ class ClassroomController extends Controller
         ]);
         return redirect('/elearning/');
     }
-    public function unirme(Request $request)
+    public function unirme(Request $request, $code = null)
     {
+        if (isset($code)) {
+            $user_id = Auth::user()->id;
+            $clase_solicitada = $code;
+            $datos_clase_solicitada = DB::table('classrooms')->where('access_code', '=', $clase_solicitada)->first();
+            if (isset($datos_clase_solicitada)) {
+                $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
+                if (isset($comprobar_si_ya_en_clase)) {
+                    return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
+                } else {
+                    foreach (json_decode($datos_clase_solicitada->classroom_config,true) as $config) {
+                        if ($config['cdginvitacion'] == 'activado') {
+                            DB::table('user_classrooms')->insert([
+                                'user_id' => $user_id,
+                                'class_id' => $datos_clase_solicitada->id
+                            ]);
+                            return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
+                        } else {
+                            return response(view('modulos.errores.403.classroom'), 403);
+                        }
+                    }
+                }
+            } else {
+                return response(view('modulos.errores.404.classroom'), 404);
+            }
+        } else {
             $user_id = Auth::user()->id;
             $clase_solicitada = $request->input('codigo');
             $datos_clase_solicitada = DB::table('classrooms')->where('access_code', '=', $clase_solicitada)->first();
@@ -231,10 +257,7 @@ class ClassroomController extends Controller
             } else {
                 return response('Not Found', 404);
             }
-    }
-
-    public function enlace_unirme(){
-
+        }
     }
 
     public function editar()
@@ -449,10 +472,10 @@ class ClassroomController extends Controller
                 $datos = json_decode(json_encode($data), true);
                 return view('modulos.classroom.trabajodeclase.crear.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -476,10 +499,10 @@ class ClassroomController extends Controller
                 $datos = json_decode(json_encode($data), true);
                 return view('modulos.classroom.trabajodeclase.crear.pregunta')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
             } else {
-                return view('modulos.errores.404.classroom');
+                    return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-            return view('modulos.errores.404.classroom');
+                return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
