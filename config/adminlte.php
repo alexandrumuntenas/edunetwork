@@ -365,14 +365,24 @@ return [
     */
 
     'plugins' => [
+        'CustomCSS' => [
+            'active' => true,
+            'files' => [
+                ['type' => 'css', 'asset' => true, 'location' => asset('../resources/css/app.css')]
+            ]
+        ],
         'jQuery' => [
             'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'
-                ],
+                ], [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'http://malsup.github.com/jquery.form.js',
+                ]
             ],
         ],
         'Datatables' => [
@@ -435,27 +445,12 @@ return [
                 ],
             ],
         ],
-        'Pace' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
-                ],
-            ],
-        ],
         'JqueryUI' => [
             'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => 'https://code.jquery.com/ui/1.12.0/jquery-ui.min.js',
                 ],
             ],

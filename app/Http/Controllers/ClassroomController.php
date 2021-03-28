@@ -57,7 +57,7 @@ class ClassroomController extends Controller
                 }
                 $actividades = DB::table($hash . '_class_activities')->get();
                 if (Auth::user()->hasRole('alumno')) {
-                    $notas = DB::table($hash . '_class_activities_response')->where('student_id', '=', Auth::user()->id)->where('mark','!=',null)->get();
+                    $notas = DB::table($hash . '_class_activities_response')->where('student_id', '=', Auth::user()->id)->where('mark', '!=', null)->get();
                 }
                 return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash, 'notas' => $notas ?? null]);
             } else {
@@ -208,24 +208,33 @@ class ClassroomController extends Controller
     }
     public function unirme(Request $request)
     {
-        $user_id = Auth::user()->id;
-        $clase_solicitada = $request->input('codigo');
-        $datos_clase_solicitada = DB::table('classrooms')->where('access_code', '=', $clase_solicitada)->first();
-        if (isset($datos_clase_solicitada)) {
-            $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
-            if (isset($comprobar_si_ya_en_clase)) {
-                return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+            $user_id = Auth::user()->id;
+            $clase_solicitada = $request->input('codigo');
+            $datos_clase_solicitada = DB::table('classrooms')->where('access_code', '=', $clase_solicitada)->first();
+            if (isset($datos_clase_solicitada)) {
+                $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
+                if (isset($comprobar_si_ya_en_clase)) {
+                    return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
+                } else {
+                    foreach ($datos_clase_solicitada->classroom_config as $config) {
+                        if ($config['cdginvitacion'] == 'activado') {
+                            DB::table('user_classrooms')->insert([
+                                'user_id' => $user_id,
+                                'class_id' => $datos_clase_solicitada->id
+                            ]);
+                            return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
+                        } else {
+                            return response('Forbidden', 403);
+                        }
+                    }
+                }
             } else {
-                DB::table('user_classrooms')->insert([
-                    'user_id' => $user_id,
-                    'class_id' => $datos_clase_solicitada->id
-                ]);
-
-                return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
+                return response('Not Found', 404);
             }
-        } else {
-            return view('modulos.errores.404.classroom');
-        }
+    }
+
+    public function enlace_unirme(){
+
     }
 
     public function editar()
@@ -248,9 +257,10 @@ class ClassroomController extends Controller
         return redirect('/elearning/');
     }
     //Configuración de clase
-    public function class_u_config(Request $request, $hash){
-        $datanatiguo = DB::table('classrooms')->where('classroom_hash','=',$hash)->first();
-        foreach(json_decode($datanatiguo->classroom_config,true) as $i){
+    public function class_u_config(Request $request, $hash)
+    {
+        $datanatiguo = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        foreach (json_decode($datanatiguo->classroom_config, true) as $i) {
             $asignatura = $i['asignatura'];
             $clase = $i['clase'];
             $seccion = $i['seccion'];
@@ -261,13 +271,13 @@ class ClassroomController extends Controller
             $aspecto = $i['aspecto'];
             $aspectotmp = $request->input('aspecto');
             $codigosinvitaciontmp = $request->input('codigosinvitacion');
-            if(isset($aspectotmp)){
+            if (isset($aspectotmp)) {
                 $aspecto = $request->input('aspecto');
             }
             if (isset($codigosinvitaciontmp)) {
                 $cdginvitacion = $request->input('codigosinvitacion');
             }
-            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"'.$cdginvitacion.'"}]';
+            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"' . $cdginvitacion . '"}]';
             DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_config' => $json_data]);
         }
         return '200';
