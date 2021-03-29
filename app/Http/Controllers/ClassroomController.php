@@ -22,7 +22,7 @@ class ClassroomController extends Controller
         }
         $clases = json_decode(json_encode($clases), true);
         $cdg = $request->input('cdg');
-        return view('modulos.classroom.index')->with(['classrooms' => $clases,'cdg'=> $cdg]);
+        return view('modulos.classroom.index')->with(['classrooms' => $clases ?? null,'cdg'=> $cdg]);
     }
     public function classroom($hash)
     {
@@ -174,6 +174,8 @@ class ClassroomController extends Controller
 
         Schema::create($classroom_hash . "_class_messages", function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('type');
+            $table->string('parent');
             $table->string('author');
             $table->longText('message_data');
             $table->timestamp('created_at')->useCurrent();
@@ -276,6 +278,8 @@ class ClassroomController extends Controller
         Schema::dropIfExists($hash . "_class_grades");
         Schema::dropIfExists($hash . "_class_topics");
         Schema::dropIfExists($hash . "_class_messages");
+        $class = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
+        DB::table('user_classrooms')->where('class_id','=',$class->id)->delete();
         DB::table('classrooms')->where('classroom_hash', '=', $hash)->delete();
         return redirect('/elearning/');
     }
@@ -310,6 +314,8 @@ class ClassroomController extends Controller
     {
         $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('nuevomensaje'))));
         DB::table($hash . '_class_messages')->insert([
+            'type' => 'publicacion',
+            'parent' => '0',
             'author' => Auth::user()->name,
             'message_data' => $contenido,
         ]);
@@ -341,6 +347,12 @@ class ClassroomController extends Controller
                 $tema = $request->input('tema');
                 $json_data = '[{"titulo": "' . $titulo . '","contenido": "' . $contenido . '"}]';
                 DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'material', 'activity_data' => $json_data]);
+                DB::table($hash . '_class_messages')->insert([
+                    'type' => 'actividad',
+                    'parent' => 0,
+                    'author' => Auth::user()->name . ' ha publicado nuevo material: ' . $titulo,
+                    'message_data' => $contenido,
+                ]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
                 break;
             case "tarea":
@@ -365,7 +377,13 @@ class ClassroomController extends Controller
                 } else {
                     $json_data = '[{"titulo": "' . $pregunta . '", "puntos":"' . $puntos . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","contenido": "' . $contenido . '"}]';
                 }
-                DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
+                $insert = DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
+                DB::table($hash . '_class_messages')->insert([
+                    'type' => 'actividad',
+                    'parent' => $insert,
+                    'author' => Auth::user()->name . ' ha publicado una nueva pregunta: ' . $pregunta,
+                    'message_data' => $contenido,
+                ]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
                 break;
 

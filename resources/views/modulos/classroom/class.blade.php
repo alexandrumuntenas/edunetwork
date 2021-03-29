@@ -3,7 +3,7 @@
 @section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
     @include('modulos.classroom.componentes.cabecera')
     <div class="col" id="class_sidebar">
-            @include('modulos.classroom.componentes.sidebar')
+        @include('modulos.classroom.componentes.sidebar')
     </div>
     <div class="col">
         <div id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
@@ -11,17 +11,28 @@
                 <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Anuncia algo a tu clase
             </div>
         </div>
+
         @foreach ($anuncios as $anuncio)
-            <div class="card" id="classroom_tablon">
-                <div class="card-header" id="class_message">
-                    <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
-                    {{ $anuncio['author'] }}
-                    <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>
+            @if ($anuncio['type'] == 'publicacion')
+                <div class="card" id="classroom_tablon">
+                    <div class="card-header" id="class_message">
+                        <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
+                        {{ $anuncio['author'] }}
+                        <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>
+                    </div>
+                    <div class="card-body">
+                        {!! $anuncio['message_data'] !!}
+                    </div>
                 </div>
-                <div class="card-body">
-                    {!! $anuncio['message_data'] !!}
-                </div>
-            </div>
+            @elseif($anuncio['type'] == 'actividad')
+                <a class="card" id="classroom_tablon" href="{{url('/elearning/c/'.$hash.'/trabajodclase/v/'.$anuncio['parent'])}}">
+                    <div class="card-header" id="class_message">
+                        <img class="user_avatar" src="{{ url('/images/_tarea.png') }}" />
+                        {{ $anuncio['author'] }}
+                        <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>
+                    </div>
+                </a>
+            @endif
         @endforeach
     </div>
 

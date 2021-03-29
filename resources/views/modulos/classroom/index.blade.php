@@ -22,7 +22,6 @@
                                 </div>
                             </div>
                         </div>
-
                     @endforeach
                 @endif
             @endforeach
@@ -107,7 +106,8 @@
                                 timerProgressBar: true,
                                 didOpen: (toast) => {
                                     toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
                                 }
                             })
 
@@ -127,7 +127,8 @@
                                 timerProgressBar: true,
                                 didOpen: (toast) => {
                                     toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    toast.addEventListener('mouseleave', Swal
+                                        .resumeTimer)
                                 }
                             });
 
@@ -136,7 +137,9 @@
                                 title: 'Redirigiéndote a la clase...'
                             });
                             setTimeout(function() {
-                                window.location = '{{ url('/elearning/c/') }}/' + response.clase}, 3000);
+                                window.location = '{{ url('/elearning/c/') }}/' + response
+                                    .clase
+                            }, 3000);
 
                         }
                     });
