@@ -346,10 +346,10 @@ class ClassroomController extends Controller
                 $contenido = trim(addslashes(preg_replace('/\s\s+/', ' ', $request->input('contenido'))));
                 $tema = $request->input('tema');
                 $json_data = '[{"titulo": "' . $titulo . '","contenido": "' . $contenido . '"}]';
-                DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'material', 'activity_data' => $json_data]);
+                $insert = DB::table($hash . '_class_activities')->insertGetId(['topic_id' => $tema, 'type' => 'material', 'activity_data' => $json_data]);
                 DB::table($hash . '_class_messages')->insert([
                     'type' => 'actividad',
-                    'parent' => 0,
+                    'parent' => $insert,
                     'author' => Auth::user()->name . ' ha publicado nuevo material: ' . $titulo,
                     'message_data' => $contenido,
                 ]);
@@ -377,7 +377,7 @@ class ClassroomController extends Controller
                 } else {
                     $json_data = '[{"titulo": "' . $pregunta . '", "puntos":"' . $puntos . '","atributo":"' . $tipo . '","masrespuestas": "' . $masrespuestas . '","contenido": "' . $contenido . '"}]';
                 }
-                $insert = DB::table($hash . '_class_activities')->insert(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
+                $insert = DB::table($hash . '_class_activities')->insertGetId(['topic_id' => $tema, 'type' => 'pregunta', 'activity_data' => $json_data]);
                 DB::table($hash . '_class_messages')->insert([
                     'type' => 'actividad',
                     'parent' => $insert,
