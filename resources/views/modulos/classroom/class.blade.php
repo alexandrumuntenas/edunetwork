@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
+@section('title', 'Classroom < Edunetwork') @section('content')<div class="h-100"><div class="row justify-content-center">
     @include('modulos.classroom.componentes.cabecera')
     <div class="col" id="class_sidebar">
         @include('modulos.classroom.componentes.sidebar')
     </div>
-    <div class="col">
+    <div class="col" style="max-width:712px">
         @foreach (json_decode($classroom['classroom_config']) as $config)
             <div id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
                 <div class="card-body">
@@ -18,17 +18,20 @@
                     <div class="card" id="classroom_tablon">
                         <div class="card-header" id="class_title">
                             <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
-                            <div class="card-tools dropleft float-right">
-                                <button type="button" class="btn btn-tool" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                        class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item" href="#">Eliminar</a>
-                                    <button class="dropdown-item" disabled>Copiar enlace</a>
+                            @if ($anuncio->author_id == Auth::user()->id)
+                                <div class="card-tools dropleft float-right">
+                                    <button type="button" class="btn btn-tool" id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                            class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Editar</a>
+                                        <a class="dropdown-item" href="#">Eliminar</a>
+                                        <button class="dropdown-item" disabled>Copiar enlace</a>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
+
                             {{ $anuncio->author }}
                             <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio->created_at }}</h6>
 
@@ -55,7 +58,7 @@
                                             <img class="user_avatar_comments"
                                                 src="{{ url('/images/_avatar.png') }}" />
                                         </div>
-                                        <div id="col" style="margin-top: 25px">
+                                        <div id="col" style="margin-top: 25px; max-width:712px">
                                             <h6>{{ $comentario->author }} <span
                                                     class="text-muted">{{ $comentario->created_at }}</span></h6>
                                             {{ $comentario->message_data }}
@@ -135,15 +138,11 @@
 
                                             Toast.fire({
                                                 icon: 'success',
-                                                title: 'El comentario se ha publicado'
+                                                title: 'El comentario se ha publicado, recargando página...'
                                             });
-
-                                            $('#{{ hash('sha256', $anuncio->id) }}textarea')
-                                                .val('');
-
-                                            $('#{{ hash('sha256', $anuncio->id) }}textarea')
-                                                .prop('readonly',
-                                                    false);
+                                            setTimeout(function() {
+                                                location.reload()
+                                            }, 3000);
                                         }
                                     });
                                 });
@@ -199,6 +198,7 @@
             </div>
         </div>
         @endforeach
+    </div>
     </div>
 @stop
 

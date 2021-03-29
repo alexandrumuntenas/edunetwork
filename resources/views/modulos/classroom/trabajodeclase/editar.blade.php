@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
+@section('title', 'Classroom < Edunetwork') @section('content')<div class="h-100"><div class="row justify-content-center">
     @include('modulos.classroom.componentes.cabecera')
 
     <div class="col" id="class_sidebar">
         @include('modulos.classroom.componentes.sidebar')
     </div>
-    <div class="col">
+    <div class="col" style="max-width:712px">
         @foreach (json_decode($data->activity_data, true) as $activity_data)
             @if ($type === 'material')
                 <form class="card" action="{{ url("/elearning/c/$hash/trabajodeclase/e") }}" method="POST">

@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Classroom < Edunetwork') @section('content') <div class="row">
+@section('title', 'Classroom < Edunetwork') @section('content')<div class="h-100"><div class="row justify-content-center">
     @include('modulos.classroom.componentes.cabecera')
 
     <div class="col" id="class_sidebar">
         @include('modulos.classroom.componentes.sidebar')
     </div>
-    <div class="col">
+    <div class="col" style="max-width:712px">
         <form class="card" action="{{ url("/elearning/c/$hash/trabajodeclase/crear") }}" method="POST">
             <div class="card-header" id="class_title">
                 <span class="card-title float-left">Crear nuevo material</span><span class="float-right"><button

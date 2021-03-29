@@ -176,6 +176,7 @@ class ClassroomController extends Controller
             $table->string('type');
             $table->string('parent');
             $table->string('author');
+            $table->string('author_id');
             $table->longText('message_data');
             $table->timestamp('created_at')->useCurrent();
         });
@@ -217,7 +218,7 @@ class ClassroomController extends Controller
             if (isset($datos_clase_solicitada)) {
                 $comprobar_si_ya_en_clase = DB::table('user_classrooms')->where('class_id', '=', $datos_clase_solicitada->id)->where('user_id', '=', Auth::user()->id)->first();
                 if (isset($comprobar_si_ya_en_clase)) {
-                    return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
+                    return redirect('/elearning/c/' . $datos_clase_solicitada->classroom_hash);
                 } else {
                     foreach (json_decode($datos_clase_solicitada->classroom_config, true) as $config) {
                         if ($config['cdginvitacion'] == 'activado') {
@@ -225,7 +226,7 @@ class ClassroomController extends Controller
                                 'user_id' => $user_id,
                                 'class_id' => $datos_clase_solicitada->id
                             ]);
-                            return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
+                            return redirect('/elearning/c/'.$datos_clase_solicitada->classroom_hash);
                         } else {
                             return response(view('modulos.errores.403.classroom'), 403);
                         }
@@ -321,6 +322,7 @@ class ClassroomController extends Controller
             'type' => 'publicacion',
             'parent' => '0',
             'author' => Auth::user()->name,
+            'author_id' => Auth::user()->id,
             'message_data' => $contenido,
         ]);
         return redirect('/elearning/c/' . $hash);
@@ -330,8 +332,8 @@ class ClassroomController extends Controller
     {
         $parent = $request->input('parent');
         $content = $request->input('content');
-        DB::table($hash . '_class_messages')->insert(['type' => 'comentario', 'parent' => $parent, 'author' => Auth::user()->id, 'message_data' => $content]);
-        return response('Comentario publicado correctamente',200);
+        DB::table($hash . '_class_messages')->insert(['type' => 'comentario', 'parent' => $parent, 'author' => Auth::user()->name, 'author_id' => Auth::user()->id, 'message_data' => $content]);
+        return response('Comentario publicado correctamente', 200);
     }
 
     public function eliminaranuncio(Request $request, $hash)
@@ -363,6 +365,7 @@ class ClassroomController extends Controller
                     'type' => 'actividad',
                     'parent' => $insert,
                     'author' => Auth::user()->name . ' ha publicado nuevo material: ' . $titulo,
+                    'author_id' => Auth::user()->id,
                     'message_data' => $contenido,
                 ]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
@@ -394,6 +397,7 @@ class ClassroomController extends Controller
                     'type' => 'actividad',
                     'parent' => $insert,
                     'author' => Auth::user()->name . ' ha publicado una nueva pregunta: ' . $pregunta,
+                    'author_id' => Auth::user()->id,
                     'message_data' => $contenido,
                 ]);
                 return redirect('/elearning/c/' . $hash . '/trabajodeclase');
@@ -487,6 +491,7 @@ class ClassroomController extends Controller
         $data = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
         if ($data->classroom_teacher === Auth::user()->id) {
             DB::table($hash . '_class_activities')->where('id', '=', $id)->delete();
+            DB::table($hash . '_class_messages')->where('parent', '=', $id)->where('type','=','actividad')->delete();
             return redirect('/elearning/c/' . $hash . '/trabajodeclase');
         }
     }
