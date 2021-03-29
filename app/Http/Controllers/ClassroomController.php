@@ -31,7 +31,7 @@ class ClassroomController extends Controller
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if (isset($esta_en_esta_clase->user_id)) {
                 $datos = json_decode(json_encode($data), true);
-                $anuncios = DB::table($hash . '_class_messages')->get();
+                $anuncios = DB::table($hash . '_class_messages')->orderBy('id','desc')->get();
                 $anuncios = json_decode($anuncios, true);
                 return view('modulos.classroom.class')->with(['classroom' => $datos, 'anuncios' => $anuncios, 'hash' => $hash]);
             } else {
