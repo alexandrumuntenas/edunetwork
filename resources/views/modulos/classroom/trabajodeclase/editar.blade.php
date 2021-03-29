@@ -10,7 +10,7 @@
         @foreach (json_decode($data->activity_data, true) as $activity_data)
             @if ($type === 'material')
                 <form class="card" action="{{ url("/elearning/c/$hash/trabajodeclase/e") }}" method="POST">
-                    <div class="card-header" id="class_message">
+                    <div class="card-header" id="class_title">
                         <span class="card-title float-left">Editar material</span><span class="float-right"><button
                                 class="btn btn-primary btn-sm" type="submit">Actualizar</button></span>
                     </div>

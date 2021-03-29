@@ -113,7 +113,7 @@ img {
     border: 5px solid lightblue;
 }
 
-#class_message {
+#class_title {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -137,6 +137,7 @@ img {
 #class_menu ul {
     list-style-type: none;
     padding: 0;
+    padding: 10px;
     text-align: center;
 }
 
@@ -167,9 +168,27 @@ img {
     padding: 0;
 }
 
-#vista_recursos {transition: .2s;}
+#vista_recursos {
+    transition: .2s;
+}
 
-#vista_recursos:hover {box-shadow: 0px 0px 5px #000;}
+#vista_recursos:hover {
+    box-shadow: 0px 0px 5px #000;
+}
+
+#classroom_activity_msg {
+    transition: .2s;
+}
+
+#classroom_activity_msg:hover {
+    filter: saturate(50%);
+}
+
+#classroom_activity_msg .activitybcast {
+    color: #333;
+    margin-right: 5px;
+    transform: rotate(-10deg);
+}
 
 /* Classroom Backgrounds */
 

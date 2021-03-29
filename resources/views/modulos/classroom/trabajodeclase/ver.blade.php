@@ -9,7 +9,7 @@
     @foreach (json_decode($actividad->activity_data, true) as $data)
         <div class="col">
             <div class="card">
-                <div class="card-header" id="class_message">
+                <div class="card-header" id="class_title">
                     <span class="card-title float-left">{{ $data['titulo'] }}</span>
                 </div>
                 <div class="card-body">
@@ -124,7 +124,7 @@
         @foreach ($respuestasalumno as $solucion)
             @if ($actividad->type === 'pregunta')
                 <div class="card">
-                    <div class="card-header" id="class_message">Entregado el {{ $solucion->created_at }}</div>
+                    <div class="card-header" id="class_title">Entregado el {{ $solucion->created_at }}</div>
                     <div class="card-body">
                         @if ($data['atributo'] == 'color')
                             <div class="col-4">
@@ -161,7 +161,7 @@
                 @endphp
                 @if ($respuesta->student_id === $alumno->id)
                     <div class="card">
-                        <div class="card-header" id="class_message">
+                        <div class="card-header" id="class_title">
                             <h5>{{$alumno->name}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Entregado el {{ $respuesta->created_at }}</h6>
                         </div>

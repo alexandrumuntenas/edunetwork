@@ -15,7 +15,7 @@
         @foreach ($anuncios as $anuncio)
             @if ($anuncio['type'] == 'publicacion')
                 <div class="card" id="classroom_tablon">
-                    <div class="card-header" id="class_message">
+                    <div class="card-header" id="class_title">
                         <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
                         {{ $anuncio['author'] }}
                         <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>
@@ -23,13 +23,19 @@
                     <div class="card-body">
                         {!! $anuncio['message_data'] !!}
                     </div>
+                    <div class="card-footer">
+                        Actualización de los comentarios pte
+                    </div>
                 </div>
             @elseif($anuncio['type'] == 'actividad')
-                <a class="card" id="classroom_tablon" href="{{url('/elearning/c/'.$hash.'/trabajodclase/v/'.$anuncio['parent'])}}">
-                    <div class="card-header" id="class_message">
-                        <img class="user_avatar" src="{{ url('/images/_tarea.png') }}" />
+                <a class="card" id="classroom_activity_msg"
+                    href="{{ url('/elearning/c/' . $hash . '/trabajodclase/v/' . $anuncio['parent']) }}">
+                    <div class="card-header" id="class_title">
+                        <i class="activitybcast fas fa-bullhorn"></i>
                         {{ $anuncio['author'] }}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio['created_at'] }}</h6>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ $anuncio['created_at'] }}
                     </div>
                 </a>
             @endif

@@ -8,7 +8,7 @@
     </div>
     <div class="col">
         <form class="card" action="{{ url("/elearning/c/$hash/trabajodeclase/crear") }}" method="POST">
-            <div class="card-header" id="class_message">
+            <div class="card-header" id="class_title">
                 <span class="card-title float-left">Crear nueva pregunta</span><span class="float-right"><button
                         class="btn btn-primary btn-sm" type="submit">Publicar</button></span>
             </div>
