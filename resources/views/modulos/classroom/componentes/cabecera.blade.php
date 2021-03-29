@@ -16,8 +16,10 @@
                             </div>
                         </div>
                     @endif
+                    <center>
                     <h4>{{ $i->asignatura }}</h4>
                     <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
+                    </center>
                 </div>
                 <div class="card-footer" id="class_menu">
                     <ul>
