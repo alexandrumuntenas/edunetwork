@@ -29,7 +29,7 @@
                 </div>
             @elseif($anuncio['type'] == 'actividad')
                 <a class="card" id="classroom_activity_msg"
-                    href="{{ url('/elearning/c/' . $hash . '/trabajodclase/v/' . $anuncio['parent']) }}">
+                    href="{{ url('/elearning/c/' . $hash . '/trabajodeclase/v/' . $anuncio['parent']) }}">
                     <div class="card-header" id="class_title">
                         <i class="activitybcast fas fa-bullhorn"></i>
                         {{ $anuncio['author'] }}
