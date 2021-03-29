@@ -42,7 +42,7 @@
         </div>
         @if (Auth::user()->id === $classroom['classroom_teacher'])
             <div class="modal fade" id="configmodal" tabindex="-1" aria-labelledby="configmodal" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                     <form class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="configmodal">Configuración</h5>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="classconfig">
-                                <h5>Detalles de la clase</h5>
+                                <h4>Detalles de la clase</h4>
                                 <div class="form-group">
                                     <label for="asignatura">Asignatura</label>
                                     <input id="asignatura" name="asignatura" class="form-control form-control-sm"
@@ -75,7 +75,8 @@
                                 </div>
                             </div>
                             <div class="generalconfig">
-                                <h5>General</h5>
+                                <h4>General</h4>
+                                <h5>Códigos de invitación</h5>
                                 <div class="form-group">
                                     <label for="invitation_settings">Gestionar códigos de invitación</label>
                                     <select class="form-control" name="codigosinvitacion" id="codigosinvitacion">
@@ -107,9 +108,32 @@
                                         </div>
                                     </div>
                                 @endif
+                                <h5>Tablón</h5>
+                                <div class="form-group">
+                                    <label for="tablon_settings">Publicaciones</label>
+                                    <select class="form-control" name="tablon_settings" id="tablon_settings">
+                                        <option value="activado">Los alumnos pueden publicar en el tablón</option>
+                                        <option value="desactivado">Los alumnos no pueden publicar en el tablón</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tablon_settings">Comentarios</label>
+                                    <select class="form-control" name="tablon_settings" id="tablon_settings">
+                                        <option value="activado">Permitir</option>
+                                        <option value="desactivado">Prohibir</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tablon_settings">Elementos eliminados</label>
+                                    <select class="form-control" name="tablon_settings" id="tablon_settings">
+                                        <option value="directo">Eliminar directamente</option>
+                                        <option value="espera">Eliminar tras 30 días</option>
+                                    </select>
+                                    <p><small>Solo los profesores pueden ver los elementos eliminados.</small></p>
+                                </div>
                             </div>
                             <div class="classthemeconfig">
-                                <h5>Aspecto</h5>
+                                <h4>Aspecto</h4>
                                 <div class="form-group">
                                     <label for="color_scheme">Aspecto de la clase</label>
                                     <select class="form-control" name="color_scheme" id="color_scheme">
@@ -204,7 +228,9 @@
                         $(this).next('div#invitation_settings_div').remove();
                     } else {
                         $(this).next('div#invitation_settings_div').remove();
-                        $(this).after('<div id="invitation_settings_div"> <div class="form-group"> <label for="codigoclase">Código de la clase</label> <input class="form-control" id="codigoclase" type="text" value="{{ $classroom["access_code"] }}" readonly /> <p><small></small></p> </div> <div class="form-group"> <label for="enlaceclase">Enlace de invitación</label> <input class="form-control" id="enlaceclase" type="text" value="{{ url('/elearning/j/' . $classroom["access_code"]) }}" readonly /> <p><small></small></p> </div> </div>');
+                        $(this).after(
+                            '<div id="invitation_settings_div"> <div class="form-group"> <label for="codigoclase">Código de la clase</label> <input class="form-control" id="codigoclase" type="text" value="{{ $classroom['access_code'] }}" readonly /> <p><small></small></p> </div> <div class="form-group"> <label for="enlaceclase">Enlace de invitación</label> <input class="form-control" id="enlaceclase" type="text" value="{{ url('/elearning/j/' . $classroom['access_code']) }}" readonly /> <p><small></small></p> </div> </div>'
+                        );
                     }
                 });
 
