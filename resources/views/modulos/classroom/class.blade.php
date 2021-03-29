@@ -6,42 +6,170 @@
         @include('modulos.classroom.componentes.sidebar')
     </div>
     <div class="col">
-        <div id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
-            <div class="card-body">
-                <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Anuncia algo a tu clase
-            </div>
-        </div>
-
-        @foreach ($anuncios as $anuncio)
-            @if ($anuncio->type == 'publicacion')
-                <div class="card" id="classroom_tablon">
-                    <div class="card-header" id="class_title">
-                        <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
-                        {{ $anuncio->author }}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio->created_at }}</h6>
-                    </div>
-                    <div class="card-body">
-                        {!! $anuncio->message_data !!}
-                    </div>
-                    <div class="card-footer">
-                        Actualización de los comentarios pte
-                    </div>
+        @foreach (json_decode($classroom['classroom_config']) as $config)
+            <div id="nuevoanuncio" class="card" style="width:100%" data-toggle="modal" data-target="#crearanuncio">
+                <div class="card-body">
+                    <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" /> Anuncia algo a tu clase
                 </div>
-            @elseif($anuncio->type == 'actividad')
-                <a class="card" id="classroom_activity_msg"
-                    href="{{ url('/elearning/c/' . $hash . '/trabajodeclase/v/' . $anuncio->parent) }}">
-                    <div class="card-header" id="class_title">
-                        <i class="activitybcast fas fa-bullhorn"></i>
-                        {{ $anuncio->author }}
-                    </div>
-                    <div class="card-footer text-muted">
-                        {{ $anuncio->created_at }}
-                    </div>
-                </a>
-            @endif
-        @endforeach
+            </div>
 
-        {{$anuncios->links()}}
+            @foreach ($anuncios as $anuncio)
+                @if ($anuncio->type == 'publicacion')
+                    <div class="card" id="classroom_tablon">
+                        <div class="card-header" id="class_title">
+                            <img class="user_avatar" src="{{ url('/images/_avatar.png') }}" />
+                            <div class="card-tools dropleft float-right">
+                                <button type="button" class="btn btn-tool" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                        class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Editar</a>
+                                    <a class="dropdown-item" href="#">Eliminar</a>
+                                    <button class="dropdown-item" disabled>Copiar enlace</a>
+                                </div>
+                            </div>
+                            {{ $anuncio->author }}
+                            <h6 class="card-subtitle mb-2 text-muted">{{ $anuncio->created_at }}</h6>
+
+                        </div>
+                        <div class="card-body">
+                            {!! $anuncio->message_data !!}
+                        </div>
+                        @php
+                            $comentarios = DB::table($hash . '_class_messages')
+                                ->where('type', '=', 'comentario')
+                                ->where('parent', '=', $anuncio->id)
+                                ->get();
+                            if ($comentarios == '[]') {
+                                $comentarios = null;
+                            }
+                        @endphp
+                        <div class="card-body comments">
+                            <h5>Comentarios</h5>
+                            @if (isset($comentarios))
+
+                                @foreach ($comentarios as $comentario)
+                                    <div id="row">
+                                        <div id="col">
+                                            <img class="user_avatar_comments"
+                                                src="{{ url('/images/_avatar.png') }}" />
+                                        </div>
+                                        <div id="col" style="margin-top: 25px">
+                                            <h6>{{ $comentario->author }} <span
+                                                    class="text-muted">{{ $comentario->created_at }}</span></h6>
+                                            {{ $comentario->message_data }}
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div id="comentario">
+                                </div>
+                            @endif
+                        </div>
+
+                        @if ($config->comentarios == 'activado')
+                            <form class="card-footer comments" name="{{ hash('sha256', $anuncio->id) }}">
+                                <div class="input-group">
+                                    @csrf
+                                    <img class="user_avatar_comments" src="{{ url('/images/_avatar.png') }}" />
+                                    <input value="{{ $anuncio->id }}" name="parent" hidden />
+                                    <textarea class="form-control" id="{{ hash('sha256', $anuncio->id) }}textarea"
+                                        required name="content"></textarea>
+                                    <button type="submit" class="btn btn-light"><i
+                                            class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </form>
+                            <script>
+                                $(document).ready(function() {
+                                    $('form[name="{{ hash('sha256', $anuncio->id) }}"]').ajaxForm({
+                                        url: '{{ url('/elearning/c/' . $hash . '/tablon/comentar') }}',
+                                        type: 'post',
+                                        beforeSend: function(Pace) {
+                                            $('#{{ hash('sha256', $anuncio->id) }}textarea')
+                                                .prop(
+                                                    'readonly',
+                                                    true);
+                                        },
+                                        error: function() {
+                                            const Toast = Swal.mixin({
+                                                toast: true,
+                                                position: 'bottom',
+                                                showConfirmButton: false,
+                                                timer: 3000,
+                                                timerProgressBar: true,
+                                                didOpen: (toast) => {
+                                                    toast.addEventListener('mouseenter',
+                                                        Swal
+                                                        .stopTimer)
+                                                    toast.addEventListener('mouseleave',
+                                                        Swal
+                                                        .resumeTimer)
+                                                }
+                                            })
+
+                                            Toast.fire({
+                                                icon: 'error',
+                                                title: 'El comentario no se ha podido publicar...'
+                                            })
+                                            $('#{{ hash('sha256', $anuncio->id) }}textarea')
+                                                .prop('readonly',
+                                                    false);
+                                        },
+                                        success: function() {
+                                            const Toast = Swal.mixin({
+                                                toast: true,
+                                                position: 'bottom',
+                                                showConfirmButton: false,
+                                                timer: 3000,
+                                                timerProgressBar: true,
+                                                didOpen: (toast) => {
+                                                    toast.addEventListener('mouseenter',
+                                                        Swal
+                                                        .stopTimer)
+                                                    toast.addEventListener('mouseleave',
+                                                        Swal
+                                                        .resumeTimer)
+                                                }
+                                            });
+
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: 'El comentario se ha publicado'
+                                            });
+
+                                            $('#{{ hash('sha256', $anuncio->id) }}textarea')
+                                                .val('');
+
+                                            $('#{{ hash('sha256', $anuncio->id) }}textarea')
+                                                .prop('readonly',
+                                                    false);
+                                        }
+                                    });
+                                });
+
+                            </script>
+                        @elseif($config->comentarios == 'noeditar')
+                            <form class="card-footer comments form-inline">
+                                Actualización de los comentarios pte
+                            </form>
+                        @endif
+                    </div>
+                @elseif($anuncio->type == 'actividad')
+                    <a class="card" id="classroom_activity_msg"
+                        href="{{ url('/elearning/c/' . $hash . '/trabajodeclase/v/' . $anuncio->parent) }}">
+                        <div class="card-header" id="class_title">
+                            <i class="activitybcast fas fa-bullhorn"></i>
+                            {{ $anuncio->author }}
+                        </div>
+                        <div class="card-footer text-muted">
+                            {{ $anuncio->created_at }}
+                        </div>
+                    </a>
+                @endif
+            @endforeach
+
+            {{ $anuncios->links() }}
     </div>
 
     </div>
@@ -70,6 +198,7 @@
                 </form>
             </div>
         </div>
+        @endforeach
     </div>
 @stop
 

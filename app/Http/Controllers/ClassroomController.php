@@ -22,7 +22,7 @@ class ClassroomController extends Controller
         }
         $clases = json_decode(json_encode($clases), true);
         $cdg = $request->input('cdg');
-        return view('modulos.classroom.index')->with(['classrooms' => $clases ?? null,'cdg'=> $cdg]);
+        return view('modulos.classroom.index')->with(['classrooms' => $clases ?? null, 'cdg' => $cdg]);
     }
     public function classroom($hash)
     {
@@ -31,13 +31,13 @@ class ClassroomController extends Controller
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if (isset($esta_en_esta_clase->user_id)) {
                 $datos = json_decode(json_encode($data), true);
-                $anuncios = DB::table($hash . '_class_messages')->orderBy('id','desc')->paginate(10);
+                $anuncios = DB::table($hash . '_class_messages')->orderBy('id', 'desc')->paginate(10);
                 return view('modulos.classroom.class')->with(['classroom' => $datos, 'anuncios' => $anuncios, 'hash' => $hash]);
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
     public function class_work($hash)
@@ -61,10 +61,10 @@ class ClassroomController extends Controller
                 }
                 return view('modulos.classroom.trabajodeclase')->with(['classroom' => $datos, 'categorias' => $categorias, 'actividades' => $actividades, 'hash' => $hash, 'notas' => $notas ?? null]);
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -106,10 +106,10 @@ class ClassroomController extends Controller
                 $actividad = DB::table($hash . '_class_activities')->where('id', '=', $id)->first();
                 return view('modulos.classroom.trabajodeclase.ver')->with(['classroom' => $datos, 'actividad' => $actividad, 'hash' => $hash, 'respuestas' => $respuestas ?? null, 'listadoalumnos' => $listadoalumnos ?? null, 'nopresentado' => $nopresentado ?? 0, 'presentado' => $presentado ?? 0, 'devuelto' => $devuelto ?? 0, 'respuestasalumno' => $respuestasalumno ?? null, 'nrespuestasalumno' => $nrespuestasalumno ?? null]);
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -128,10 +128,10 @@ class ClassroomController extends Controller
                 }
                 return view('modulos.classroom.classmates')->with(['classroom' => $datos, 'alumnos' => $companeros, 'hash' => $hash]);
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
     public function misdeberes()
@@ -141,10 +141,10 @@ class ClassroomController extends Controller
             $esta_en_esta_clase = DB::table('user_classrooms')->where('class_id', '=', $data->id)->where('user_id', '=', Auth::user()->id)->first();
             if (isset($esta_en_esta_clase->user_id)) {
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -162,7 +162,7 @@ class ClassroomController extends Controller
         $aspectos = array("orange", "blue", "indigo", "purple", "cyan");
         $aspecto = array_rand($aspectos, 1);
         $aspecto = $aspectos[$aspecto];
-        $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $user_id . '", "profesor_name":"' . $user_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"activado"}]';
+        $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $user_id . '", "profesor_name":"' . $user_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"activado","comentarios":"activado"}]';
         $access_code = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
         DB::table('classrooms')->insert([
             'classroom_teacher' => $user_id,
@@ -219,7 +219,7 @@ class ClassroomController extends Controller
                 if (isset($comprobar_si_ya_en_clase)) {
                     return response()->json(['clase' => $datos_clase_solicitada->classroom_hash]);
                 } else {
-                    foreach (json_decode($datos_clase_solicitada->classroom_config,true) as $config) {
+                    foreach (json_decode($datos_clase_solicitada->classroom_config, true) as $config) {
                         if ($config['cdginvitacion'] == 'activado') {
                             DB::table('user_classrooms')->insert([
                                 'user_id' => $user_id,
@@ -278,7 +278,7 @@ class ClassroomController extends Controller
         Schema::dropIfExists($hash . "_class_topics");
         Schema::dropIfExists($hash . "_class_messages");
         $class = DB::table('classrooms')->where('classroom_hash', '=', $hash)->first();
-        DB::table('user_classrooms')->where('class_id','=',$class->id)->delete();
+        DB::table('user_classrooms')->where('class_id', '=', $class->id)->delete();
         DB::table('classrooms')->where('classroom_hash', '=', $hash)->delete();
         return redirect('/elearning/');
     }
@@ -295,15 +295,20 @@ class ClassroomController extends Controller
             $profesor_name = $i['profesor_name'];
             $cdginvitacion = $i['cdginvitacion'];
             $aspecto = $i['aspecto'];
+            $comentarios = $i['comentarios'] ?? null;
             $aspectotmp = $request->input('aspecto');
             $codigosinvitaciontmp = $request->input('codigosinvitacion');
+            $comentariostmp = $request->input('comentarios');
             if (isset($aspectotmp)) {
                 $aspecto = $request->input('aspecto');
             }
             if (isset($codigosinvitaciontmp)) {
                 $cdginvitacion = $request->input('codigosinvitacion');
             }
-            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"' . $cdginvitacion . '"}]';
+            if (isset($comentariostmp)) {
+                $comentarios = $request->input('comentarios');
+            }
+            $json_data = '[{"asignatura":"' . $asignatura . '", "clase":"' . $clase . '", "seccion":"' . $seccion . '", "aula":"' . $aula . '", "profesor_id":"' . $profesor_id . '", "profesor_name":"' . $profesor_name . '", "aspecto":"' . $aspecto . '","cdginvitacion":"' . $cdginvitacion . '","comentarios":"' . $comentarios . '"}]';
             DB::table('classrooms')->where('classroom_hash', '=', $hash)->update(['classroom_config' => $json_data]);
         }
         return '200';
@@ -319,6 +324,14 @@ class ClassroomController extends Controller
             'message_data' => $contenido,
         ]);
         return redirect('/elearning/c/' . $hash);
+    }
+
+    public function comentaranuncio(Request $request, $hash)
+    {
+        $parent = $request->input('parent');
+        $content = $request->input('content');
+        DB::table($hash . '_class_messages')->insert(['type' => 'comentario', 'parent' => $parent, 'author' => Auth::user()->id, 'message_data' => $content]);
+        return response('Comentario publicado correctamente',200);
     }
 
     public function eliminaranuncio(Request $request, $hash)
@@ -489,10 +502,10 @@ class ClassroomController extends Controller
                 $datos = json_decode(json_encode($data), true);
                 return view('modulos.classroom.trabajodeclase.crear.material')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 
@@ -516,10 +529,10 @@ class ClassroomController extends Controller
                 $datos = json_decode(json_encode($data), true);
                 return view('modulos.classroom.trabajodeclase.crear.pregunta')->with(['classroom' => $datos, 'temas' => $topics, 'hash' => $hash]);
             } else {
-                    return response(view('modulos.errores.404.classroom'), 404);
+                return response(view('modulos.errores.404.classroom'), 404);
             }
         } else {
-                return response(view('modulos.errores.404.classroom'), 404);
+            return response(view('modulos.errores.404.classroom'), 404);
         }
     }
 

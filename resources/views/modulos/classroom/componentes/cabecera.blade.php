@@ -17,8 +17,8 @@
                         </div>
                     @endif
                     <center>
-                    <h4>{{ $i->asignatura }}</h4>
-                    <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
+                        <h4>{{ $i->asignatura }}</h4>
+                        <p>{{ $i->clase }} · {{ $i->profesor_name }}</p>
                     </center>
                 </div>
                 <div class="card-footer" id="class_menu">
@@ -115,13 +115,16 @@
                                     <label for="tablon_settings">Publicaciones</label>
                                     <select class="form-control" name="tablon_settings" id="tablon_settings">
                                         <option value="activado">Los alumnos pueden publicar en el tablón</option>
+                                        <option value="noeditar">Los alumnos pueden publicar en el tablón, pero no
+                                            editar su publicación</option>
                                         <option value="desactivado">Los alumnos no pueden publicar en el tablón</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tablon_settings">Comentarios</label>
-                                    <select class="form-control" name="tablon_settings" id="tablon_settings">
+                                    <label for="comments_settings">Comentarios</label>
+                                    <select class="form-control" name="comments_settings" id="comments_settings">
                                         <option value="activado">Permitir</option>
+                                        <option value="noeditar">Permitir, pero no se pueden editar</option>
                                         <option value="desactivado">Prohibir</option>
                                     </select>
                                 </div>
@@ -129,7 +132,7 @@
                                     <label for="tablon_settings">Elementos eliminados</label>
                                     <select class="form-control" name="tablon_settings" id="tablon_settings">
                                         <option value="directo">Eliminar directamente</option>
-                                        <option value="espera">Eliminar tras 30 días</option>
+                                        <option value="espera" disabled>Eliminar tras 30 días</option>
                                     </select>
                                     <p><small>Solo los profesores pueden ver los elementos eliminados.</small></p>
                                 </div>
@@ -159,6 +162,64 @@
                 </div>
             </div>
             <script>
+                function respuesta200() {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal
+                                .resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Se han guardado los ajustes'
+                    })
+                }
+
+                function respuesta500() {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal
+                                .resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Se ha producido un error'
+                    })
+                }
+                $('#comments_settings').change(function() {
+                    var csrf = "{{ csrf_token() }}";
+                    var option = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ url('/elearning/c/' . $hash . '/config/u') }}",
+                        data: {
+                            comentarios: option,
+                            _token: csrf
+                        },
+                        success: function() {
+                            respuesta200();
+                        },
+                        error: function() {
+                            respuesta500();
+                        }
+                    });
+                });
+
                 var selectedScheme = '{{ $i->aspecto }}';
 
                 $('#color_scheme').change(function() {
@@ -174,24 +235,11 @@
                             _token: csrf
                         },
                         success: function() {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal
-                                        .resumeTimer)
-                                }
-                            })
-
-                            Toast.fire({
-                                icon: 'info',
-                                title: 'Se han guardado los ajustes'
-                            })
+                            respuesta200();
                         },
+                        error: function() {
+                            respuesta500();
+                        }
                     });
                 });
                 $('#codigosinvitacion').change(function() {
@@ -205,24 +253,11 @@
                             _token: csrf
                         },
                         success: function() {
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                    toast.addEventListener('mouseleave', Swal
-                                        .resumeTimer)
-                                }
-                            })
-
-                            Toast.fire({
-                                icon: 'info',
-                                title: 'Se han guardado los ajustes'
-                            })
+                            respuesta200();
                         },
+                        error: function() {
+                            respuesta500();
+                        }
                     });
                 });
                 $('#codigosinvitacion').change(function() {

@@ -36,6 +36,7 @@ Route::post('/elearning/c/{hash}/config/u', [App\Http\Controllers\ClassroomContr
 Route::get('/elearning/c/{hash}/del', [App\Http\Controllers\ClassroomController::class, 'eliminar'])->middleware('auth');
 #Tablón
 Route::post('/elearning/c/{hash}/tablon/crear', [App\Http\Controllers\ClassroomController::class, 'crearanuncio'])->middleware('auth');
+Route::post('/elearning/c/{hash}/tablon/comentar', [App\Http\Controllers\ClassroomController::class, 'comentaranuncio'])->middleware('auth');
 Route::post('/elearning/c/{hash}/tablon/eliminar', [App\Http\Controllers\ClassroomController::class, 'eliminaranuncio'])->middleware('auth');
 #Trabajo de clase
 Route::get('/elearning/c/{hash}/trabajodeclase/', [App\Http\Controllers\ClassroomController::class, 'class_work'])->middleware('auth');

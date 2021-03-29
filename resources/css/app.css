@@ -100,6 +100,14 @@ img {
     float: left;
 }
 
+#classroom_tablon .user_avatar_comments {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    margin-right: 15px;
+    float:left;
+}
+
 #nuevoanuncio {
     transition: .2s;
     color: rgba(0, 0, 0, 0.549)
@@ -190,6 +198,13 @@ img {
     transform: rotate(-10deg);
 }
 
+div.comments {
+    border-top: 1px solid rgba(0, 0, 0, .125);
+}
+
+#contenidocomentario{
+    padding: 47px;
+}
 /* Classroom Backgrounds */
 
 .blue {
