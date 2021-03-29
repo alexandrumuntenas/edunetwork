@@ -380,7 +380,7 @@ return [
                     'location' => 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'
                 ], [
                     'type' => 'js',
-                    'asset' => true,
+                    'asset' => false,
                     'location' => 'http://malsup.github.com/jquery.form.js',
                 ]
             ],
